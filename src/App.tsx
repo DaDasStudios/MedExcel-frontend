@@ -19,22 +19,64 @@ function App() {
 				<Navbar
 					elements={[
 						{
+							displayTitle: "Subscriptions",
+							href: "/subscription",
+						},
+						{
 							displayTitle: "About",
 							href: "/about",
 						},
 						{
-							displayTitle: "Contact us",
-							href: "/contact",
+							displayTitle: "Sign up",
+							href: "/about",
 						},
 					]}
 				/>
-				<Routes>
-					<Route
-						path='/'
-						element={<Home />}
-					/>
-				</Routes>
-				<Footer />
+				<main className='min-h-screen relative'>
+					<Routes>
+						<Route
+							path='/'
+							element={<Home />}
+						/>
+					</Routes>
+				</main>
+				<Footer
+					cols={[
+						[
+							{
+								label: "About",
+								href: "/about",
+							},
+							{
+								label: "Recover password",
+								href: "/",
+							},
+							{
+								label: "Report",
+								href: "/admin",
+							},
+						],
+						[
+							{
+								label: "Terms & Conditions",
+								href: "/terms-conditions",
+							},
+							{
+								label: "Privacy Policy",
+								href: "/privacy-policy",
+							},
+							{
+								label: "FAQ",
+								href: "/faq",
+							},
+						],
+						[
+							{
+								label: "excelatmedicine@gmail.com",
+							},
+						],
+					]}
+				/>
 			</BrowserRouter>
 		</SiteContextProvider>
 	)
