@@ -1,4 +1,5 @@
 
+
 export interface ISubscriptionPlan {
     createdAt: Date
     updatedAt: Date

@@ -1,7 +1,7 @@
 // * Pages
 import Home from "./pages/Home/"
 import Subscription from "./pages/Subscription"
-import About from "./pages/About"
+import More from "./pages/More"
 
 // * Components
 import Footer from "./components/ui/Footer"
@@ -25,8 +25,8 @@ function App() {
 							href: "/subscription",
 						},
 						{
-							displayTitle: "About",
-							href: "/about",
+							displayTitle: "More",
+							href: "/more",
 						},
 						{
 							displayTitle: "Sign up",
@@ -45,8 +45,8 @@ function App() {
 							element={<Subscription />}
 						/>
 						<Route
-							path='/about'
-							element={<About />}	
+							path='/more'
+							element={<More />}
 						/>
 					</Routes>
 				</main>
@@ -55,7 +55,7 @@ function App() {
 						[
 							{
 								label: "About",
-								href: "/about",
+								href: "/more#about",
 							},
 							{
 								label: "Recover password",
@@ -81,6 +81,10 @@ function App() {
 							},
 						],
 						[
+							{
+								label: "Admin portal",
+								href: "/admin",
+							},
 							{
 								label: "excelatmedicine@gmail.com",
 							},
