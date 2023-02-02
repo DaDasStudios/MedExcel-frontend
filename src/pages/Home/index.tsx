@@ -1,7 +1,6 @@
 import { useEffect } from "react"
 import { Link } from "react-router-dom"
 import AOS from 'aos'
-import "aos/dist/aos.css"
 
 const Home = () => {
 	useEffect(() => {
@@ -13,11 +12,11 @@ const Home = () => {
 	},[])
 	return (
 		<>
-			<span className="fixed bg-no-repeat bg-cover bg-[url('/img/landing-page-image.jpg')] min-h-screen -z-20 inset-0"></span>
+			<span className="blur-sm fixed bg-no-repeat bg-cover bg-[url('/img/landing-page-image.jpg')] min-h-screen -z-20 inset-0"></span>
 			<section className='pt-[200px] pb-32 min-h-screen bg-slate-900/30 px-52'>
 				<div className='grid grid-cols-2 items-center h-[70vh] gap-12 justify-between'>
 					<article
-						className='text-slate-50 flex flex-col gap-5 justify-center'
+						className='text-slate-50 flex flex-col gap-6 justify-center'
 						data-aos='fade-right'
 					>
 						<h1 className='font-bold tracking-tight text-6xl'>
@@ -28,7 +27,7 @@ const Home = () => {
 							who need to pass complex exams about different
 							categories of health.
 						</p>
-						<div className='flex gap-5 group max-w-fit'>
+						<div className='flex gap-6 group max-w-fit'>
 							<Link
 								className='bg-blue-700/50 transition-all group-hover:translate-x-2 hover:bg-blue-700/70 py-4 px-5 text-lg text-blue-100 rounded-md shadow-md font-medium flex gap-1 border border-blue-100/20 max-w-fit'
 								to='/subscription'
@@ -72,11 +71,11 @@ const Home = () => {
 								</svg>
 							</Link>
 						</div>
-						<div className='bg-slate-900/50 p-5 border border-slate-50/10 shadow-md shadow-amber-100/10 rounded-md max-w-fit flex flex-col justify-center gap-2 transition-transform hover:translate-x-2 group text-center relative'>
-							<h3 className='text-slate-200 text-2xl font-semibold'>
+						<div className='bg-slate-900/50 p-5 border border-slate-50/10 shadow-md rounded-md max-w-fit flex flex-col justify-center gap-2 transition-transform hover:translate-x-2 group text-center relative'>
+							<h3 className='text-yellow-50 text-2xl font-semibold'>
 								Get started for free!
 							</h3>
-							<p className='text-slate-300'>
+							<p className='text-yellow-50/90'>
 								You can take a free trail for two weeks
 							</p>
 							<Link

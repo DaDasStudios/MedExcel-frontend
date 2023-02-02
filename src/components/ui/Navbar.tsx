@@ -12,7 +12,7 @@ interface Props extends PropsWithChildren {
 const Navbar = ({ elements }: Props) => {
 	const { image, name } = useSiteContext()
 	return (
-		<header className='py-6 text-white bg-slate-900/80 border-b border-slate-50/10 font-medium tracking-normal text-lg fixed left-0 right-0 top-0 shadow-2xl z-30'>
+		<header className='py-6 text-white bg-slate-900/80 border-b border-slate-50/10 text-base fixed left-0 right-0 top-0 shadow-2xl z-30'>
 			<nav className='max-w-4xl mx-auto flex items-center justify-between'>
 				<Link
 					className='block'

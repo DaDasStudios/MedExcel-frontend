@@ -1,5 +1,7 @@
 // * Pages
 import Home from "./pages/Home/"
+import Subscription from "./pages/Subscription"
+import About from "./pages/About"
 
 // * Components
 import Footer from "./components/ui/Footer"
@@ -37,6 +39,14 @@ function App() {
 						<Route
 							path='/'
 							element={<Home />}
+						/>
+						<Route
+							path='/subscription'
+							element={<Subscription />}
+						/>
+						<Route
+							path='/about'
+							element={<About />}	
 						/>
 					</Routes>
 				</main>
