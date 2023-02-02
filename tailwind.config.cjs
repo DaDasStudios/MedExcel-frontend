@@ -6,7 +6,8 @@ module.exports = {
   ],
   theme: {
     fontFamily: {
-      sans: ["Quicksand", "sans-serif"]
+      sans: ['Inter', 'sans-serif'],
+      serif: ['Helvetica', 'serif']
     },
     extend: {},
   },
