@@ -1,7 +1,9 @@
 
+
 const Home = () => {
   return (
-    <main className="min-h-screen">Home</main>
+    <main className="min-h-screen">
+    </main>
   )
 }
 
