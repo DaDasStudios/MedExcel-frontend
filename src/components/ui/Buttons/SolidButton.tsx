@@ -4,11 +4,31 @@ import { ComponentElement } from "../../../interface"
 interface IProps extends PropsWithChildren {
 	href?: string
 	as: ComponentElement
+	theme?: string
+	submit?: boolean
 }
 
-const SolidButton = ({ as, children, href }: IProps) => {
+const neutralBtn =
+	"border-slate-100/10 bg-slate-800/50 hover:bg-slate-800/70 text-slate-50"
+
+const blueBtn =
+	"border-blue-100/20 bg-blue-700/50 hover:bg-blue-700/70 text-blue-100"
+
+export const themeBtns = {
+	neutralBtn,
+	blueBtn,
+}
+
+const SolidButton = ({
+	as,
+	children,
+	href,
+	submit,
+	theme = neutralBtn,
+}: IProps) => {
 	const className =
-		"py-4 px-6 font-medium text-base rounded-md transition-colors border border-slate-100/10 bg-slate-800/50 hover:bg-slate-800/70 text-slate-50"
+		theme +
+		" py-4 px-6 font-medium text-base rounded-md transition-colors border"
 	switch (as) {
 		case ComponentElement.A:
 			return (
@@ -21,7 +41,14 @@ const SolidButton = ({ as, children, href }: IProps) => {
 			)
 
 		case ComponentElement.BUTTON:
-			return <button className={className}>{children}</button>
+			return (
+				<button
+					type={submit ? "submit" : "button"}
+					className={className}
+				>
+					{children}
+				</button>
+			)
 
 		default:
 			throw new Error("Unknown component type")

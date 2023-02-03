@@ -2,6 +2,7 @@
 import Home from "./pages/Home/"
 import Subscription from "./pages/Subscription"
 import More from "./pages/More"
+import Signup from "./pages/Signup"
 
 // * Components
 import Footer from "./components/layout/Footer"
@@ -13,6 +14,7 @@ import { SiteContextProvider } from "./context/site/siteContext"
 // * Router
 import { BrowserRouter, Routes, Route } from "react-router-dom"
 import { AuthContextProvider } from "./context/auth/authContext"
+import { Toaster } from "react-hot-toast"
 
 // * Application
 function App() {
@@ -32,7 +34,7 @@ function App() {
 							},
 							{
 								displayTitle: "Sign up",
-								href: "/about",
+								href: "/signup",
 							},
 						]}
 					/>
@@ -49,6 +51,10 @@ function App() {
 							<Route
 								path='/more'
 								element={<More />}
+							/>
+							<Route
+								path='/signup'
+								element={<Signup />}
 							/>
 						</Routes>
 					</main>
@@ -93,6 +99,7 @@ function App() {
 							],
 						]}
 					/>
+					<Toaster/>
 				</BrowserRouter>
 			</AuthContextProvider>
 		</SiteContextProvider>
