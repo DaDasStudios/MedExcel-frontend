@@ -1,9 +1,11 @@
 import Spin from "../../../components/ui/Spin"
+import { useAuthContext } from "../../../context/auth/authContext"
 import { useSiteContext } from "../../../context/site/siteContext"
 import Plan from "./Plan"
 
 const PlansList = () => {
 	const { subscriptionPlans } = useSiteContext()
+	const {auth} = useAuthContext()
 	return (
 		<div className='w-fit max-w-5xl mx-auto'>
 			{subscriptionPlans.length === 0 ? (
@@ -11,7 +13,9 @@ const PlansList = () => {
 					<Spin className='w-16 text-slate-100' />
 				</div>
 			) : (
-				<ul className='text-slate-100 grid grid-cols-4 items-center justify-center gap-5'>
+				<ul
+					className={`text-slate-100 grid ${auth.user ? 'grid-cols-3' : 'grid-cols-4'} items-center justify-center gap-5`}
+				>
 					{subscriptionPlans.map((sp, idx) => (
 						<Plan
 							key={sp._id}

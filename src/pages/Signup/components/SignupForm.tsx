@@ -8,11 +8,11 @@ import SolidButton, {
 import Spin from "../../../components/ui/Spin"
 import { ComponentElement } from "../../../interface"
 import { signUpRequest } from "../../../lib/auth.request"
-import { Checkbox, Input } from "./Input"
+import { Checkbox, Input } from "../../../components/ui/Input"
 
 const SignupForm = () => {
 	return (
-		<div className='bg-slate-900/50 p-8 rounded-md shadow-md border border-slate-100/10'>
+		<div className='bg-slate-900/50 p-8 rounded-md shadow-md border border-slate-100/10 flex flex-col'>
 			<div className='mb-6 text-center flex flex-col justify-center gap-3'>
 				<h1 className='text-4xl font-bold text-slate-100 tracking-tight'>
 					Sign Up
@@ -83,6 +83,7 @@ const SignupForm = () => {
 								}
 							},
 							error: err => {
+								setSubmitting(false)
 								return `Ups... Something went wrong. Please try again`
 							},
 						},
@@ -144,7 +145,13 @@ const SignupForm = () => {
 								</Link>
 							</p>
 						</Checkbox>
-						<div className={`flex items-center justify-center ${isSubmitting ? "pointer-events-none" : "pointer-events-auto"}`}>
+						<div
+							className={`flex items-center justify-center ${
+								isSubmitting
+									? "pointer-events-none"
+									: "pointer-events-auto"
+							}`}
+						>
 							<SolidButton
 								submit={true}
 								theme={themeBtns.blueBtn}
@@ -177,6 +184,12 @@ const SignupForm = () => {
 					</Form>
 				)}
 			</Formik>
+				<Link
+					to='/signin'
+					className='font-medium text-slate-300 hover:underline self-end mt-6 text-sm'
+				>
+					Already registered?
+				</Link>
 		</div>
 	)
 }

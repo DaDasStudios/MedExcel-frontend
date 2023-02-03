@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom"
+import { useAuthContext } from "../../../context/auth/authContext"
 import { ISubscriptionPlan } from "../../../interface"
 import { requestForPayment } from "../../../lib/site.request"
 import { formatCurrency } from "../../../utils/currency"
@@ -11,6 +12,8 @@ interface IProps {
 }
 
 const Plan = ({ plan, recommended, href, idx }: IProps) => {
+	const { auth } = useAuthContext()
+
 	const buyPlan = async (id: string) => {
 		// ! Needs to be authorized to do it
 		const data = await requestForPayment(id)
@@ -37,7 +40,7 @@ const Plan = ({ plan, recommended, href, idx }: IProps) => {
 						{formatCurrency.format(plan.price)}
 					</p>
 				</article>
-				{href ? (
+				{href && !auth.user ? (
 					<Link
 						className='bg-emerald-700/50 hover:bg-emerald-700/70 text-emerald-100 border border-emerald-100/10 rounded-md py-3 px-2 transition-colors'
 						to={"/signup"}

@@ -14,9 +14,13 @@ const neutralBtn =
 const blueBtn =
 	"border-blue-100/20 bg-blue-700/50 hover:bg-blue-700/70 text-blue-100"
 
+const greenBtn =
+	"border-emerald-100/20 bg-emerald-700/50 hover:bg-emerald-700/70 text-emerald-100"
+
 export const themeBtns = {
 	neutralBtn,
 	blueBtn,
+	greenBtn,
 }
 
 const SolidButton = ({
