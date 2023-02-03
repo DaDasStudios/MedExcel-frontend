@@ -1,3 +1,4 @@
+import { useId } from "react"
 import Category, { ICategory } from "./Category"
 
 interface IProps {
@@ -5,10 +6,11 @@ interface IProps {
 }
 
 const CategoriesList = ({ categories }: IProps) => {
+	const id = useId()
 	return (
 		<div>
 			<ul className="grid grid-cols-3 gap-6 mt-4">
-                {categories.map(c => <Category
+                {categories.map((c, idx) => <Category key={id + idx}
                     category={c}
                 />)}
             </ul>

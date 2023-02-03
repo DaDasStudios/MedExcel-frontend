@@ -3,7 +3,6 @@ interface IProps {
 }
 
 const BackgroundImage = ({ url }: IProps) => {
-	console.log(url)
 	return (
 		<span
       style={{
@@ -15,3 +14,4 @@ const BackgroundImage = ({ url }: IProps) => {
 }
 
 export default BackgroundImage
+

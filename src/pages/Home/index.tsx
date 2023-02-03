@@ -114,8 +114,8 @@ const Home = () => {
 							data-aos='fade-left'
 						>
 							Here's gonna be located a sample video of a exam
-							being answered, so user can look what it's exactly
-							about the website
+							being answered, so user can look what exactly
+							the website is about
 						</div>
 					</div>
 				</div>
