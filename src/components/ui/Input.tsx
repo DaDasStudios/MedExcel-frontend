@@ -1,12 +1,14 @@
 import { useField } from "formik"
-import { ReactNode, useRef } from "react"
+import { ReactNode } from "react"
 
 interface IProps {
 	label: string
 	name: string
 	id: string
-	placeholder: string
+	placeholder?: string
 	type?: string
+	value?: any
+	readOnly?: boolean
 }
 
 export const Checkbox = ({

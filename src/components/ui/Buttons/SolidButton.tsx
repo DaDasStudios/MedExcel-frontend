@@ -32,7 +32,7 @@ const SolidButton = ({
 }: IProps) => {
 	const className =
 		theme +
-		" py-4 px-6 font-medium text-base rounded-md transition-colors border"
+		" focus:outline-none py-4 px-6 font-medium text-base rounded-md transition-colors border"
 	switch (as) {
 		case ComponentElement.A:
 			return (

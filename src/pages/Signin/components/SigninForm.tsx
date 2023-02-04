@@ -57,7 +57,7 @@ const SigninForm = () => {
 									})
 									resetForm()
 									setSubmitting(false)
-									navigate('/exams')
+									navigate('/account')
 									return `You're authenticated`
 								}
 

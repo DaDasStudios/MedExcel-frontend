@@ -4,6 +4,7 @@ import Subscription from "./pages/Subscription"
 import More from "./pages/More"
 import Signup from "./pages/Signup"
 import Signin from "./pages/Signin"
+import Account from './pages/Account'
 
 // * Components
 import Footer from "./components/layout/Footer"
@@ -73,6 +74,14 @@ function App() {
 							path='/more'
 							element={<More />}
 						/>
+						{user && (
+							<>
+								<Route
+									path="/account"
+									element={<Account/>}
+								/>
+							</>
+						)}
 						{!user && (
 							<>
 								<Route

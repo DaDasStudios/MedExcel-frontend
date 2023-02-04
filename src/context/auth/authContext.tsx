@@ -9,7 +9,7 @@ import { toast } from "react-hot-toast"
 import { useLocalStorage } from "../../hooks/useLocalStorage"
 import { IAuth } from "../../interface"
 import { IUser } from "../../interface/user"
-import { getUserRequest } from "../../lib/use.request"
+import { getUserRequest } from "../../lib/user.request"
 
 type loginFunction = (payload: {
 	token: string

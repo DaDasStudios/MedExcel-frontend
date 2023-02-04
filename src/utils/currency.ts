@@ -1,5 +1,5 @@
 
-export const formatCurrency = new Intl.NumberFormat('en-US', {
+export const formatCurrency = new Intl.NumberFormat('en-GB', {
     style: 'currency',
     currency: 'GBP'
 })

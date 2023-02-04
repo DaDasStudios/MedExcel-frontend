@@ -9,3 +9,9 @@ export const getUserRequest = (id: string, token: string) => axios.get<{
         'Authorization': `Bearer ${token}`
     }
 })
+
+export const updateUserRequest = (username: string, id: string, token: string) => axios.put(`${REST_HOST}/users/user/owner/${id}`, { username }, {
+    headers: {
+        'Authorization': `Bearer ${token}`
+    }
+})
