@@ -15,3 +15,19 @@ export const updateUserRequest = (username: string, id: string, token: string) =
         'Authorization': `Bearer ${token}`
     }
 })
+
+export const recoverPasswordRequest = (email: string) => axios.put<{ message: string }>(`${REST_HOST}/users/password`, { email }, {
+    headers: {
+        'Content-Type': "application/json"
+    }
+})
+
+export const sendNewPasswordRequest = (newPassword: string, recoverToken: string) => axios.put<{
+    message: string
+    token: string
+    id: string
+}>(`${REST_HOST}/users/password/${recoverToken}`, { password: newPassword }, {
+    headers: {
+        'Content-Type': 'application/json'
+    }
+})

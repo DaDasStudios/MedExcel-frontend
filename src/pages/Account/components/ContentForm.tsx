@@ -41,8 +41,11 @@ const ContentForm = ({ user }: IProps) => {
 					  )
 					: "",
 				activeSubscription: isCurrent ? "Active" : "Paused",
-				correctAnswers: exam.correctAnswers.length,
-				maxScore: exam.scoresHistory[0].score.toFixed(0),
+				correctAnswers: exam?.correctAnswers.length,
+				maxScore:
+					exam.scoresHistory?.length === 0
+						? "Don't have exams answered"
+						: exam.scoresHistory[0]?.score.toFixed(0),
 			}}
 			validationSchema={yup.object({
 				username: yup
@@ -54,22 +57,22 @@ const ContentForm = ({ user }: IProps) => {
 			onSubmit={(values, { setSubmitting }) => {
 				const requestPromise = updateUserRequest(
 					values.username,
-					id || '',
-					token || ''
+					id || "",
+					token || ""
 				)
 
 				toast.promise(requestPromise, {
 					loading: "Sending...",
-					success: (res) => {
+					success: res => {
 						setSubmitting(false)
 						console.log(res)
-						
-						return 'Username updated, reload the page please'
+
+						return "Username updated, reload the page please"
 					},
-					error: (err) => {
+					error: err => {
 						setSubmitting(false)
 						return "Ups... Something went wrong"
-					}
+					},
 				})
 			}}
 		>
@@ -151,7 +154,7 @@ const ContentForm = ({ user }: IProps) => {
 						</SolidButton>
 					</div>
 					<div className='relative'>
-						{!isCurrent && (
+						{isCurrent && !subscription?.hasSubscription && (
 							<span className='flex flex-col gap-2 items-center justify-center text-lg font- text-center inset-0 text-slate-400 absolute'>
 								Get a subscription plan to see your stats
 								<svg
@@ -174,7 +177,9 @@ const ContentForm = ({ user }: IProps) => {
 
 						<div
 							className={`${
-								!isCurrent ? "blur-sm pointer-events-none" : ""
+								isCurrent && !subscription?.hasSubscription
+									? "blur-sm pointer-events-none"
+									: ""
 							}`}
 						>
 							<Separator></Separator>

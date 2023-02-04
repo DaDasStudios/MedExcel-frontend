@@ -6,6 +6,7 @@ import {
 	useState,
 } from "react"
 import { toast } from "react-hot-toast"
+import { Navigate, useNavigate } from "react-router-dom"
 import { useLocalStorage } from "../../hooks/useLocalStorage"
 import { IAuth } from "../../interface"
 import { IUser } from "../../interface/user"
@@ -36,6 +37,7 @@ const authInitialState: IAuth = {
 
 export const AuthContextProvider = ({ children }: PropsWithChildren) => {
 	const [auth, setAuth] = useLocalStorage("medexcel_auth", authInitialState)
+	const navigate = useNavigate()
 
 	const login: loginFunction = payload => {
 		setAuth(payload)
@@ -51,6 +53,8 @@ export const AuthContextProvider = ({ children }: PropsWithChildren) => {
 				const { data } = await getUserRequest(auth.id, auth.token)
 				setAuth({ ...auth, user: data.user })
 			} catch (error: any) {
+				reset()
+				navigate('/')
 				toast.error("Session expired")
 			}
 		})()

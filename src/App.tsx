@@ -5,6 +5,8 @@ import More from "./pages/More"
 import Signup from "./pages/Signup"
 import Signin from "./pages/Signin"
 import Account from './pages/Account'
+import Recover from './pages/Recover/index'
+import RecoverAuth from "./pages/Recover/RecoverAuth"
 
 // * Components
 import Footer from "./components/layout/Footer"
@@ -14,7 +16,7 @@ import Navbar from "./components/layout/Navbar"
 import { SiteContextProvider } from "./context/site/siteContext"
 
 // * Router
-import { BrowserRouter, Routes, Route } from "react-router-dom"
+import { Routes, Route } from "react-router-dom"
 import { Toaster } from "react-hot-toast"
 import { useAuthContext } from "./context/auth/authContext"
 
@@ -25,7 +27,6 @@ function App() {
 	} = useAuthContext()
 	return (
 		<SiteContextProvider>
-			<BrowserRouter>
 				<Navbar
 					elements={
 						user
@@ -92,6 +93,14 @@ function App() {
 									path='/signin'
 									element={<Signin />}
 								/>
+								<Route
+									path='/recover'
+									element={<Recover/>}
+								/>
+								<Route
+									path='/recover/auth'
+									element={<RecoverAuth/>}
+								/>
 							</>
 						)}
 					</Routes>
@@ -105,7 +114,7 @@ function App() {
 							},
 							{
 								label: "Recover password",
-								href: "/",
+								href: "/recover",
 							},
 							{
 								label: "Report",
@@ -138,7 +147,6 @@ function App() {
 					]}
 				/>
 				<Toaster />
-			</BrowserRouter>
 		</SiteContextProvider>
 	)
 }

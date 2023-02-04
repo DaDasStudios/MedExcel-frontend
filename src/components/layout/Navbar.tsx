@@ -1,5 +1,5 @@
 import { PropsWithChildren } from "react"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { useSiteContext } from "../../context/site/siteContext"
 import Spin from "../ui/Spin"
 import { useAuthContext } from "../../context/auth/authContext"
@@ -14,6 +14,7 @@ interface Props extends PropsWithChildren {
 const Navbar = ({ elements }: Props) => {
 	const { image, name } = useSiteContext()
 	const { auth, reset } = useAuthContext()
+	const navigate = useNavigate()
 
 	return (
 		<header className='py-6 text-white bg-slate-900/80 border-b border-slate-50/10 text-base fixed left-0 right-0 top-0 shadow-2xl z-30'>
@@ -43,7 +44,7 @@ const Navbar = ({ elements }: Props) => {
 					))}
 					{auth.user && (
 						<>
-							<li className='text-sky-100 hover:text-sky-200'>
+							<li className='text-sky-100 hover:text-sky-200 cursor-pointer'>
 								<Link to='/account'>
 									{" "}
 									<svg
@@ -63,7 +64,10 @@ const Navbar = ({ elements }: Props) => {
 									</svg>
 								</Link>
 							</li>
-							<li onClick={() => reset()} className='text-sky-100 hover:text-sky-200'>
+							<li onClick={() => {
+								reset()
+								navigate('/')
+							}} className='text-sky-100 hover:text-sky-200 cursor-pointer'>
 								<svg
 									className='w-6'
 									fill='none'

@@ -23,8 +23,7 @@ const Profile = () => {
 					Profile
 				</h3>
 				<p className='text-slate-400 text-lg mb-4'>
-					Here you can check your account information and make some
-					changes.
+					Here you can check your account information and update your username.
 				</p>
 				<Separator></Separator>
 			</div>

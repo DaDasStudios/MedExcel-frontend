@@ -17,10 +17,12 @@ const Subscription = () => {
 		<>
 			<BackgroundImage url='/img/subscription-page-image.jpg' />
 			<section className='pt-[260px] pb-32 min-h-screen bg-slate-900/50 shadow-md rounded-md'>
-				{auth.user?.subscription?.hasSubscription ? (
-					<div className='flex gap-4 max-w-xl tracking-tight mx-auto bg-slate-900/50 rounded-md p-5 shadow-md border border-yellow-100/10 text-yellow-50 text-5xl font-bold text-center'>
+				{auth.user?.subscription?.hasSubscription &&
+				new Date(auth.user?.subscription?.access || "").getTime() >
+					Date.now() ? (
+					<div className='flex gap-4 max-w-xl tracking-tight mx-auto bg-slate-900/50 rounded-md p-5 shadow-md border border-yellow-100/10 text-slate-200 text-5xl font-bold text-center'>
 						<svg
-							className="w-28"
+							className='w-28'
 							fill='none'
 							stroke='currentColor'
 							strokeWidth={1.5}

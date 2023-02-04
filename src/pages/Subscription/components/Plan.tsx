@@ -1,3 +1,4 @@
+import { toast } from "react-hot-toast"
 import { Link } from "react-router-dom"
 import { useAuthContext } from "../../../context/auth/authContext"
 import { ISubscriptionPlan } from "../../../interface"
@@ -16,7 +17,13 @@ const Plan = ({ plan, recommended, href, idx }: IProps) => {
 
 	const buyPlan = async (id: string) => {
 		// ! Needs to be authorized to do it
-		const data = await requestForPayment(id)
+		const res = await requestForPayment(id, auth?.token || '')
+		if (res.data.message === "Order created" && res.data.order.status === "CREATED") {
+			const approveLink = res.data.order.links[1]
+			window.location.replace(approveLink.href)
+		} else {
+			toast.error("Something went wrong")
+		}
 	}
 
 	return (
@@ -40,7 +47,7 @@ const Plan = ({ plan, recommended, href, idx }: IProps) => {
 						{formatCurrency.format(plan.price)}
 					</p>
 				</article>
-				{href && !auth.user ? (
+				{href || !auth.user ? (
 					<Link
 						className='bg-emerald-700/50 hover:bg-emerald-700/70 text-emerald-100 border border-emerald-100/10 rounded-md py-3 px-2 transition-colors'
 						to={"/signup"}
