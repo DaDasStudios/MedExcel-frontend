@@ -3,7 +3,7 @@ import * as yup from "yup"
 import { toast } from "react-hot-toast"
 import { signInRequest } from "../../../lib/auth.request"
 import { Input } from "../../../components/ui/Input"
-import { Link, useNavigate } from "react-router-dom"
+import { Link } from "react-router-dom"
 import SolidButton, {
 	themeBtns,
 } from "../../../components/ui/Buttons/SolidButton"
@@ -13,7 +13,6 @@ import { useAuthContext } from "../../../context/auth/authContext"
 
 const SigninForm = () => {
 	const { login } = useAuthContext()
-	const navigate = useNavigate()
 	return (
 		<div className='bg-slate-900/50 p-8 rounded-md shadow-md border border-slate-100/10 flex flex-col'>
 			<div className='mb-6 text-center flex flex-col justify-center gap-3'>
@@ -24,8 +23,8 @@ const SigninForm = () => {
 			</div>
 			<Formik
 				initialValues={{
-					email: "elproelectrominion@gmail.com",
-					password: "2424aajr",
+					email: "",
+					password: "",
 				}}
 				validationSchema={yup.object({
 					email: yup
@@ -34,43 +33,33 @@ const SigninForm = () => {
 						.required("Required"),
 					password: yup.string().required("Required"),
 				})}
-				onSubmit={(values, { resetForm, setSubmitting }) => {
-					const requestPromise = signInRequest({
-						email: values.email,
-						password: values.password,
-					})
+				onSubmit={async (values, { resetForm, setSubmitting }) => {
+					try {
+						const res = await signInRequest({
+							email: values.email,
+							password: values.password,
+						})
 
-					toast.promise(
-						requestPromise,
-						{
-							loading: "Loading...",
-							success: res => {
-								if (
-									res.status === 200 &&
-									res.data?.token &&
-									res.data?.id
-								) {
-									login({
-										token: res.data.token,
-										id: res.data.id,
-										user: null
-									})
-									resetForm()
-									setSubmitting(false)
-									navigate('/account')
-									return `You're authenticated`
-								}
-
-								return `Please try again`
-							},
-							error: (err) => {
-								setSubmitting(false)
-
-								return `Email address or password incorrect`
-							},
-						},
-						{}
-					)
+						if (
+							res.status === 200 &&
+							res.data?.token &&
+							res.data?.id
+						) {
+							login({
+								token: res.data.token,
+								id: res.data.id,
+								user: null,
+							})
+							resetForm()
+						} 
+					} catch (error: any) {
+						if (error.response?.data?.message === "Invalid credentials") {
+							return toast.error(`Email address or password incorrect`)
+						} 
+						toast.error("Unknow error, try later")
+					} finally {
+						setSubmitting(false)
+					}
 				}}
 			>
 				{({ isSubmitting }) => (

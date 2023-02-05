@@ -1,12 +1,6 @@
-import {
-	createContext,
-	PropsWithChildren,
-	useContext,
-	useEffect,
-	useState,
-} from "react"
+import { createContext, PropsWithChildren, useContext, useEffect } from "react"
 import { toast } from "react-hot-toast"
-import { Navigate, useNavigate } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 import { useLocalStorage } from "../../hooks/useLocalStorage"
 import { IAuth } from "../../interface"
 import { IUser } from "../../interface/user"
@@ -39,25 +33,39 @@ export const AuthContextProvider = ({ children }: PropsWithChildren) => {
 	const [auth, setAuth] = useLocalStorage("medexcel_auth", authInitialState)
 	const navigate = useNavigate()
 
+	const reset = () => setAuth(authInitialState)
+
 	const login: loginFunction = payload => {
 		setAuth(payload)
 	}
 
-	const reset = () => setAuth(authInitialState)
-
 	useEffect(() => {
-		;(async () => {
-			if (!auth.token || !auth.id) return reset()
+		if (!auth.token || !auth.id) return reset()
 
-			try {
-				const { data } = await getUserRequest(auth.id, auth.token)
-				setAuth({ ...auth, user: data.user })
-			} catch (error: any) {
+		const promiseRequest = getUserRequest(auth.id, auth.token)
+		toast.promise(promiseRequest, {
+			loading: "Loading user...",
+			success(res) {
+				const { data } = res
+				if (data.user && data.user.role === "Admin") {
+					navigate("/")
+					reset()
+					toast.error("Admin cannot sign in as an user")
+					return "Everything's right but..."
+				} else {
+					setAuth({
+						...auth,
+						user: data.user,
+					})
+					navigate("/account")
+					return "Authenticated"
+				}
+			},
+			error() {
 				reset()
-				navigate('/')
-				toast.error("Session expired")
-			}
-		})()
+				return "Session expired"
+			},
+		})
 	}, [auth.token])
 
 	return (
