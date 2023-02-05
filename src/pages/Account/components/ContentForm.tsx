@@ -23,8 +23,6 @@ const ContentForm = ({ user }: IProps) => {
 	const {
 		auth: { id, token },
 	} = useAuthContext()
-	const isCurrent =
-		new Date(subscription?.access || "").getTime() > Date.now()
 
 	return (
 		<Formik
@@ -40,7 +38,7 @@ const ContentForm = ({ user }: IProps) => {
 							new Date(subscription?.purchaseDate || "")
 					  )
 					: "",
-				activeSubscription: isCurrent ? "Active" : "Paused",
+				activeSubscription: user.subscription?.hasSubscription ? "Active" : "Paused",
 				correctAnswers: exam?.correctAnswers.length,
 				maxScore:
 					exam.scoresHistory?.length === 0
@@ -154,7 +152,7 @@ const ContentForm = ({ user }: IProps) => {
 						</SolidButton>
 					</div>
 					<div className='relative'>
-						{isCurrent && !subscription?.hasSubscription && (
+						{!subscription?.hasSubscription && (
 							<span className='flex flex-col gap-2 items-center justify-center text-lg font- text-center inset-0 text-slate-400 absolute'>
 								Get a subscription plan to see your stats
 								<svg
@@ -177,7 +175,7 @@ const ContentForm = ({ user }: IProps) => {
 
 						<div
 							className={`${
-								isCurrent && !subscription?.hasSubscription
+								!subscription?.hasSubscription
 									? "blur-sm pointer-events-none"
 									: ""
 							}`}

@@ -58,37 +58,46 @@ const SignupForm = () => {
 							"You must accept the terms and conditions"
 						),
 				})}
-				onSubmit={(values, { resetForm, setSubmitting }) => {
-					const requestPromise = signUpRequest({
-						username: values.username,
-						email: values.email,
-						password: values.password,
-					})
+				onSubmit={async (values, { resetForm, setSubmitting }) => {
+					const toastId = toast.loading("Checking...")
+					try {
+						const res = await signUpRequest({
+							username: values.username,
+							email: values.email,
+							password: values.password,
+						})
 
-					toast.promise(
-						requestPromise,
-						{
-							loading: "Loading...",
-							success: res => {
-								if (
-									res.status === 200 &&
-									res.data.message ===
-										"Waiting for email confirmation"
-								) {
-									resetForm()
-									setSubmitting(false)
-									return `Go to ${values.email} and verify the account`
-								} else {
-									return `Ups... Something went wrong. Please try again`
-								}
-							},
-							error: err => {
-								setSubmitting(false)
-								return `Ups... Something went wrong. Please try again`
-							},
-						},
-						{}
-					)
+						if (
+							res.status === 200 &&
+							res.data.message ===
+								"Waiting for email confirmation"
+						) {
+							resetForm()
+							setSubmitting(false)
+							return toast.success(
+								`Go to ${values.email} and verify the account`,
+								{ id: toastId }
+							)
+						}
+
+						throw new Error("Unknown error")
+					} catch (error: any) {
+						setSubmitting(false)
+						if (
+							error.response.status === 400 &&
+							error.response.data.status === "REGISTERED"
+						) {
+							return toast.error(
+								"Given email address is already registered",
+								{ id: toastId }
+							)
+						}
+
+						return toast.error(
+							`Ups... Something went wrong. Please try again`,
+							{ id: toastId }
+						)
+					}
 				}}
 			>
 				{({ isSubmitting }) => (
@@ -184,12 +193,12 @@ const SignupForm = () => {
 					</Form>
 				)}
 			</Formik>
-				<Link
-					to='/signin'
-					className='font-medium text-slate-300 hover:underline self-end mt-6 text-sm'
-				>
-					Already registered?
-				</Link>
+			<Link
+				to='/signin'
+				className='font-medium text-slate-300 hover:underline self-end mt-6 text-sm'
+			>
+				Already registered?
+			</Link>
 		</div>
 	)
 }
