@@ -1,13 +1,13 @@
 import axios from 'axios'
 import { REST_HOST } from './env'
 
-interface ISignUp {
+export interface ISignUp {
     username: string
     email: string
     password: string
 }
 
-interface ISignIn {
+export interface ISignIn {
     email: string
     password: string
 }

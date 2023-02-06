@@ -17,6 +17,8 @@ import {
 import Root from "./routes/Root"
 import Admin from "./routes/Admin"
 import ErrorPage from "./routes/ErrorPage"
+import { Toaster } from "react-hot-toast"
+import Users from "./pages/Admin/components/users/Users"
 
 const router = createBrowserRouter(
 	createRoutesFromElements(
@@ -55,17 +57,22 @@ const router = createBrowserRouter(
 					path='/account'
 					element={<Account />}
 				/>
-				{/* ADMIN */}
-				<Route
-					path='/admin'
-					element={<Admin />}
-				></Route>
+			</Route>
+			{/* ADMIN */}
+			<Route
+				path='/admin/*'
+				element={<Admin />}
+				errorElement={<ErrorPage/>}
+			>
 			</Route>
 		</>
 	)
 )
 const App = () => {
-	return <RouterProvider router={router} />
+	return <>
+		<RouterProvider router={router} />
+		<Toaster />
+	</>
 }
 
 export default App

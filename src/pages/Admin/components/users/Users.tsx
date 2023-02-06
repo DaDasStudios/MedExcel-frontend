@@ -1,0 +1,56 @@
+import { useEffect, useState } from "react"
+import Breadcrumb from "../../../../components/ui/Breadcrumb"
+import { useAdminContext } from "../../../../context/admin/adminContext"
+import { IUser } from "../../../../interface/user"
+import {
+	getAllUsersRequest,
+} from "../../../../lib/admin.request"
+import SearchBar from "./SearchBar"
+import UsersTable from "./UsersTable"
+
+const Users = () => {
+	const [users, setUsers] = useState([] as IUser[])
+	const { auth } = useAdminContext()
+
+	useEffect(() => {
+		;(async () => {
+			const res = await getAllUsersRequest(auth.token)
+			if (res.status === 200 && res.data.users) {
+				setUsers(res.data.users)
+			}
+		})()
+	}, [])
+
+	return (
+		<div>
+			<Breadcrumb
+				elements={[
+					<span className='flex items-center gap-3'>
+						<svg
+							className='w-6'
+							fill='currentColor'
+							viewBox='0 0 20 20'
+							xmlns='http://www.w3.org/2000/svg'
+							aria-hidden='true'>
+							<path
+								clipRule='evenodd'
+								fillRule='evenodd'
+								d='M9.293 2.293a1 1 0 011.414 0l7 7A1 1 0 0117 11h-1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-3a1 1 0 00-1-1H9a1 1 0 00-1 1v3a1 1 0 01-1 1H5a1 1 0 01-1-1v-6H3a1 1 0 01-.707-1.707l7-7z'
+							/>
+						</svg>
+						Admin
+					</span>,
+					<span>Users</span>,
+					<p className='text-gray-300'>List</p>,
+				]}
+			/>
+			<h1 className='text-2xl font-semibold my-4'>All users</h1>
+			<div>
+				<SearchBar setUsers={setUsers}></SearchBar>
+				<UsersTable users={users} setUsers={setUsers}></UsersTable>
+			</div>
+		</div>
+	)
+}
+
+export default Users

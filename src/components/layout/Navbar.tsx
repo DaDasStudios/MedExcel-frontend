@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom"
 import { useSiteContext } from "../../context/site/siteContext"
 import Spin from "../ui/Spin"
 import { useAuthContext } from "../../context/auth/authContext"
+import Tooltip from "../ui/Tooltip"
 
 interface Props extends PropsWithChildren {
 	elements: {
@@ -21,8 +22,7 @@ const Navbar = ({ elements }: Props) => {
 			<nav className='max-w-4xl mx-auto flex items-center justify-between'>
 				<Link
 					className='block'
-					to='/'
-				>
+					to='/'>
 					{image.url ? (
 						<img
 							className='rounded-full w-14 shadow-lg'
@@ -37,8 +37,7 @@ const Navbar = ({ elements }: Props) => {
 					{elements.map((e, i) => (
 						<li
 							key={e.displayTitle + i}
-							className='text-sky-100 hover:text-sky-200'
-						>
+							className='text-sky-100 hover:text-sky-200'>
 							<Link to={e.href}>{e.displayTitle}</Link>
 						</li>
 					))}
@@ -54,8 +53,7 @@ const Navbar = ({ elements }: Props) => {
 										strokeWidth={1.5}
 										viewBox='0 0 24 24'
 										xmlns='http://www.w3.org/2000/svg'
-										aria-hidden='true'
-									>
+										aria-hidden='true'>
 										<path
 											strokeLinecap='round'
 											strokeLinejoin='round'
@@ -64,10 +62,12 @@ const Navbar = ({ elements }: Props) => {
 									</svg>
 								</Link>
 							</li>
-							<li onClick={() => {
-								reset()
-								navigate('/')
-							}} className='text-sky-100 hover:text-sky-200 cursor-pointer'>
+							<li
+								onClick={() => {
+									reset()
+									navigate("/")
+								}}
+								className='text-sky-100 hover:text-sky-200 cursor-pointer'>
 								<svg
 									className='w-6'
 									fill='none'
@@ -75,8 +75,7 @@ const Navbar = ({ elements }: Props) => {
 									strokeWidth={1.5}
 									viewBox='0 0 24 24'
 									xmlns='http://www.w3.org/2000/svg'
-									aria-hidden='true'
-								>
+									aria-hidden='true'>
 									<path
 										strokeLinecap='round'
 										strokeLinejoin='round'
