@@ -6,7 +6,7 @@ import SigninForm from "./components/SigninForm"
 const Admin = () => {
 	const { auth } = useAdminContext()
 	return (
-		<div className='min-h-screen bg-gray-900'>
+		<div className='min-h-screen min-w-max bg-gray-900'>
 			{auth?.user && <Navbar></Navbar>}
 			<main className='pt-[120px]'>
 				{auth?.user ? <Dashboard></Dashboard> : <SigninForm />}

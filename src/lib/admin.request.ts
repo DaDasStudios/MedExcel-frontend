@@ -34,3 +34,15 @@ export const deleteUserRequest = (id: string, adminToken: string) => axios.delet
         'Authorization': `Bearer ${adminToken}`,
     }
 })
+
+export const updateUserByAdminRequest = (id: string, username: string, adminToken: string) => axios.put<
+    {
+        message: string
+        user: IUser
+    }
+>(`${REST_HOST}/users/user/${id}`, { username }, {
+    headers: {
+        'Authorization': `Bearer ${adminToken}`,
+        'Content-Type': 'application/json'
+    }
+})

@@ -2,15 +2,31 @@ import { useEffect, useState } from "react"
 import Breadcrumb from "../../../../components/ui/Breadcrumb"
 import { useAdminContext } from "../../../../context/admin/adminContext"
 import { IUser } from "../../../../interface/user"
-import {
-	getAllUsersRequest,
-} from "../../../../lib/admin.request"
+import { getAllUsersRequest } from "../../../../lib/admin.request"
 import SearchBar from "./SearchBar"
+import UpdateUserModal from "./UpdateUserModal"
 import UsersTable from "./UsersTable"
 
 const Users = () => {
-	const [users, setUsers] = useState([] as IUser[])
 	const { auth } = useAdminContext()
+	const [users, setUsers] = useState([] as IUser[])
+	
+	// * Modal
+	const [renderModal, setRenderModal] = useState(false)
+	const [userId, setUserId] = useState("") // ? To edit users
+	const [username, setUsername] = useState("")
+
+	function displayModal(id: string, username: string) {
+		setUserId(id)
+		setUsername(username)
+		setRenderModal(true)
+	}
+
+	function closeModal() {
+		setUserId("")
+		setUsername("")
+		setRenderModal(false)
+	}
 
 	useEffect(() => {
 		;(async () => {
@@ -47,8 +63,18 @@ const Users = () => {
 			<h1 className='text-2xl font-semibold my-4'>All users</h1>
 			<div>
 				<SearchBar setUsers={setUsers}></SearchBar>
-				<UsersTable users={users} setUsers={setUsers}></UsersTable>
+				<UsersTable
+					users={users}
+					setUsers={setUsers}
+					displayModal={displayModal}></UsersTable>
 			</div>
+			<UpdateUserModal
+				userId={userId}
+				username={username}
+				rendered={renderModal}
+				closeModal={closeModal}
+				setUsers={setUsers}
+			/>
 		</div>
 	)
 }

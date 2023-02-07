@@ -7,22 +7,30 @@ import { formatDate } from "../../../../utils/date"
 interface IUserElementProps {
 	user: IUser
 	setUsers: React.Dispatch<React.SetStateAction<IUser[]>>
+	displayModal: (id: string, username: string) => void
 }
 
-function UserElement({ user, setUsers }: IUserElementProps) {
+function UserElement({ user, setUsers, displayModal }: IUserElementProps) {
 	const {
 		auth: { token },
 	} = useAdminContext()
 
 	async function deleteUser() {
+		const wantsDelete = prompt(
+			"Are you sure you want to delete this user? Type Yes",
+			"No"
+		) as string
+		if (wantsDelete.toLowerCase() !== "yes")
+			return toast.error("User deletion cancelled")
 		try {
 			const res = await deleteUserRequest(user._id, token)
 			if (res.status === 204) {
 				toast.success("User deleted")
-				setUsers(users => users.filter(u => u._id !== user._id))
+				return setUsers(users => users.filter(u => u._id !== user._id))
 			}
+			throw new Error("Error on request")
 		} catch (error) {
-			toast.error("Something went wrong... Try later")
+			return toast.error("Something went wrong... Try later")
 		}
 	}
 
@@ -40,8 +48,22 @@ function UserElement({ user, setUsers }: IUserElementProps) {
 			<td className='px-6 py-4'>
 				{formatDate.format(new Date(user.subscription?.access || ""))}
 			</td>
+			<td className='px-6 py-4'>{user.exam.correctAnswers.length}</td>
+			<td className='px-6 py-4'>
+				{user.exam.scoresHistory.length > 0
+					? user.exam.scoresHistory[0].score.toFixed(0)
+					: "No score yet"}
+			</td>
+			<td className='px-6 py-4'>
+				{formatDate.format(new Date(user.createdAt))}
+			</td>
+			<td className='px-6 py-4'>
+				{formatDate.format(new Date(user.updatedAt))}
+			</td>
 			<td className='px-6 py-4 flex gap-4'>
-				<button className='font-medium p-2 border border-blue-100/20 bg-blue-700/50 hover:bg-blue-700/70 text-blue-100 rounded-md hover:underline flex gap-2 items-center'>
+				<button
+					onClick={() => displayModal(user._id, user.username)}
+					className='font-medium p-2 border border-blue-100/20 bg-blue-700/50 hover:bg-blue-700/70 text-blue-100 rounded-md hover:underline flex gap-2 items-center'>
 					<svg
 						className='w-5'
 						fill='currentColor'
