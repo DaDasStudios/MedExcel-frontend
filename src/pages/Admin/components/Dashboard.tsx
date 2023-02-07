@@ -1,6 +1,6 @@
 import { Routes, Route } from "react-router-dom"
 import Users from "./users/Users"
-import Settings from "./Settings"
+import Settings from "./settings/Settings"
 
 const Dashboard = () => {
 	return (

@@ -46,3 +46,17 @@ export const updateUserByAdminRequest = (id: string, username: string, adminToke
         'Content-Type': 'application/json'
     }
 })
+
+export const uploadSiteImageRequest = (form: FormData, adminToken: string) => axios.put<{
+    message: string,
+    image: {
+        id: string
+        url: string
+        secureUrl: string
+    }
+}>(`${REST_HOST}/site/image`, form, {
+    headers: {
+        'Content-Type': "multipart/form-data",
+        'Authorization': `Bearer ${adminToken}`
+    }
+})
