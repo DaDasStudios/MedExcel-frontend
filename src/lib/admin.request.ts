@@ -62,7 +62,7 @@ export const uploadSiteImageRequest = (form: FormData, adminToken: string) => ax
     }
 })
 
-export const addSubscriptinoPlanRequest = (payload: {
+export const addSubscriptionPlanRequest = (payload: {
     name: string,
     description: string,
     days: number,
@@ -76,6 +76,22 @@ export const addSubscriptinoPlanRequest = (payload: {
         'Content-Type': 'application/json'
     }
 })
+
+export const updateSubscriptionPlanRequest = (id: string, payload: {
+    name: string,
+    description: string,
+    days: number,
+    price: number
+}, adminToken: string) => axios.put<{
+    message: string
+    subscriptionPlans: ISubscriptionPlan[]
+}>(`${REST_HOST}/site/subscription/${id}`, payload, {
+    headers: {
+        'Authorization': `Bearer ${adminToken}`,
+        'Content-Type': 'application/json'
+    }
+})
+
 
 export const deleteSubscriptionPlanRequest = (subscriptionId: string, adminToken: string) => axios.delete<{
     message: string,

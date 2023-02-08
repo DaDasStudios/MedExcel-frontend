@@ -4,13 +4,21 @@ import { ISubscriptionPlan } from "../../../../interface"
 import { useAdminContext } from "../../../../context/admin/adminContext"
 import { getSiteData } from "../../../../lib/site.request"
 import { toast } from "react-hot-toast"
-import AddSubscription from "./components/AddSubscription"
+import AddSubscription from "./components/SubscriptionPlanForm"
 import SubscriptionsGroup from "./components/SubscriptionsGroup"
 import Spin from "../../../../components/ui/Spin"
 import { deleteSubscriptionPlanRequest } from "../../../../lib/admin.request"
 
 const Pricing = () => {
 	const { auth } = useAdminContext()
+	const [isEditing, setIsEditing] = useState(false)
+	const [planId, setPlanId] = useState("" as string | null)
+	const [formValues, setFormValues] = useState({
+		name: "",
+		description: "",
+		days: "",
+		price: "",
+	})
 	const [subscriptions, setSubscriptions] = useState(
 		[] as ISubscriptionPlan[]
 	)
@@ -23,15 +31,41 @@ const Pricing = () => {
 			} catch (error: any) {
 				toast.error("Error when fetching subscription plans")
 			}
-		})(),
-			[setSubscriptions]
-	})
+		})()
+	}, [subscriptions])
+
+	function editPlan(subscriptionPlan: ISubscriptionPlan) {
+		setIsEditing(true)
+		setPlanId(subscriptionPlan._id)
+		setFormValues({
+			name: subscriptionPlan.name,
+			days: subscriptionPlan.days.toString(),
+			description: subscriptionPlan.description,
+			price: subscriptionPlan.price.toString(),
+		})
+	}
+
+	function cancelEditingPlan() {
+		setFormValues({
+			name: "",
+			description: "",
+			days: "",
+			price: "",
+		})
+		setIsEditing(false)
+	}
 
 	async function deleteSubscriptionPlan(id: string) {
+		const wantsDelete = prompt("Are you sure you want to delete this subscription? Type yes", 'No')
+		if (wantsDelete?.toLowerCase() !== 'yes') return toast.error("Deletion cancelled")
 		try {
 			const res = await deleteSubscriptionPlanRequest(id, auth.token)
-			
-			if (res.status === 200 && res.data.message === "Subscription deleted") {
+
+			if (
+				res.status === 200 &&
+				res.data.message === "Subscription deleted"
+			) {
+				setSubscriptions(subscriptions)
 				return toast.success("Subscription plan deleted")
 			}
 
@@ -69,7 +103,13 @@ const Pricing = () => {
 			</h1>
 			<div className='grid grid-cols-3 gap-6'>
 				<div className='col-span-1'>
-					<AddSubscription setSubscriptions={setSubscriptions} />
+					<AddSubscription
+						planId={planId}
+						isEditing={isEditing}
+						cancelEditingPlan={cancelEditingPlan}
+						initialValues={formValues}
+						setSubscriptions={setSubscriptions}
+					/>
 				</div>
 				<div
 					className={`col-span-2 ${
@@ -78,6 +118,7 @@ const Pricing = () => {
 					}`}>
 					{subscriptions ? (
 						<SubscriptionsGroup
+							editPlan={editPlan}
 							deletePlan={deleteSubscriptionPlan}
 							subscriptions={subscriptions}
 						/>

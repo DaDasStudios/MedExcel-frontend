@@ -3,10 +3,11 @@ import Subscription from "./Subscription"
 
 interface IProps {
 	subscriptions: ISubscriptionPlan[]
+	editPlan: (subscriptionPlan: ISubscriptionPlan) => void
 	deletePlan: (id: string) => void
 }
 
-const SubscriptionsGroup = ({ subscriptions, deletePlan }: IProps) => {
+const SubscriptionsGroup = ({ subscriptions, deletePlan, editPlan }: IProps) => {
 	return (
 		<ul className='grid grid-cols-3 gap-4'>
 			{subscriptions.map(subscription => (
@@ -14,6 +15,7 @@ const SubscriptionsGroup = ({ subscriptions, deletePlan }: IProps) => {
 					<Subscription
 						deletePlan={deletePlan}
 						subscription={subscription}
+						editPlan={editPlan}
 					/>
 				</li>
 			))}

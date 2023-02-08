@@ -46,7 +46,7 @@ const Settings = () => {
 					/>
 				</svg>
 				Want to modify subscription plans? Go to
-				<Link className="text-gray-100 hover:underline" to='admin'>Pricing section.</Link>
+				<Link className="text-gray-100 hover:underline" to='/admin/pricing'>Pricing section.</Link>
 			</p>
 		</div>
 	)

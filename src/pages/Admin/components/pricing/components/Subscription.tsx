@@ -7,9 +7,10 @@ import { toTitle } from "../../../../../utils/string"
 interface IProps {
 	subscription: ISubscriptionPlan
 	deletePlan: (id: string) => void
+	editPlan: (subscriptionPlan: ISubscriptionPlan) => void
 }
 
-const Subscription = ({ subscription, deletePlan }: IProps) => {
+const Subscription = ({ subscription, deletePlan, editPlan }: IProps) => {
 	return (
 		<div className='text-gray-300 flex flex-col gap-2 bg-slate-700/50 transition-colors hover:bg-slate-700 p-4 rounded-md shadow-md border border-gray-100/10'>
 			<h5 className='text-left text-semibold text-lg'>
@@ -52,7 +53,9 @@ const Subscription = ({ subscription, deletePlan }: IProps) => {
 				</p>
 				<div className='flex gap-2'>
 					<Tooltip message='Edit'>
-						<button className='hover:text-white'>
+						<button
+							className='hover:text-white'
+							onClick={() => editPlan(subscription)}>
 							<svg
 								className='w-5'
 								fill='currentColor'
