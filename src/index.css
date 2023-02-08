@@ -23,6 +23,10 @@ html {
   @apply bg-slate-500;
 }
 
+input[type=number]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
+
 @keyframes shake {
   10%, 90% {
     transform: translate3d(-1px, 0, 0);

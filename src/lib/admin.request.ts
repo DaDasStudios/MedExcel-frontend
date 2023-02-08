@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { ISubscriptionPlan } from '../interface'
 import { IUser } from '../interface/user'
 import { ISignIn } from './auth.request'
 import { REST_HOST } from './env'
@@ -58,5 +59,30 @@ export const uploadSiteImageRequest = (form: FormData, adminToken: string) => ax
     headers: {
         'Content-Type': "multipart/form-data",
         'Authorization': `Bearer ${adminToken}`
+    }
+})
+
+export const addSubscriptinoPlanRequest = (payload: {
+    name: string,
+    description: string,
+    days: number,
+    price: number
+}, adminToken: string) => axios.post<{
+    message: string
+    subscriptionPlans: ISubscriptionPlan[]
+}>(`${REST_HOST}/site/subscription`, payload, {
+    headers: {
+        'Authorization': `Bearer ${adminToken}`,
+        'Content-Type': 'application/json'
+    }
+})
+
+export const deleteSubscriptionPlanRequest = (subscriptionId: string, adminToken: string) => axios.delete<{
+    message: string,
+    subscription: ISubscriptionPlan 
+}>(`${REST_HOST}/site/subscription/${subscriptionId}`, {
+    headers: {
+        'Authorization': `Bearer ${adminToken}`,
+        'Content-Type': 'application/json'
     }
 })

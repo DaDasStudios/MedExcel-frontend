@@ -1,6 +1,7 @@
 import { Routes, Route } from "react-router-dom"
 import Users from "./users/Users"
 import Settings from "./settings/Settings"
+import Pricing from "./pricing/Pricing"
 
 const Dashboard = () => {
 	return (
@@ -17,6 +18,10 @@ const Dashboard = () => {
 				<Route
 					path='settings'
 					element={<Settings />}
+				/>
+				<Route
+					path="pricing"
+					element={<Pricing />}
 				/>
 			</Routes>
 		</div>

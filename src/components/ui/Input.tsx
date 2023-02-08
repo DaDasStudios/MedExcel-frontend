@@ -54,7 +54,7 @@ export const Input = ({ label, ...props }: IProps) => {
 					animation: meta.touched && meta.error ? "0.4s shake" : "",
 				}}
 
-				className={`bg-transparent border-2 border-slate-100/10 rounded-md text-slate-300 py-3 px-4 placeholder:text-slate-400 outline-none focus:outline-none placeholder:tracking-tight focus-within:bg-transparent`}
+				className={`bg-transparent border-2 border-slate-100/10 rounded-md text-slate-300 py-3 px-4 placeholder:text-slate-400 outline-none focus:outline-none placeholder:tracking-tight focus-within:bg-transparent `}
 				{...field}
 				{...props}
 			/>
