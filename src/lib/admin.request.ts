@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { ISubscriptionPlan } from '../interface'
+import { IQuestion } from '../interface/exam'
 import { IUser } from '../interface/user'
 import { ISignIn } from './auth.request'
 import { REST_HOST } from './env'
@@ -100,5 +101,15 @@ export const deleteSubscriptionPlanRequest = (subscriptionId: string, adminToken
     headers: {
         'Authorization': `Bearer ${adminToken}`,
         'Content-Type': 'application/json'
+    }
+})
+
+export const getAllQuestionsRequest = (adminToken: string) => axios.post<{
+    questions: IQuestion[]
+}>(`${REST_HOST}/question/filter`, {
+    category: []
+} ,{
+    headers: {
+        'Authorization': `Bearer ${adminToken}`
     }
 })

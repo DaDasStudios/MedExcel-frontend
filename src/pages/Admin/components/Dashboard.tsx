@@ -2,6 +2,7 @@ import { Routes, Route } from "react-router-dom"
 import Users from "./users/Users"
 import Settings from "./settings/Settings"
 import Pricing from "./pricing/Pricing"
+import Exams from "./exams/Exams"
 
 const Dashboard = () => {
 	return (
@@ -20,8 +21,12 @@ const Dashboard = () => {
 					element={<Settings />}
 				/>
 				<Route
-					path="pricing"
+					path='pricing'
 					element={<Pricing />}
+				/>
+				<Route
+					path='exams'
+					element={<Exams />}
 				/>
 			</Routes>
 		</div>
