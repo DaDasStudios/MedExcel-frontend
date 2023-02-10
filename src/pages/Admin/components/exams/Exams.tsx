@@ -1,6 +1,7 @@
 import Breadcrumb from "../../../../components/ui/Breadcrumb"
 import { ExamsAdminContextProvider } from "../../../../context/admin/examsContext"
-import QuestionsGroup from "./components/QuestionsGroup"
+import PreviewQuestion from "./components/question/PreviewQuestionModal"
+import QuestionsGroup from "./components/question/QuestionsGroup"
 import VisualizeMarkDownModal from "./components/VisualizeMarkDownModal"
 
 const Exams = () => {
@@ -27,9 +28,10 @@ const Exams = () => {
 					<p className='text-gray-300'>List</p>,
 				]}
 			/>
-			<h1 className='text-2xl font-semibold my-4'>All exams around</h1>
+			<h1 className='text-2xl font-semibold my-4'>All questions around</h1>
 			<QuestionsGroup />
 			<VisualizeMarkDownModal/>
+			<PreviewQuestion/>
 		</ExamsAdminContextProvider>
 	)
 }

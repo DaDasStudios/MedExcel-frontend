@@ -1,9 +1,9 @@
 import { useEffect } from "react"
 import { toast } from "react-hot-toast"
-import Spin from "../../../../../components/ui/Spin"
-import { useAdminContext } from "../../../../../context/admin/adminContext"
-import { useExamsAdminContext } from "../../../../../context/admin/examsContext"
-import { getAllQuestionsRequest } from "../../../../../lib/admin.request"
+import Spin from "../../../../../../components/ui/Spin"
+import { useAdminContext } from "../../../../../../context/admin/adminContext"
+import { useExamsAdminContext } from "../../../../../../context/admin/examsContext"
+import { getAllQuestionsRequest } from "../../../../../../lib/admin.request"
 import QuestionCard from "./QuestionCard"
 
 const QuestionsGroup = () => {
@@ -23,7 +23,7 @@ const QuestionsGroup = () => {
 	}, [])
 
 	if (questions.length === 0) return (
-		<div className="flex flex-col gap-2 items-center justify-center">
+		<div className="flex flex-col gap-4 items-center justify-center">
 			<Spin/>
 			<p className="text-gray-400 text-xl">Loading MedExcel questions...</p>
 		</div>

@@ -25,7 +25,7 @@ const Navbar = ({ elements }: Props) => {
 					to='/'>
 					{image.url ? (
 						<img
-							className='rounded-full w-14 shadow-lg'
+							className='rounded-full w-36 shadow-lg'
 							src={image.url}
 							alt={name}
 						/>

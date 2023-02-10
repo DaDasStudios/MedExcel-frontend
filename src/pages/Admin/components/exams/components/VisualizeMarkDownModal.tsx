@@ -12,11 +12,12 @@ const VisualizeMarkDownModal = () => {
 		<Modal
 			closeModal={closeModal}
 			rendered={isVisualizerOpen}>
-			<ReactMarkdown
-				children={content}
-                className="markdown-container"
-				remarkPlugins={[remarkGfm]}
-			/>
+			<article className='markdown-visualizer'>
+				<ReactMarkdown
+					children={content}
+					remarkPlugins={[remarkGfm]}
+				/>
+			</article>
 		</Modal>
 	)
 }

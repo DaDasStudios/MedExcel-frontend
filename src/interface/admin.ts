@@ -36,5 +36,11 @@ export interface IExamsAdminContext {
         openModal: (content: string) => void
         content: string
     }
+    previewModal: {
+        question: IQuestion
+        rendered: boolean
+        closeModal: () => void
+        openModal: (question: IQuestion) => void
+    }
 
 }

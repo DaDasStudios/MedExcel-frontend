@@ -1,9 +1,9 @@
-import Separator from "../../../../../components/ui/Separator"
-import Tooltip from "../../../../../components/ui/Tooltip"
-import { IQuestion, QuestionType } from "../../../../../interface/exam"
-import { formatDate } from "../../../../../utils/date"
+import Separator from "../../../../../../components/ui/Separator"
+import { IQuestion, QuestionType } from "../../../../../../interface/exam"
+import { formatDate } from "../../../../../../utils/date"
 import QuestionContent from "./QuestionContent"
-import ViewButton from "./ViewButton"
+import ViewButton from "../ViewButton"
+import { useExamsAdminContext } from "../../../../../../context/admin/examsContext"
 
 interface IProps {
 	question: IQuestion
@@ -32,28 +32,68 @@ function handleStyle(type: QuestionType) {
 }
 
 const QuestionCard = ({ question, index }: IProps) => {
+	const { previewModal } = useExamsAdminContext()
 	return (
 		<div
 			className={`relative flex flex-col gap-2 p-4 rounded-md shadow-md ${handleStyle(
 				question.type
 			)}`}>
 			<span className='absolute flex gap-1.5 items-center text-gray-400 text-xs top-0 right-0 m-3'>
-				<Tooltip message="Options">
-					<button className='p-1 hover:bg-gray-600 hover:text-gray-200 rounded-md'>
-						<svg
-							className='w-4'
-							fill='currentColor'
-							viewBox='0 0 20 20'
-							xmlns='http://www.w3.org/2000/svg'
-							aria-hidden='true'>
-							<path
-								clipRule='evenodd'
-								fillRule='evenodd'
-								d='M6 4.75A.75.75 0 016.75 4h10.5a.75.75 0 010 1.5H6.75A.75.75 0 016 4.75zM6 10a.75.75 0 01.75-.75h10.5a.75.75 0 010 1.5H6.75A.75.75 0 016 10zm0 5.25a.75.75 0 01.75-.75h10.5a.75.75 0 010 1.5H6.75a.75.75 0 01-.75-.75zM1.99 4.75a1 1 0 011-1H3a1 1 0 011 1v.01a1 1 0 01-1 1h-.01a1 1 0 01-1-1v-.01zM1.99 15.25a1 1 0 011-1H3a1 1 0 011 1v.01a1 1 0 01-1 1h-.01a1 1 0 01-1-1v-.01zM1.99 10a1 1 0 011-1H3a1 1 0 011 1v.01a1 1 0 01-1 1h-.01a1 1 0 01-1-1V10z'
-							/>
-						</svg>
-					</button>
-				</Tooltip>
+				<button className='relative outline-none p-1 hover:bg-gray-600 hover:text-gray-200 rounded-md group'>
+					<svg
+						className='w-4'
+						fill='currentColor'
+						viewBox='0 0 20 20'
+						xmlns='http://www.w3.org/2000/svg'
+						aria-hidden='true'>
+						<path
+							clipRule='evenodd'
+							fillRule='evenodd'
+							d='M6 4.75A.75.75 0 016.75 4h10.5a.75.75 0 010 1.5H6.75A.75.75 0 016 4.75zM6 10a.75.75 0 01.75-.75h10.5a.75.75 0 010 1.5H6.75A.75.75 0 016 10zm0 5.25a.75.75 0 01.75-.75h10.5a.75.75 0 010 1.5H6.75a.75.75 0 01-.75-.75zM1.99 4.75a1 1 0 011-1H3a1 1 0 011 1v.01a1 1 0 01-1 1h-.01a1 1 0 01-1-1v-.01zM1.99 15.25a1 1 0 011-1H3a1 1 0 011 1v.01a1 1 0 01-1 1h-.01a1 1 0 01-1-1v-.01zM1.99 10a1 1 0 011-1H3a1 1 0 011 1v.01a1 1 0 01-1 1h-.01a1 1 0 01-1-1V10z'
+						/>
+					</svg>
+					<div className='group-focus:block hidden bg-slate-800 border border-gray-100/10 p-3 rounded-md shadow-md left-1/2 right-1/2 -translate-x-1/2 bottom-[-90px] absolute max-w-[100px] w-fit'>
+						<ul className='text-gray-300 flex flex-col gap-1.5'>
+							<li onClick={() => previewModal.openModal(question)} className='flex items-center gap-2 hover:underline'>
+								<svg
+									className='w-3'
+									fill='currentColor'
+									viewBox='0 0 20 20'
+									xmlns='http://www.w3.org/2000/svg'
+									aria-hidden='true'>
+									<path d='M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z' />
+								</svg>
+								Preview
+							</li>
+							<li className='flex items-center gap-2 hover:underline'>
+								<svg
+									className='w-3'
+									fill='currentColor'
+									viewBox='0 0 20 20'
+									xmlns='http://www.w3.org/2000/svg'
+									aria-hidden='true'>
+									<path d='M2.695 14.763l-1.262 3.154a.5.5 0 00.65.65l3.155-1.262a4 4 0 001.343-.885L17.5 5.5a2.121 2.121 0 00-3-3L3.58 13.42a4 4 0 00-.885 1.343z' />
+								</svg>
+								Edit
+							</li>
+							<li className='flex items-center gap-2 hover:underline'>
+								<svg
+									className='w-3'
+									fill='currentColor'
+									viewBox='0 0 20 20'
+									xmlns='http://www.w3.org/2000/svg'
+									aria-hidden='true'>
+									<path
+										clipRule='evenodd'
+										fillRule='evenodd'
+										d='M8.75 1A2.75 2.75 0 006 3.75v.443c-.795.077-1.584.176-2.365.298a.75.75 0 10.23 1.482l.149-.022.841 10.518A2.75 2.75 0 007.596 19h4.807a2.75 2.75 0 002.742-2.53l.841-10.52.149.023a.75.75 0 00.23-1.482A41.03 41.03 0 0014 4.193V3.75A2.75 2.75 0 0011.25 1h-2.5zM10 4c.84 0 1.673.025 2.5.075V3.75c0-.69-.56-1.25-1.25-1.25h-2.5c-.69 0-1.25.56-1.25 1.25v.325C8.327 4.025 9.16 4 10 4zM8.58 7.72a.75.75 0 00-1.5.06l.3 7.5a.75.75 0 101.5-.06l-.3-7.5zm4.34.06a.75.75 0 10-1.5-.06l-.3 7.5a.75.75 0 101.5.06l.3-7.5z'
+									/>
+								</svg>
+								Delete
+							</li>
+						</ul>
+					</div>
+				</button>
 				<p>{index + 1}</p>
 			</span>
 			<h6>

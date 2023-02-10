@@ -3,9 +3,9 @@ import {
 	IECQQuestion,
 	ISBAQuestion,
 	QuestionType,
-} from "../../../../../interface/exam"
+} from "../../../../../../interface/exam"
 import DropdownQuestion from "./DropdownQuestion"
-import ViewButton from "./ViewButton"
+import ViewButton from "../ViewButton"
 
 interface IProps {
 	type: QuestionType
