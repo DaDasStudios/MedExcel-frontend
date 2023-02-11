@@ -17,7 +17,7 @@ import toast from "react-hot-toast"
 import { addQuestionRequest } from "../../../../../../lib/admin.request"
 
 const QuestionForm = () => {
-	const { questionForm } = useExamsAdminContext()
+	const { questionForm, setQuestions } = useExamsAdminContext()
 	const { auth } = useAdminContext()
 	const initialValues: IQuestionFormState = {
 		category: "Dermatology",
@@ -46,7 +46,7 @@ const QuestionForm = () => {
 								...values,
 								content: {
 									...questionForm.SBAContent,
-									answer: questionForm.SBAContent.answer + 1
+									answer: questionForm.SBAContent.answer + 1,
 								},
 							}
 
@@ -61,9 +61,12 @@ const QuestionForm = () => {
 							) {
 								throw new Error("Failed to save question")
 							}
-							toast.success(
-								"New question saved, reload to see changes"
-							)
+
+							setQuestions(questions => {
+								return [...questions, res.data.question]
+							})
+							resetForm()
+							toast.success("New question saved")
 							break
 						}
 
@@ -72,7 +75,6 @@ const QuestionForm = () => {
 							break
 					}
 				} catch (error) {
-					console.log(error)
 					toast.error("Something went wrong... Try later")
 				} finally {
 					setSubmitting(false)

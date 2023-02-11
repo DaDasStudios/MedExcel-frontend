@@ -123,3 +123,12 @@ export const addQuestionRequest = (payload: any, adminToken: string) => axios.po
         "Content-Type": "application/json"
     }
 })
+
+export const deleteQuestionRequest = (id: string, adminToken: string) => axios.delete<{
+    message: string
+    question: IQuestion
+}>(`${REST_HOST}/question/${id}`, {
+    headers: {
+        'Authorization': `Bearer ${adminToken}`,
+    }
+})

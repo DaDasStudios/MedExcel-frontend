@@ -4,6 +4,9 @@ import { formatDate } from "../../../../../../utils/date"
 import QuestionContent from "./QuestionContent"
 import ViewButton from "../ViewButton"
 import { useExamsAdminContext } from "../../../../../../context/admin/examsContext"
+import { toast } from "react-hot-toast"
+import { deleteQuestionRequest } from "../../../../../../lib/admin.request"
+import { useAdminContext } from "../../../../../../context/admin/adminContext"
 
 interface IProps {
 	question: IQuestion
@@ -32,7 +35,8 @@ function handleStyle(type: QuestionType) {
 }
 
 const QuestionCard = ({ question, index }: IProps) => {
-	const { previewModal } = useExamsAdminContext()
+	const { previewModal, setQuestions } = useExamsAdminContext()
+	const { auth } = useAdminContext()
 	return (
 		<div
 			className={`relative flex flex-col gap-2 p-4 rounded-md shadow-md ${handleStyle(
@@ -54,7 +58,9 @@ const QuestionCard = ({ question, index }: IProps) => {
 					</svg>
 					<div className='group-focus:block hidden bg-slate-800 border border-gray-100/10 p-3 rounded-md shadow-md left-1/2 right-1/2 -translate-x-1/2 bottom-[-90px] absolute max-w-[100px] w-fit'>
 						<ul className='text-gray-300 flex flex-col gap-1.5'>
-							<li onClick={() => previewModal.openModal(question)} className='flex items-center gap-2 hover:underline'>
+							<li
+								onClick={() => previewModal.openModal(question)}
+								className='flex items-center gap-2 hover:underline'>
 								<svg
 									className='w-3'
 									fill='currentColor'
@@ -76,7 +82,44 @@ const QuestionCard = ({ question, index }: IProps) => {
 								</svg>
 								Edit
 							</li>
-							<li className='flex items-center gap-2 hover:underline'>
+							<li
+								onClick={async () => {
+									const wantsDelete = prompt(
+										"Sure you want to delete this question? Yes/No",
+										"No"
+									)
+									if (wantsDelete?.toLowerCase() === "yes") {
+										try {
+											const res =
+												await deleteQuestionRequest(
+													question._id,
+													auth.token
+												)
+
+											if (
+												res.status === 200 &&
+												res.data.message ===
+													"Question deleted"
+											) {
+												setQuestions(questions =>
+													questions.filter(
+														q =>
+															q._id !==
+															question._id
+													)
+												)
+												return toast.success(
+													"Question deleted"
+												)
+											}
+										} catch (error) {
+											toast.error(
+												"Failed to delete this question"
+											)
+										}
+									}
+								}}
+								className='flex items-center gap-2 hover:underline'>
 								<svg
 									className='w-3'
 									fill='currentColor'
