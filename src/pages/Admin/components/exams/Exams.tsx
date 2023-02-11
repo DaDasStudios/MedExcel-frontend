@@ -1,5 +1,6 @@
 import Breadcrumb from "../../../../components/ui/Breadcrumb"
 import { ExamsAdminContextProvider } from "../../../../context/admin/examsContext"
+import CreateQuestion from "./components/createQuestion/CreateQuestion"
 import PreviewQuestion from "./components/question/PreviewQuestionModal"
 import QuestionsGroup from "./components/question/QuestionsGroup"
 import VisualizeMarkDownModal from "./components/VisualizeMarkDownModal"
@@ -25,13 +26,20 @@ const Exams = () => {
 						Admin
 					</span>,
 					<span>Exams</span>,
-					<p className='text-gray-300'>List</p>,
+					<p className='text-gray-300'>Overview</p>,
 				]}
 			/>
-			<h1 className='text-2xl font-semibold my-4'>All questions around</h1>
+
+			<h1 className='text-2xl font-semibold my-4'>
+				Question operations
+			</h1>
+			<CreateQuestion/>
+			<h1 className='text-2xl font-semibold my-4'>
+				All questions around
+			</h1>
 			<QuestionsGroup />
-			<VisualizeMarkDownModal/>
-			<PreviewQuestion/>
+			<VisualizeMarkDownModal />
+			<PreviewQuestion />
 		</ExamsAdminContextProvider>
 	)
 }

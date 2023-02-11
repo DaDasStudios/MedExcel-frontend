@@ -16,9 +16,20 @@ export const ExamsAdminContextProvider = function ({
 	const [isVisualizerOpen, setIsVisualizerOpen] = useState(false)
 	const [visualizerContent, setVisualizerContent] = useState("")
 
+	// * The markdown content of the add question form
+	const [markdownContent, setMarkdownContent] = useState("")
+
 	// * Preview question modal
 	const [isPreviewOpen, setIsPreviewOpen] = useState(false)
 	const [previewQuestion, setPreviewQuestion] = useState({} as IQuestion)
+
+	// * Has an state for every type of question
+	const [SBAContent, setSBAContent] = useState({
+		answer: 0,
+		explanation: "",
+		options: ["", ""],
+		question: "",
+	})
 
 	function closeVisualizerModal() {
 		setIsVisualizerOpen(false)
@@ -58,6 +69,12 @@ export const ExamsAdminContextProvider = function ({
 					question: previewQuestion,
 					openModal: openPreviewModal,
 					closeModal: closePreviewModal,
+				},
+				questionForm: {
+					markdownContent,
+					setMarkdownContent,
+					SBAContent,
+					setSBAContent,
 				},
 			}}>
 			{children}

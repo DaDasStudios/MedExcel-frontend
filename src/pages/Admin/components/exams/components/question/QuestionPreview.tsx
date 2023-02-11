@@ -137,7 +137,7 @@ const QuestionPreview = ({ question, type }: IProps) => {
 					<form>
 						<ul className='ml-5 flex flex-col gap-2'>
 							{data.content.question.map((question, i) => (
-								<li className='list-decimal'>
+								<li key={question.question + i} className='list-decimal'>
 									<div className='flex gap-2'>
 										<p className=''>{question.question}</p>
 										<label

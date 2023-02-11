@@ -29,8 +29,14 @@ const QuestionsGroup = () => {
 		</div>
 	)
 	else return (
-		<div className="grid grid-cols-4 gap-4 items-baseline">
-			{questions.map((question, index) => <QuestionCard key={question._id} index={index} question={question}/>)}
+		<div className='grid grid-cols-4 gap-6 items-baseline'>
+			{questions.map((question, index) => (
+				<QuestionCard
+					key={question._id}
+					index={index}
+					question={question}
+				/>
+			))}
 		</div>
 	)
 }

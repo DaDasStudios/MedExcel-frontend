@@ -24,6 +24,7 @@ const CBQQuestion = ({ data }: IProps) => {
 				<div className='flex gap-2 items-center text-sm'>
 					{data.content.map((_, i) => (
 						<span
+							key={i + i**2}
 							className={` border shadow-md rounded-lg p-1 ${
 								i === current
 									? "bg-blue-700/50 border-blue-100/10"

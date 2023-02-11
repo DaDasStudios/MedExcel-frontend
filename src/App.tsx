@@ -18,7 +18,6 @@ import Root from "./routes/Root"
 import Admin from "./routes/Admin"
 import ErrorPage from "./routes/ErrorPage"
 import { Toaster } from "react-hot-toast"
-import Users from "./pages/Admin/components/users/Users"
 
 const router = createBrowserRouter(
 	createRoutesFromElements(

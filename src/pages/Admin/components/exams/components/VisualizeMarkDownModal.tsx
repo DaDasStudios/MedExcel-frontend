@@ -1,8 +1,6 @@
 import Modal from "../../../../../components/ui/Modal"
 import { useExamsAdminContext } from "../../../../../context/admin/examsContext"
-import ReactMarkdown from "react-markdown"
-import remarkGfm from "remark-gfm"
-import '../styles/markdown.scss'
+import MarkdownBody from "../../../../../components/ui/MarkdownBody"
 
 const VisualizeMarkDownModal = () => {
 	const {
@@ -12,12 +10,7 @@ const VisualizeMarkDownModal = () => {
 		<Modal
 			closeModal={closeModal}
 			rendered={isVisualizerOpen}>
-			<article className='markdown-visualizer'>
-				<ReactMarkdown
-					children={content}
-					remarkPlugins={[remarkGfm]}
-				/>
-			</article>
+			<MarkdownBody content={content} />
 		</Modal>
 	)
 }

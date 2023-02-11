@@ -1,0 +1,78 @@
+.markdown-body {
+	@apply overflow-y-auto max-h-[450px];
+
+	* {
+		@apply text-gray-200;
+	}
+
+	p {
+		@apply text-gray-400 mb-2;
+	}
+
+	hr {
+		@apply border-b-2 border-gray-100/10 mb-4;
+	}
+
+	ul {
+		@apply ml-5 mb-2;
+		li {
+			@apply list-disc text-gray-300;
+		}
+	}
+
+	ol {
+		@apply ml-5 mb-2;
+		li {
+			@apply list-decimal text-gray-300;
+		}
+	}
+
+	a {
+		@apply hover:underline inline;
+	}
+
+	blockquote {
+		@apply mt-4 mb-2 border-l-4 border-gray-100/10 pl-2 text-gray-400;
+	}
+
+	table {
+		@apply border-2 border-collapse;
+
+		td,
+		th {
+			@apply border-2 border-gray-100/10 p-3;
+		}
+
+        th {
+            @apply text-gray-200 font-semibold;
+        }
+
+        td, td a {
+            @apply text-gray-300 font-medium;
+
+        }
+    }
+
+    img {
+        @apply rounded-md max-w-md shadow-md mt-4 mb-2;
+    }
+
+	h1 {
+		@apply text-4xl font-bold mt-6 mb-4 pb-2 border-b-2 border-gray-100/10;
+	}
+	h2 {
+		@apply text-3xl font-semibold mt-6 mb-2;
+	}
+	h3 {
+		@apply text-2xl font-semibold mt-6 mb-2;
+	}
+	h4 {
+		@apply text-xl font-semibold mt-6 mb-2;
+	}
+	h5 {
+		@apply text-lg font-semibold mt-6 mb-2;
+	}
+	h6 {
+		@apply text-base font-medium mt-6 mb-2;
+	}
+}

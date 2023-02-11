@@ -1,4 +1,4 @@
-import { IQuestion } from "./exam";
+import { IMDString, IQuestion, ISBAQuestion, QuestionType } from "./exam";
 import React from "react";
 
 export type setAdminDataType = (payload: { token: string; id: string }) => Promise<boolean>;
@@ -42,5 +42,16 @@ export interface IExamsAdminContext {
         closeModal: () => void
         openModal: (question: IQuestion) => void
     }
+    questionForm: {
+        markdownContent: string
+        setMarkdownContent: React.Dispatch<React.SetStateAction<string>>
+        SBAContent: ISBAQuestion
+        setSBAContent: React.Dispatch<React.SetStateAction<ISBAQuestion>>
+    }
+}
 
+export interface IQuestionFormState {
+    type: QuestionType
+    category: string
+    scenario: IMDString
 }

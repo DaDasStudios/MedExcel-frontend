@@ -96,7 +96,7 @@ export const updateSubscriptionPlanRequest = (id: string, payload: {
 
 export const deleteSubscriptionPlanRequest = (subscriptionId: string, adminToken: string) => axios.delete<{
     message: string,
-    subscription: ISubscriptionPlan 
+    subscription: ISubscriptionPlan
 }>(`${REST_HOST}/site/subscription/${subscriptionId}`, {
     headers: {
         'Authorization': `Bearer ${adminToken}`,
@@ -108,8 +108,18 @@ export const getAllQuestionsRequest = (adminToken: string) => axios.post<{
     questions: IQuestion[]
 }>(`${REST_HOST}/question/filter`, {
     category: []
-} ,{
+}, {
     headers: {
         'Authorization': `Bearer ${adminToken}`
+    }
+})
+
+export const addQuestionRequest = (payload: any, adminToken: string) => axios.post<{
+    message: string
+    question: IQuestion
+}>(`${REST_HOST}/question`, payload, {
+    headers: {
+        'Authorization': `Bearer ${adminToken}`,
+        "Content-Type": "application/json"
     }
 })
