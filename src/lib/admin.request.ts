@@ -110,7 +110,8 @@ export const getAllQuestionsRequest = (adminToken: string) => axios.post<{
     category: []
 }, {
     headers: {
-        'Authorization': `Bearer ${adminToken}`
+        'Authorization': `Bearer ${adminToken}`,
+        "Content-Type": "application/json"
     }
 })
 
@@ -130,5 +131,14 @@ export const deleteQuestionRequest = (id: string, adminToken: string) => axios.d
 }>(`${REST_HOST}/question/${id}`, {
     headers: {
         'Authorization': `Bearer ${adminToken}`,
+    }
+})
+
+export const getQuestionsFiltered = (payload: { type?: string[], category?: string[] | null }, adminToken: string) => axios.post<{
+    questions: IQuestion[]
+}>(`${REST_HOST}/question/filter`, payload, {
+    headers: {
+        'Authorization': `Bearer ${adminToken}`,
+        "Content-Type": "application/json"
     }
 })

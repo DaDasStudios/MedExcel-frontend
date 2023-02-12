@@ -1,7 +1,9 @@
 import Breadcrumb from "../../../../components/ui/Breadcrumb"
+import Separator from "../../../../components/ui/Separator"
 import { ExamsAdminContextProvider } from "../../../../context/admin/examsContext"
 import CreateQuestion from "./components/createQuestion/CreateQuestion"
 import PreviewQuestion from "./components/question/PreviewQuestionModal"
+import QuestionFilter from "./components/question/QuestionFilter"
 import QuestionsGroup from "./components/question/QuestionsGroup"
 import VisualizeMarkDownModal from "./components/VisualizeMarkDownModal"
 
@@ -37,6 +39,8 @@ const Exams = () => {
 			<h1 className='text-2xl font-semibold my-4'>
 				All questions around
 			</h1>
+			<Separator/>
+			<QuestionFilter/>
 			<QuestionsGroup />
 			<VisualizeMarkDownModal />
 			<PreviewQuestion />
