@@ -24,12 +24,25 @@ export const ExamsAdminContextProvider = function ({
 	const [previewQuestion, setPreviewQuestion] = useState({} as IQuestion)
 
 	// * Has an state for every type of question
-	const [SBAContent, setSBAContent] = useState({
+	const SBAInitialState = {
 		answer: 0,
 		explanation: "",
 		options: ["", ""],
 		question: "",
-	})
+	}
+	const [SBAContent, setSBAContent] = useState(SBAInitialState)
+
+	const ECQInitialState = {
+		options: ["", ""],
+		question: [
+			{
+				question: "",
+				answer: 0,
+			},
+		],
+		explanation: "",
+	}
+	const [ECQContent, setECQContent] = useState(ECQInitialState)
 
 	function closeVisualizerModal() {
 		setIsVisualizerOpen(false)
@@ -73,8 +86,18 @@ export const ExamsAdminContextProvider = function ({
 				questionForm: {
 					markdownContent,
 					setMarkdownContent,
+
 					SBAContent,
 					setSBAContent,
+					resetSBAContent() {
+						setSBAContent(SBAInitialState)
+					},
+
+					ECQContent,
+					setECQContent,
+					resetECQContent() {
+						setECQContent(ECQInitialState)
+					},
 				},
 			}}>
 			{children}

@@ -1,4 +1,4 @@
-import { ReactMarkdown } from "react-markdown/lib/react-markdown"
+import MarkdownBody from "../../../../../../components/ui/MarkdownBody"
 import Separator from "../../../../../../components/ui/Separator"
 import {
 	ICBQQuestion,
@@ -7,7 +7,6 @@ import {
 	ISBAQuestion,
 	QuestionType,
 } from "../../../../../../interface/exam"
-import remarkGfm from "remark-gfm"
 import CBQQuestion from "./CBQQuestion"
 
 interface IProps {
@@ -26,12 +25,7 @@ const QuestionPreview = ({ question, type }: IProps) => {
 						Category - <b>{data.category}</b>
 					</span>
 					<Separator />
-					<div>
-						<ReactMarkdown
-							children={data.scenario}
-							remarkPlugins={[remarkGfm]}
-						/>
-					</div>
+					<MarkdownBody content={data.scenario} />
 					<p className='text-gray-300'>{data.content.question}</p>
 					<form>
 						<div className='inline-flex flex-col mt-2 mb-1'>
@@ -77,12 +71,7 @@ const QuestionPreview = ({ question, type }: IProps) => {
 					<h5 className='text-sm text-blue-500 mt-2'>
 						Explanation after answering
 					</h5>
-					<div>
-						<ReactMarkdown
-							children={data.content.explanation}
-							remarkPlugins={[remarkGfm]}
-						/>
-					</div>
+						<MarkdownBody content={data.content.explanation} />
 				</>
 			)
 		}
@@ -128,16 +117,13 @@ const QuestionPreview = ({ question, type }: IProps) => {
 							</li>
 						))}
 					</ul>
-					<div className='mt-2'>
-						<ReactMarkdown
-							children={data.scenario}
-							remarkPlugins={[remarkGfm]}
-						/>
-					</div>
+					<MarkdownBody content={data.scenario} />
 					<form>
 						<ul className='ml-5 flex flex-col gap-2'>
 							{data.content.question.map((question, i) => (
-								<li key={question.question + i} className='list-decimal'>
+								<li
+									key={question.question + i}
+									className='list-decimal'>
 									<div className='flex gap-2'>
 										<p className=''>{question.question}</p>
 										<label
@@ -180,12 +166,7 @@ const QuestionPreview = ({ question, type }: IProps) => {
 					<h5 className='text-sm text-blue-500 mt-2'>
 						Explanation after answering
 					</h5>
-					<div>
-						<ReactMarkdown
-							children={data.content.explanation}
-							remarkPlugins={[remarkGfm]}
-						/>
-					</div>
+					<MarkdownBody content={data.content.explanation} />
 				</>
 			)
 		}
@@ -219,13 +200,8 @@ const QuestionPreview = ({ question, type }: IProps) => {
 						</p>
 					</span>
 					<Separator />
-					<div className='mt-2'>
-						<ReactMarkdown
-							children={data.scenario}
-							remarkPlugins={[remarkGfm]}
-						/>
-					</div>
-					<CBQQuestion data={data}/>
+					<MarkdownBody content={data.scenario} />
+					<CBQQuestion data={data} />
 				</>
 			)
 		}

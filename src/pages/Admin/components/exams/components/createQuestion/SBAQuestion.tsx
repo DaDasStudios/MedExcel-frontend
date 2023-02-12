@@ -1,5 +1,4 @@
-import { useState, useId } from "react"
-import { ISBAQuestion } from "../../../../../../interface/exam"
+import { useId } from "react"
 import { SimpleInput, TextArea } from "./Input"
 import Tooltip from "../../../../../../components/ui/Tooltip"
 import { useExamsAdminContext } from "../../../../../../context/admin/examsContext"

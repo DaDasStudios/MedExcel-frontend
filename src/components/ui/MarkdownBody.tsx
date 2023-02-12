@@ -8,7 +8,7 @@ interface IProps {
 
 const MarkdownBody = ({ content }: IProps) => {
 	return (
-		<article className='markdown-body p-2 rounded-md'>
+		<article className='markdown-body'>
 			<ReactMarkdown
 				children={
 					content

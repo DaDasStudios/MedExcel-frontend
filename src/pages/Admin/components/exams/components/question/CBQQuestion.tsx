@@ -6,6 +6,7 @@ import {
 import { useState } from "react"
 import remarkGfm from "remark-gfm"
 import ReactMarkdown from "react-markdown"
+import MarkdownBody from "../../../../../../components/ui/MarkdownBody"
 
 interface IProps {
 	data: IQuestion<ICBQQuestion>
@@ -52,10 +53,7 @@ const CBQQuestion = ({ data }: IProps) => {
 								Explanation of the <span className="text-blue-500">question {i + 1}</span>
 							</h5>
 							<div>
-								<ReactMarkdown
-									children={question.explanation}
-									remarkPlugins={[remarkGfm]}
-								/>
+								<MarkdownBody content={question.explanation}/>
 							</div>
 						</div>
 					))}
