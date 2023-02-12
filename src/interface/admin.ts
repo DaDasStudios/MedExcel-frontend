@@ -1,4 +1,4 @@
-import { IECQQuestion, IMDString, IQuestion, ISBAQuestion, QuestionType } from "./exam";
+import { ICBQQuestion, IECQQuestion, IMDString, IQuestion, ISBAQuestion, QuestionType } from "./exam";
 import React from "react";
 
 export type setAdminDataType = (payload: { token: string; id: string }) => Promise<boolean>;
@@ -53,6 +53,10 @@ export interface IExamsAdminContext {
         ECQContent: IECQQuestion
         setECQContent: React.Dispatch<React.SetStateAction<IECQQuestion>>
         resetECQContent: () => void
+
+        CBQContent: ICBQQuestion
+        setCBQContent: React.Dispatch<React.SetStateAction<ICBQQuestion>>
+        resetCBQContent: () => void
     }
 }
 

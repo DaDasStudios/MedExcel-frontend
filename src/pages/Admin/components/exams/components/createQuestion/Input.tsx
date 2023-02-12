@@ -14,8 +14,7 @@ interface IProps {
 
 interface ITextAreaProps extends IProps {
 	setValues: (
-		values: React.SetStateAction<any>,
-		shouldValidate?: boolean | undefined
+		values: any
 	) => void
 }
 

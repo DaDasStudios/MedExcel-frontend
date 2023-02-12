@@ -6,6 +6,7 @@ interface IProps extends PropsWithChildren {
 	as: ComponentElement
 	theme?: string
 	submit?: boolean
+	onClick?: () => void
 }
 
 const neutralBtn =
@@ -32,6 +33,7 @@ const SolidButton = ({
 	children,
 	href,
 	submit,
+	onClick,
 	theme = neutralBtn,
 }: IProps) => {
 	const className =
@@ -53,6 +55,7 @@ const SolidButton = ({
 				<button
 					type={submit ? "submit" : "button"}
 					className={className}
+					onClick={onClick}
 				>
 					{children}
 				</button>

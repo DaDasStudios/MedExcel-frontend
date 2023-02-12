@@ -1,6 +1,6 @@
 import { createContext, PropsWithChildren, useContext, useState } from "react"
 import { IExamsAdminContext } from "../../interface/admin"
-import { IQuestion } from "../../interface/exam"
+import { ICBQQuestion, IQuestion } from "../../interface/exam"
 
 const examsContext = createContext({} as IExamsAdminContext)
 
@@ -43,6 +43,22 @@ export const ExamsAdminContextProvider = function ({
 		explanation: "",
 	}
 	const [ECQContent, setECQContent] = useState(ECQInitialState)
+
+	const CBQInitialState: ICBQQuestion = [
+		{
+			question: "",
+			answer: 0,
+			options: ["", ""],
+			explanation: "",
+		},
+		{
+			question: "",
+			answer: 0,
+			options: ["", ""],
+			explanation: "",
+		},
+	]
+	const [CBQContent, setCBQContent] = useState(CBQInitialState)
 
 	function closeVisualizerModal() {
 		setIsVisualizerOpen(false)
@@ -97,6 +113,12 @@ export const ExamsAdminContextProvider = function ({
 					setECQContent,
 					resetECQContent() {
 						setECQContent(ECQInitialState)
+					},
+
+					CBQContent,
+					setCBQContent,
+					resetCBQContent() {
+						setCBQContent(CBQInitialState)
 					},
 				},
 			}}>

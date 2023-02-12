@@ -7,6 +7,6 @@
     "tabWidth": 4,
     "editorconfig": false,
     "useTabs": true,
-    "singleAttributePerLine": true,
+    "singleAttributePerLine": false,
     "quoteProps": "as-needed"
 }

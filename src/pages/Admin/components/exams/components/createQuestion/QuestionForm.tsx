@@ -17,6 +17,7 @@ import toast from "react-hot-toast"
 import { addQuestionRequest } from "../../../../../../lib/admin.request"
 import Spin from "../../../../../../components/ui/Spin"
 import ECQQuestion from "./ECQQuestion"
+import CBQQUestion from "./CBQQuestion"
 
 const QuestionForm = () => {
 	const { questionForm, setQuestions } = useExamsAdminContext()
@@ -36,6 +37,37 @@ const QuestionForm = () => {
 				try {
 					let body
 					switch (values.type) {
+						case "CBQ":
+							if (
+								questionForm.CBQContent.some(singleCase => {
+									const hasVoidOptions =
+										singleCase.options.some(
+											option => !option
+										)
+									return (
+										!singleCase.explanation ||
+										!singleCase.question ||
+										hasVoidOptions
+									)
+								})
+							) {
+								return toast.error("Fill up all the fields")
+							}
+
+							body = {
+								...values,
+								content: questionForm.CBQContent.map(
+									question => {
+										return {
+											...question,
+											answer: question.answer + 1,
+										}
+									}
+								),
+							}
+
+							break
+
 						case "ECQ":
 							if (
 								!questionForm.ECQContent.explanation ||
@@ -111,10 +143,7 @@ const QuestionForm = () => {
 				<Form>
 					<div className='grid grid-cols-2 gap-4'>
 						<div>
-							<Select
-								id='type'
-								label='Type'
-								name='type'>
+							<Select id='type' label='Type' name='type'>
 								<option value='SBA'>
 									Standard Single Best Answer
 								</option>
@@ -122,7 +151,7 @@ const QuestionForm = () => {
 									Extended Choice Question
 								</option>
 								<option value='CBQ'>
-									Case based questions
+									Case Based Questions
 								</option>
 							</Select>
 							<Select
@@ -198,6 +227,7 @@ const QuestionForm = () => {
 						<div>
 							{values.type === "SBA" && <SBAQuetion />}
 							{values.type === "ECQ" && <ECQQuestion />}
+							{values.type === "CBQ" && <CBQQUestion />}
 						</div>
 					</div>
 				</Form>
