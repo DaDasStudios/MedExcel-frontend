@@ -46,6 +46,21 @@ export interface IExamsAdminContext {
         markdownContent: string
         setMarkdownContent: React.Dispatch<React.SetStateAction<string>>
 
+        generalQuestionContent: {
+            type: QuestionType
+            category: string
+            scenario: string
+        }
+        setGeneralQuestionContent: React.Dispatch<React.SetStateAction<{
+            type: QuestionType
+            category: string
+            scenario: string
+        }>>
+        isEditing: boolean
+        setIsEditing: React.Dispatch<React.SetStateAction<boolean>>
+        editId: string
+        setEditId: React.Dispatch<React.SetStateAction<string>>
+
         SBAContent: ISBAQuestion
         setSBAContent: React.Dispatch<React.SetStateAction<ISBAQuestion>>
         resetSBAContent: () => void

@@ -1,5 +1,9 @@
 import Separator from "../../../../../../components/ui/Separator"
-import { IQuestion, QuestionType } from "../../../../../../interface/exam"
+import {
+	IQuestion,
+	ISBAQuestion,
+	QuestionType,
+} from "../../../../../../interface/exam"
 import { formatDate } from "../../../../../../utils/date"
 import QuestionContent from "./QuestionContent"
 import ViewButton from "../ViewButton"
@@ -35,7 +39,7 @@ function handleStyle(type: QuestionType) {
 }
 
 const QuestionCard = ({ question, index }: IProps) => {
-	const { previewModal, setQuestions } = useExamsAdminContext()
+	const { previewModal, setQuestions, questionForm } = useExamsAdminContext()
 	const { auth } = useAdminContext()
 	return (
 		<div
@@ -71,7 +75,55 @@ const QuestionCard = ({ question, index }: IProps) => {
 								</svg>
 								Preview
 							</li>
-							<li className='flex items-center gap-2 hover:underline'>
+							<li
+								onClick={() => {
+									questionForm.setIsEditing(true)
+									questionForm.setEditId(question._id)
+									questionForm.setGeneralQuestionContent({
+										category: question.category,
+										scenario: question.scenario,
+										type: question.type,
+									})
+
+									if (question.type === "SBA") {
+										questionForm.setSBAContent({
+											...question.content,
+											answer: question.content.answer - 1,
+										})
+									}
+
+									if (question.type === "ECQ") {
+										questionForm.setECQContent({
+											...question.content,
+											question:
+												question.content.question.map(
+													(q: any) => {
+														return {
+															...q,
+															answer:
+																q.answer - 1,
+														}
+													}
+												),
+										})
+									}
+
+									if (question.type === "CBQ") {
+										questionForm.setCBQContent(
+											question.content.map((q: any) => {
+												return {
+													...q,
+													answer: q.answer - 1,
+												}
+											})
+										)
+									}
+
+									toast.success(
+										"Use the add question form to edit this question"
+									)
+								}}
+								className='flex items-center gap-2 hover:underline'>
 								<svg
 									className='w-3'
 									fill='currentColor'
@@ -144,10 +196,7 @@ const QuestionCard = ({ question, index }: IProps) => {
 			</h6>
 			<ViewButton content={question.scenario} />
 			<Separator />
-			<QuestionContent
-				type={question.type}
-				content={question.content}
-			/>
+			<QuestionContent type={question.type} content={question.content} />
 
 			<div className='flex items-center justify-between text-xs text-gray-400 mt-3'>
 				<p className='flex gap-2 items-center'>

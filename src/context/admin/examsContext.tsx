@@ -1,6 +1,6 @@
 import { createContext, PropsWithChildren, useContext, useState } from "react"
 import { IExamsAdminContext } from "../../interface/admin"
-import { ICBQQuestion, IQuestion } from "../../interface/exam"
+import { ICBQQuestion, IQuestion, QuestionType } from "../../interface/exam"
 
 const examsContext = createContext({} as IExamsAdminContext)
 
@@ -23,7 +23,15 @@ export const ExamsAdminContextProvider = function ({
 	const [isPreviewOpen, setIsPreviewOpen] = useState(false)
 	const [previewQuestion, setPreviewQuestion] = useState({} as IQuestion)
 
-	// * Has an state for every type of question
+	// ? Support to edit questions
+	const [generalQuestionContent, setGeneralQuestionContent] = useState({
+		type: "SBA" as QuestionType,
+		category: "Dermatology",
+		scenario: "",
+	})
+	const [isEditing, setIsEditing] = useState(false)
+	const [editId, setEditId] = useState("")
+
 	const SBAInitialState = {
 		answer: 0,
 		explanation: "",
@@ -102,6 +110,13 @@ export const ExamsAdminContextProvider = function ({
 				questionForm: {
 					markdownContent,
 					setMarkdownContent,
+
+					generalQuestionContent,
+					setGeneralQuestionContent,
+					isEditing,
+					setIsEditing,
+					editId,
+					setEditId,
 
 					SBAContent,
 					setSBAContent,

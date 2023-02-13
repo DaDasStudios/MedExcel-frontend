@@ -14,7 +14,10 @@ import SolidButton, {
 import { ComponentElement } from "../../../../../../interface"
 import { useAdminContext } from "../../../../../../context/admin/adminContext"
 import toast from "react-hot-toast"
-import { addQuestionRequest } from "../../../../../../lib/admin.request"
+import {
+	addQuestionRequest,
+	updateQuestionRequest,
+} from "../../../../../../lib/admin.request"
 import Spin from "../../../../../../components/ui/Spin"
 import ECQQuestion from "./ECQQuestion"
 import CBQQUestion from "./CBQQuestion"
@@ -22,18 +25,16 @@ import CBQQUestion from "./CBQQuestion"
 const QuestionForm = () => {
 	const { questionForm, setQuestions } = useExamsAdminContext()
 	const { auth } = useAdminContext()
-	const initialValues: IQuestionFormState = {
-		category: "Dermatology",
-		scenario: "",
-		type: "SBA",
-	}
+	const initialValues: IQuestionFormState =
+		questionForm.generalQuestionContent
 	return (
 		<Formik
 			initialValues={initialValues}
 			validationSchema={yup.object({
 				scenario: yup.string().required("Required"),
 			})}
-			onSubmit={async (values, { resetForm, setSubmitting }) => {
+			enableReinitialize={true}
+			onSubmit={async (values, { setValues, setSubmitting }) => {
 				try {
 					let body
 					switch (values.type) {
@@ -117,21 +118,51 @@ const QuestionForm = () => {
 							return toast.error("Unknown type of question")
 					}
 
-					const res = await addQuestionRequest(body, auth.token)
+					if (questionForm.isEditing && questionForm.editId) {
+						const res = await updateQuestionRequest(
+							questionForm.editId,
+							body,
+							auth.token
+						)
+						if (
+							res.status !== 200 &&
+							res.data.message !== "Question updated"
+						) {
+							throw new Error("Failed to update question")
+						}
 
-					if (
-						res.status !== 200 &&
-						res.data.message !== "New question saved"
-					) {
-						throw new Error("Failed to save question")
+						toast.success("Question updated")
+						setQuestions(questions =>
+							questions.map(question =>
+								question._id === questionForm.editId
+									? res.data.question
+									: question
+							)
+						)
+						questionForm.setEditId("")
+						questionForm.setIsEditing(false)
+					} else {
+						const res = await addQuestionRequest(body, auth.token)
+						if (
+							res.status !== 200 &&
+							res.data.message !== "New question saved"
+						) {
+							throw new Error("Failed to save question")
+						}
+						toast.success("New question saved")
+
+						setQuestions(questions => {
+							return [...questions, res.data.question]
+						})
 					}
 
-					toast.success("New question saved")
-					resetForm()
 					if (values.type === "SBA") questionForm.resetSBAContent()
 					if (values.type === "ECQ") questionForm.resetECQContent()
-					setQuestions(questions => {
-						return [...questions, res.data.question]
+					if (values.type === "CBQ") questionForm.resetCBQContent()
+					setValues({
+						category: values.category,
+						scenario: "",
+						type: values.type,
 					})
 				} catch (error) {
 					toast.error("Something went wrong... Try later")
@@ -139,7 +170,7 @@ const QuestionForm = () => {
 					setSubmitting(false)
 				}
 			}}>
-			{({ isSubmitting, setValues, values }) => (
+			{({ isSubmitting, setValues, values, resetForm }) => (
 				<Form>
 					<div className='grid grid-cols-2 gap-4'>
 						<div>
@@ -193,7 +224,7 @@ const QuestionForm = () => {
 								</button>
 							</div>
 							<div
-								className={`flex justify-center mt-6 ${
+								className={`flex gap-4 items-center justify-center mt-6 ${
 									isSubmitting
 										? "pointer-events-none"
 										: "pointer-events-auto"
@@ -205,6 +236,15 @@ const QuestionForm = () => {
 									<div className='flex gap-2 items-center'>
 										{isSubmitting ? (
 											<Spin />
+										) : questionForm.isEditing ? (
+											<svg
+												className='w-6'
+												fill='currentColor'
+												viewBox='0 0 20 20'
+												xmlns='http://www.w3.org/2000/svg'
+												aria-hidden='true'>
+												<path d='M2.695 14.763l-1.262 3.154a.5.5 0 00.65.65l3.155-1.262a4 4 0 001.343-.885L17.5 5.5a2.121 2.121 0 00-3-3L3.58 13.42a4 4 0 00-.885 1.343z' />
+											</svg>
 										) : (
 											<svg
 												className='w-6'
@@ -219,9 +259,48 @@ const QuestionForm = () => {
 												/>
 											</svg>
 										)}
-										Submit
+										{questionForm.isEditing
+											? "Edit"
+											: "Create"}
 									</div>
 								</SolidButton>
+								{questionForm.isEditing && (
+									<SolidButton
+										as={ComponentElement.BUTTON}
+										submit={false}
+										theme={themeBtns.redBtn}
+										onClick={() => {
+											questionForm.setEditId("")
+											questionForm.setIsEditing(false)
+											if (values.type === "SBA")
+												questionForm.resetSBAContent()
+											if (values.type === "ECQ")
+												questionForm.resetECQContent()
+											if (values.type === "CBQ")
+												questionForm.resetCBQContent()
+											setValues({
+												category: values.category,
+												scenario: "",
+												type: values.type,
+											})
+										}}>
+										<div className='flex gap-2 items-center'>
+											<svg
+												className='w-6'
+												fill='currentColor'
+												viewBox='0 0 20 20'
+												xmlns='http://www.w3.org/2000/svg'
+												aria-hidden='true'>
+												<path
+													clipRule='evenodd'
+													fillRule='evenodd'
+													d='M5.965 4.904l9.131 9.131a6.5 6.5 0 00-9.131-9.131zm8.07 10.192L4.904 5.965a6.5 6.5 0 009.131 9.131zM4.343 4.343a8 8 0 1111.314 11.314A8 8 0 014.343 4.343z'
+												/>
+											</svg>
+											Cancel
+										</div>
+									</SolidButton>
+								)}
 							</div>
 						</div>
 						<div>

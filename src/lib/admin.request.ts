@@ -142,3 +142,13 @@ export const getQuestionsFiltered = (payload: { type?: string[], category?: stri
         "Content-Type": "application/json"
     }
 })
+
+export const updateQuestionRequest = (id: string, payload: any, adminToken: string) => axios.put<{
+    message: string
+    question: IQuestion
+}>(`${REST_HOST}/question/${id}`, payload, {
+    headers: {
+        'Authorization': `Bearer ${adminToken}`,
+        "Content-Type": "application/json"
+    }
+})

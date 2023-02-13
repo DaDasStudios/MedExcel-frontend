@@ -122,7 +122,7 @@ function QuestionContent({ content, type }: IProps) {
 							/>
 						</svg>
 						<p>
-							This questions are nested <b>SBA Questions</b>
+							These questions are formed by <b>SBA Questions</b>
 						</p>
 					</span>
 				</article>
