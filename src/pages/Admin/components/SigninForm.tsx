@@ -13,8 +13,8 @@ const SigninForm = () => {
 	const { setAdminData } = useAdminContext()
 
 	const formInitialValues = {
-		email: "mayibongwe.chivizhe@gmail.com",
-		password: "administrator mexExc2023",
+		email: "",
+		password: "",
 	}
 
 	const validationSchema = yup.object({
