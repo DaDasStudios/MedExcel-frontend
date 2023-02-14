@@ -82,7 +82,7 @@ const QuestionPreview = ({ question, type }: IProps) => {
 			return (
 				<>
 					<span className='text-sm text-gray-300'>
-						Category - <b>{data.category}</b>
+						Category - <b>{data.parent}</b> / <b>{data.category}</b>
 					</span>
 					<span className='text-sm text-gray-400 flex items-baseline gap-3'>
 						<svg

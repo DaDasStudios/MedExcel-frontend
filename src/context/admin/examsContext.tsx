@@ -28,6 +28,7 @@ export const ExamsAdminContextProvider = function ({
 		type: "SBA" as QuestionType,
 		category: "Dermatology",
 		scenario: "",
+		parent: "All"
 	})
 	const [isEditing, setIsEditing] = useState(false)
 	const [editId, setEditId] = useState("")

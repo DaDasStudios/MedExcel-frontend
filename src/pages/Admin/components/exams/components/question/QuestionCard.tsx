@@ -1,7 +1,6 @@
 import Separator from "../../../../../../components/ui/Separator"
 import {
 	IQuestion,
-	ISBAQuestion,
 	QuestionType,
 } from "../../../../../../interface/exam"
 import { formatDate } from "../../../../../../utils/date"
@@ -83,6 +82,7 @@ const QuestionCard = ({ question, index }: IProps) => {
 										category: question.category,
 										scenario: question.scenario,
 										type: question.type,
+										parent: question.parent
 									})
 
 									if (question.type === "SBA") {
@@ -192,7 +192,7 @@ const QuestionCard = ({ question, index }: IProps) => {
 				<p>{index + 1}</p>
 			</span>
 			<h6>
-				{question.type} - {question.category}
+				{question.type} - {question.parent} / {question.category}
 			</h6>
 			<ViewButton content={question.scenario} />
 			<Separator />

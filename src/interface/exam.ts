@@ -27,7 +27,7 @@ export interface IQuestion<T = any> {
     scenario: IMDString
     content: T
     category: string
-    subcategory?: string
+    parent: string
     createdAt: string
     updatedAt: string
 }

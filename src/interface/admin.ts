@@ -50,11 +50,13 @@ export interface IExamsAdminContext {
             type: QuestionType
             category: string
             scenario: string
+            parent: string
         }
         setGeneralQuestionContent: React.Dispatch<React.SetStateAction<{
             type: QuestionType
             category: string
             scenario: string
+            parent: string
         }>>
         isEditing: boolean
         setIsEditing: React.Dispatch<React.SetStateAction<boolean>>
@@ -79,4 +81,5 @@ export interface IQuestionFormState {
     type: QuestionType
     category: string
     scenario: IMDString
+    parent: string
 }

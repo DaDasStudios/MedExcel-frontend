@@ -3,6 +3,7 @@ import { Select, TextArea } from "./Input"
 import { IQuestionFormState } from "../../../../../../interface/admin"
 import {
 	markdownExampleText,
+	parentCategories,
 	questionCategories,
 } from "../../../../../../utils/question"
 import * as yup from "yup"
@@ -163,6 +164,7 @@ const QuestionForm = () => {
 						category: values.category,
 						scenario: "",
 						type: values.type,
+						parent: "All"
 					})
 				} catch (error) {
 					toast.error("Something went wrong... Try later")
@@ -185,6 +187,17 @@ const QuestionForm = () => {
 									Case Based Questions
 								</option>
 							</Select>
+							<Select
+								id='parent'
+								name='parent'
+								label='Parent category'>
+								{parentCategories.map((category, i) => (
+									<option key={category + i}>
+										{category}
+									</option>
+								))}
+							</Select>
+							<p className="mb-4 text-gray-400 text-sm text-center">Specify "All" if the question hasn't a parent category</p>
 							<Select
 								id='category'
 								name='category'
@@ -282,6 +295,7 @@ const QuestionForm = () => {
 												category: values.category,
 												scenario: "",
 												type: values.type,
+												parent: values.parent
 											})
 										}}>
 										<div className='flex gap-2 items-center'>

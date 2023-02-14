@@ -34,6 +34,13 @@ Tables are one of the most useful thing in markdown, it's just so easy to type.
 You can also append images just using the syntax
 ![Some alternative text](https://i.blogs.es/ceda9c/dalle/450_1000.jpg)
 `
+export const parentCategories = [
+    "All",
+    "Medicine",
+    "Musculoskeletal",
+    "Surgery",
+    "Womens's health"
+]
 
 export const questionCategories = [
     /* Categories */
