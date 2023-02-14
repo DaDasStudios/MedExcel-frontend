@@ -4,7 +4,6 @@ import Separator from "../../../components/ui/Separator"
 import { useAuthContext } from "../../../context/auth/authContext"
 import { IUser } from "../../../interface/user"
 import { formatDate } from "../../../utils/date"
-import { toTitle } from "../../../utils/string"
 import ContentForm from "./ContentForm"
 
 const Profile = () => {

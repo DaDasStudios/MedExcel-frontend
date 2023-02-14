@@ -24,38 +24,11 @@ const router = createBrowserRouter(
 		<>
 			{/* ROOT */}
 			<Route
-				path='/'
+				path='/*'
 				element={<Root />}
 				errorElement={<ErrorPage />}
 			>
-				<Route
-					path='/subscription'
-					element={<Subscription />}
-				/>
-				<Route
-					path='/more'
-					element={<More />}
-				/>
-				<Route
-					path='/signup'
-					element={<Signup />}
-				/>
-				<Route
-					path='/signin'
-					element={<Signin />}
-				/>
-				<Route
-					path='/recover'
-					element={<Recover />}
-				/>
-				<Route
-					path='/recover/auth'
-					element={<RecoverAuth />}
-				/>
-				<Route
-					path='/account'
-					element={<Account />}
-				/>
+
 			</Route>
 			{/* ADMIN */}
 			<Route

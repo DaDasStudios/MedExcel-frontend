@@ -19,7 +19,7 @@ import { AuthContextProvider } from "../context/auth/authContext"
 // * Components
 import Footer from "../components/layout/Footer"
 import Navbar from "../components/layout/Navbar"
-import { Toaster } from "react-hot-toast"
+import Exam from "../pages/Exam"
 
 function Layout() {
 	const {
@@ -39,6 +39,10 @@ function Layout() {
 									displayTitle: "More",
 									href: "/more",
 								},
+								{
+									displayTitle: "Exam",
+									href: "/exam"
+								}
 						  ]
 						: [
 								{
@@ -80,6 +84,10 @@ function Layout() {
 							<Route
 								path='/account'
 								element={<Account />}
+							/>
+							<Route
+								path='/exam'
+								element={<Exam/>}
 							/>
 						</>
 					)}
