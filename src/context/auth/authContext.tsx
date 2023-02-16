@@ -63,6 +63,7 @@ export const AuthContextProvider = ({ children }: PropsWithChildren) => {
 			},
 			error() {
 				reset()
+				navigate("/signin")
 				return "Session expired"
 			},
 		})

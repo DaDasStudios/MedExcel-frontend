@@ -26,8 +26,10 @@ export interface IQuestion<T = any> {
     type: QuestionType
     scenario: IMDString
     content: T
-    category: string
+    category: string    
     parent: string
     createdAt: string
     updatedAt: string
 }
+
+export type FilterSetExamType = "ALL" | "INCORRECT" | "NEW"

@@ -35,7 +35,7 @@ You can also append images just using the syntax
 ![Some alternative text](https://i.blogs.es/ceda9c/dalle/450_1000.jpg)
 `
 export const parentCategories = [
-    "All",
+    "None",
     "Medicine",
     "Musculoskeletal",
     "Surgery",

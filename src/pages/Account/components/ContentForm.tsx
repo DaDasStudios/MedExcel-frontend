@@ -43,7 +43,7 @@ const ContentForm = ({ user }: IProps) => {
 				maxScore:
 					exam.scoresHistory?.length === 0
 						? "Don't have exams answered"
-						: exam.scoresHistory[0]?.score.toFixed(0),
+						: exam.scoresHistory[0]?.score.toFixed(0) + "%",
 			}}
 			validationSchema={yup.object({
 				username: yup

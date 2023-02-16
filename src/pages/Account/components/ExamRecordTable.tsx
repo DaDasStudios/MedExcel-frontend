@@ -45,7 +45,7 @@ const ExamRecordTable = () => {
 								scope='row'
 								className='px-6 py-4 font-medium whitespace-nowrap'
 							>
-								{record.score.toFixed(0)}
+								{record.score.toFixed(0)}%
 							</th>
 							<td className='px-6 py-4'>
 								{record.questions.length}

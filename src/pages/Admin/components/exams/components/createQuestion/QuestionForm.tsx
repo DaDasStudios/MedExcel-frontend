@@ -190,14 +190,16 @@ const QuestionForm = () => {
 							<Select
 								id='parent'
 								name='parent'
-								label='Parent category'>
+								label='Parent category'
+								value={values.parent}
+								>
 								{parentCategories.map((category, i) => (
 									<option key={category + i}>
 										{category}
 									</option>
 								))}
 							</Select>
-							<p className="mb-4 text-gray-400 text-sm text-center">Specify "All" if the question hasn't a parent category</p>
+							<p className="mb-4 text-gray-400 text-sm text-center">Specify "None" if the question hasn't a parent category</p>
 							<Select
 								id='category'
 								name='category'
