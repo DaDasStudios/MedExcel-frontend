@@ -20,6 +20,7 @@ import { AuthContextProvider } from "../context/auth/authContext"
 import Footer from "../components/layout/Footer"
 import Navbar from "../components/layout/Navbar"
 import Exam from "../pages/Exam"
+import ErrorPage from "./ErrorPage"
 
 function Layout() {
 	const {
@@ -41,8 +42,8 @@ function Layout() {
 								},
 								{
 									displayTitle: "Exam",
-									href: "/exam"
-								}
+									href: "/exam",
+								},
 						  ]
 						: [
 								{
@@ -67,50 +68,27 @@ function Layout() {
 			/>
 			<main className='min-h-screen relative'>
 				<Routes>
-					<Route
-						path='/'
-						element={<Home />}
-					/>
-					<Route
-						path='/subscription'
-						element={<Subscription />}
-					/>
-					<Route
-						path='/more'
-						element={<More />}
-					/>
+					<Route path='/' element={<Home />} />
+					<Route path='/subscription' element={<Subscription />} />
+					<Route path='/more' element={<More />} />
 					{user && (
 						<>
-							<Route
-								path='/account'
-								element={<Account />}
-							/>
-							<Route
-								path='/exam'
-								element={<Exam/>}
-							/>
+							<Route path='/account' element={<Account />} />
+							<Route path='/exam' element={<Exam />} />
 						</>
 					)}
 					{!user && (
 						<>
-							<Route
-								path='/signup'
-								element={<Signup />}
-							/>
-							<Route
-								path='/signin'
-								element={<Signin />}
-							/>
-							<Route
-								path='/recover'
-								element={<Recover />}
-							/>
+							<Route path='/signup' element={<Signup />} />
+							<Route path='/signin' element={<Signin />} />
+							<Route path='/recover' element={<Recover />} />
 							<Route
 								path='/recover/auth'
 								element={<RecoverAuth />}
 							/>
 						</>
 					)}
+					<Route path='*' element={<ErrorPage />} />
 				</Routes>
 			</main>
 			<Footer

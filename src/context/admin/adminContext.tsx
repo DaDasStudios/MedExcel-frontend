@@ -1,4 +1,5 @@
-import { createContext, PropsWithChildren, useContext } from "react"
+import { createContext, PropsWithChildren, useContext, useEffect } from "react"
+import toast from "react-hot-toast"
 import { useLocalStorage } from "../../hooks/useLocalStorage"
 import {
 	IAdminContext,
@@ -16,7 +17,6 @@ const initialAuthState: IAdminState = {
 	id: "",
 	user: null,
 }
-
 export const AdminContextProvider = ({ children }: PropsWithChildren) => {
 	const [auth, setAuth] = useLocalStorage("medexcel_auth", initialAuthState)
 
@@ -35,13 +35,24 @@ export const AdminContextProvider = ({ children }: PropsWithChildren) => {
 					user: res.data.user,
 				})
 				return true
+			} else {
+				toast.error("User not authorized")
+				reset()
+				return false
 			}
-			throw new Error("User not authorized")
 		} catch (error) {
+			toast.error("Session expired")
 			reset()
 			return false
 		}
 	}
+
+	useEffect(() => {
+		;(async () => {
+			if (!auth.token || !auth.id) return reset()
+			await setAdminData({ id: auth.id, token: auth.token })
+		})()
+	}, [])
 
 	return (
 		<adminContext.Provider

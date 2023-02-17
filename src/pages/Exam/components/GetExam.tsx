@@ -141,7 +141,7 @@ const GetExam = () => {
 			return toast.error("Must provide categories and one filter")
 		}
 
-		if (!auth.user?.subscription?.hasSubscription) {
+		if (new Date(auth.user?.subscription?.access || '').getTime() < Date.now()) {
 			return toast.error(
 				"You cannot start an exam without a subscription plan"
 			)

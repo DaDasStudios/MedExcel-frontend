@@ -3,7 +3,7 @@ import * as yup from "yup"
 import { toast } from "react-hot-toast"
 import { signInRequest } from "../../../lib/auth.request"
 import { Input } from "../../../components/ui/Input"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import SolidButton, {
 	themeBtns,
 } from "../../../components/ui/Buttons/SolidButton"
@@ -13,6 +13,7 @@ import { useAuthContext } from "../../../context/auth/authContext"
 
 const SigninForm = () => {
 	const { login } = useAuthContext()
+	const navigate = useNavigate()
 	return (
 		<div className='bg-slate-900/50 p-8 rounded-md shadow-md border border-slate-100/10 flex flex-col'>
 			<div className='mb-6 text-center flex flex-col justify-center gap-3'>
@@ -50,6 +51,8 @@ const SigninForm = () => {
 								id: res.data.id,
 								user: null,
 							})
+							toast.success("Authenticated")
+							navigate("/account")
 							resetForm()
 						} 
 					} catch (error: any) {

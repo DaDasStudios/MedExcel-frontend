@@ -15,6 +15,7 @@ type loginFunction = (payload: {
 interface IAuthContext {
 	auth: IAuth
 	login: loginFunction
+	refreshUser: () => void
 	reset: () => void
 }
 
@@ -39,34 +40,30 @@ export const AuthContextProvider = ({ children }: PropsWithChildren) => {
 		setAuth(payload)
 	}
 
+	async function refreshUser() {
+		try {
+			const { data } = await getUserRequest(auth.id, auth.token)
+			if (data.user && data.user.role === "Admin") {
+				navigate("/")
+				reset()
+				toast.error("Admin cannot sign in as an user")
+			} else {
+				setAuth({
+					...auth,
+					user: data.user,
+				})
+				return ""
+			}
+		} catch (error) {
+			reset()
+			navigate("/signin")
+			toast.error("Session expired")
+		}
+	}
+
 	useEffect(() => {
 		if (!auth.token || !auth.id) return reset()
-
-		const promiseRequest = getUserRequest(auth.id, auth.token)
-		toast.promise(promiseRequest, {
-			loading: "Loading user...",
-			success(res) {
-				const { data } = res
-				if (data.user && data.user.role === "Admin") {
-					navigate("/")
-					reset()
-					toast.error("Admin cannot sign in as an user")
-					return "Everything's right but..."
-				} else {
-					setAuth({
-						...auth,
-						user: data.user,
-					})
-					navigate("/account")
-					return "Authenticated"
-				}
-			},
-			error() {
-				reset()
-				navigate("/signin")
-				return "Session expired"
-			},
-		})
+		refreshUser()
 	}, [auth.token])
 
 	return (
@@ -75,8 +72,8 @@ export const AuthContextProvider = ({ children }: PropsWithChildren) => {
 				auth,
 				login,
 				reset,
-			}}
-		>
+				refreshUser
+			}}>
 			{children}
 		</AuthContext.Provider>
 	)

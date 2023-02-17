@@ -1,5 +1,5 @@
 import axios from "axios"
-import { FilterSetExamType, IQuestion } from "../interface/exam"
+import { FilterSetExamType, IAnsweredQuestionResponse, IQuestion } from "../interface/exam"
 import { REST_HOST } from "./env"
 
 export const getQuestionNoContentRequest = (token: string) => axios.get<{
@@ -20,5 +20,31 @@ export const setExamRequest = (payload: {
     headers: {
         'Authorization': `Bearer ${token}`,
         "Content-Type": "application/json"
+    }
+})
+
+export const getCurrentQuestionRequest = (token: string) => axios.get<{
+    question: IQuestion
+}>(`${REST_HOST}/exam/current`, {
+    headers: {
+        'Authorization': `Bearer ${token}`
+    }
+})
+
+export const submitAnswerRequest = (payload: {
+    answer?: string
+    answers?: string[]
+}, token: string) => axios.post<IAnsweredQuestionResponse>(`${REST_HOST}/exam/answer`, payload, {
+    headers: {
+        'Authorization': `Bearer ${token}`,
+        "Content-Type": "application/json"
+    }
+})
+
+export const cancelExamRequest = (token: string) => axios.delete<{
+    message: string
+}>(`${REST_HOST}/exam/cancel`, {
+    headers: {
+        'Authorization': `Bearer ${token}`
     }
 })

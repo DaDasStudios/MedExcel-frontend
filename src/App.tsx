@@ -23,20 +23,13 @@ const router = createBrowserRouter(
 	createRoutesFromElements(
 		<>
 			{/* ROOT */}
-			<Route
-				path='/*'
-				element={<Root />}
-				errorElement={<ErrorPage />}
-			>
-
+			<Route path='/*' element={<Root />} errorElement={<ErrorPage />}>
 			</Route>
 			{/* ADMIN */}
 			<Route
 				path='/admin/*'
 				element={<Admin />}
-				errorElement={<ErrorPage/>}
-			>
-			</Route>
+				errorElement={<ErrorPage />}></Route>
 		</>
 	)
 )

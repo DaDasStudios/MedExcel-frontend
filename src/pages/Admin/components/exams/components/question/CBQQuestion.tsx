@@ -4,8 +4,6 @@ import {
 	ISBAQuestion,
 } from "../../../../../../interface/exam"
 import { useState } from "react"
-import remarkGfm from "remark-gfm"
-import ReactMarkdown from "react-markdown"
 import MarkdownBody from "../../../../../../components/ui/MarkdownBody"
 
 interface IProps {

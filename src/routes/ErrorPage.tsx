@@ -14,9 +14,6 @@ export default function ErrorPage() {
 				contact
 				<span className='underline'> excelatmedicine@gmail.com</span>
 			</p>
-			<p className='text-rose-500 text-nlg font-medium underline'>
-				<i>{error.statusText || error.message}</i>
-			</p>
 			<SolidButton
 				theme={themeBtns.blueBtn}
 				as={ComponentElement.A}
