@@ -5,7 +5,6 @@ import GetExam from "./components/GetExam"
 import { useAuthContext } from "../../context/auth/authContext"
 import ShowQuestion from "./components/ShowQuestion"
 import { ExamContextProvider } from "../../context/exam/examContext"
-import "./styles/exam.scss"
 
 const Exam = () => {
 	const { auth } = useAuthContext()

@@ -13,7 +13,6 @@ const ECQQuestion = () => {
 	const { auth } = useAuthContext()
 	const {
 		currentQuestion,
-		setCurrentQuestion,
 		questionResponse,
 		setQuestionResponse,
 		setScore,
@@ -21,13 +20,12 @@ const ECQQuestion = () => {
 		setHasAnswered,
 	} = useExamContext()
 
-
 	const [question, setQuestion] = useState(
 		currentQuestion as IQuestion<IECQQuestion>
 	)
 	const [answers, setAnswers] = useState([] as (number | string)[])
 
-	function submitAnswer(e: React.FormEvent) {
+	async function submitAnswer(e: React.FormEvent) {
 		e.preventDefault()
 		try {
 			const payload = {
@@ -36,27 +34,26 @@ const ECQQuestion = () => {
 						question.content.options[answerIndex as number]
 				),
 			}
-			const submitPromise = submitAnswerRequest(payload, auth.token || "")
+			const { data } = await submitAnswerRequest(
+				payload,
+				auth.token || ""
+			)
 
-			toast.promise(submitPromise, {
-				loading: "Checking the answer...",
-				success({ data }) {
-					setHasAnswered(true)
-					setQuestionResponse(data)
-					setScore(data.score)
+			setHasAnswered(true)
+			setQuestionResponse(data)
+			setScore(data.score)
 
-					if (data.status === "CORRECT") return "Correct answers"
-					if (data.status === "INCORRECT") return "Correct answers"
-					if (data.status === "NOT ALL CORRECT") {
-						return "Some answers were correct"
-					}
+			if (data.status === "CORRECT") {
+				return toast.success("Correct answers")
+			}
+			if (data.status === "INCORRECT") {
+				return toast.error("Incorrect answers")
+			}
+			if (data.status === "NOT ALL CORRECT") {
+				return toast.error("Some answers were correct")
+			}
 
-					return toast.error("Something went wrong... Try later")
-				},
-				error(e) {
-					return "Something went wrong... Try later"
-				},
-			})
+			return toast.error("Something went wrong... Try later")
 		} catch (error) {
 			toast.error("Something went wrong when submitting the answer")
 		}
@@ -137,7 +134,8 @@ const ECQQuestion = () => {
 										className={`rounded-md outline-none border ${
 											hasAnswered
 												? answers[i] ==
-												  questionResponse.question.content.question[i]
+												  questionResponse.question
+														.content.question[i]
 														.answer -
 														1
 													? themeBtns.greenBtn
@@ -179,7 +177,9 @@ const ECQQuestion = () => {
 			</form>
 			{hasAnswered && (
 				<>
-					<MarkdownBody content={questionResponse.question.content.explanation} />
+					<MarkdownBody
+						content={questionResponse.question.content.explanation}
+					/>
 					<NextButton />
 				</>
 			)}

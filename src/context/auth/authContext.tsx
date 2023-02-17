@@ -52,7 +52,6 @@ export const AuthContextProvider = ({ children }: PropsWithChildren) => {
 					...auth,
 					user: data.user,
 				})
-				return ""
 			}
 		} catch (error) {
 			reset()
