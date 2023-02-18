@@ -133,7 +133,7 @@ const SignupForm = () => {
 								I accept the{" "}
 								<Link
 									className='inline-flex items-center gap-1 hover:underline text-blue-500 font-medium tracking-tight'
-									to='/terms-conditions'
+									to='/more#terms-conditions'
 								>
 									terms and conditions{" "}
 									<svg

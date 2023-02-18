@@ -34,10 +34,6 @@ function Layout() {
 					user
 						? [
 								{
-									displayTitle: "Subscriptions",
-									href: "/subscription",
-								},
-								{
 									displayTitle: "More",
 									href: "/more",
 								},
@@ -72,10 +68,15 @@ function Layout() {
 					<Route path='/' element={<Home />} />
 					<Route path='/subscription' element={<Subscription />} />
 					<Route path='/more' element={<More />} />
+
 					{user && (
 						<>
 							<Route path='/account' element={<Account />} />
-							<Route errorElement={<ExamErrorPage/>} path='/exam' element={<Exam />} />
+							<Route
+								errorElement={<ExamErrorPage />}
+								path='/exam'
+								element={<Exam />}
+							/>
 						</>
 					)}
 					{!user && (
@@ -97,7 +98,7 @@ function Layout() {
 					[
 						{
 							label: "About",
-							href: "/more#about",
+							href: "/more#about-us",
 						},
 						{
 							label: "Recover password",
@@ -111,15 +112,11 @@ function Layout() {
 					[
 						{
 							label: "Terms & Conditions",
-							href: "/terms-conditions",
+							href: "/more#terms-conditions",
 						},
 						{
 							label: "Privacy Policy",
-							href: "/privacy-policy",
-						},
-						{
-							label: "FAQ",
-							href: "/faq",
+							href: "/more#privacy-policy",
 						},
 					],
 					[
