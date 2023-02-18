@@ -3,6 +3,7 @@ import { Link } from "react-router-dom"
 import AOS from "aos"
 import BackgroundImage from "../../components/ui/BackgroundImage"
 import { useAuthContext } from "../../context/auth/authContext"
+import QuestionExample from "./components/QuestionExample"
 
 const Home = () => {
 	const { auth } = useAuthContext()
@@ -165,9 +166,7 @@ const Home = () => {
 							className='bg-black/50 h-full text-white'
 							data-aos='fade-left'
 						>
-							Here's gonna be located a sample video of a exam
-							being answered, so user can look what exactly the
-							website is about
+							<QuestionExample/>
 						</div>
 					</div>
 				</div>
