@@ -33,16 +33,31 @@ function Layout() {
 			<Navbar
 				elements={
 					user
-						? [
-								{
-									displayTitle: "More",
-									href: "/more",
-								},
-								{
-									displayTitle: "Exam",
-									href: "/exam",
-								},
-						  ]
+						? !user.subscription?.hasSubscription
+							? [
+									{
+										displayTitle: "More",
+										href: "/more",
+									},
+									{
+										displayTitle: "Exam",
+										href: "/exam",
+									},
+									{
+										displayTitle: "Subscriptions",
+										href: "/subscription",
+									},
+							  ]
+							: [
+									{
+										displayTitle: "More",
+										href: "/more",
+									},
+									{
+										displayTitle: "Exam",
+										href: "/exam",
+									},
+							  ]
 						: [
 								{
 									displayTitle: "Subscriptions",
