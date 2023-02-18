@@ -5,6 +5,7 @@ import GetExam from "./components/GetExam"
 import { useAuthContext } from "../../context/auth/authContext"
 import ShowQuestion from "./components/ShowQuestion"
 import { ExamContextProvider } from "../../context/exam/examContext"
+import Confetti from "./Confetti"
 
 const Exam = () => {
 	const { auth } = useAuthContext()
@@ -30,6 +31,7 @@ const Exam = () => {
 					{auth.user?.exam.startedAt ? <ShowQuestion /> : <GetExam />}
 				</article>
 			</section>
+			<Confetti/>
 		</ExamContextProvider>
 	)
 }

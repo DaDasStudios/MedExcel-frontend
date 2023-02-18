@@ -1,4 +1,11 @@
 
+export interface IScoresHistory {
+    startedAt: Date
+    finishedAt: Date
+    questions: string[]
+    score: number
+}
+
 export interface IUser {
     _id: string
     username: string
@@ -15,12 +22,7 @@ export interface IUser {
         current: number
         questions: string[]
         score: number
-        scoresHistory: {
-            startedAt: Date
-            finishedAt: Date
-            questions: string[]
-            score: number
-        }[]
+        scoresHistory: IScoresHistory[]
     }
     token?: string
     payment_id?: string

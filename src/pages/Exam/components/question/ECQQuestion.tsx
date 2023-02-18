@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react"
 import { toast } from "react-hot-toast"
-import { themeBtns } from "../../../components/ui/Buttons/SolidButton"
-import MarkdownBody from "../../../components/ui/MarkdownBody"
-import Separator from "../../../components/ui/Separator"
-import { useAuthContext } from "../../../context/auth/authContext"
-import { useExamContext } from "../../../context/exam/examContext"
-import { IECQQuestion, IQuestion } from "../../../interface/exam"
-import { submitAnswerRequest } from "../../../lib/exam.request"
-import NextButton from "./ui/NextButton"
+import { themeBtns } from "../../../../components/ui/Buttons/SolidButton"
+import MarkdownBody from "../../../../components/ui/MarkdownBody"
+import Separator from "../../../../components/ui/Separator"
+import { useAuthContext } from "../../../../context/auth/authContext"
+import { useExamContext } from "../../../../context/exam/examContext"
+import { IECQQuestion, IQuestion } from "../../../../interface/exam"
+import { submitAnswerRequest } from "../../../../lib/exam.request"
+import NextButton from "../ui/NextButton"
 
 const ECQQuestion = () => {
 	const { auth } = useAuthContext()

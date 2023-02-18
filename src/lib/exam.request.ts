@@ -1,5 +1,6 @@
 import axios from "axios"
 import { FilterSetExamType, IAnsweredQuestionResponse, IQuestion } from "../interface/exam"
+import { IScoresHistory } from "../interface/user"
 import { REST_HOST } from "./env"
 
 export const getQuestionNoContentRequest = (token: string) => axios.get<{
@@ -25,6 +26,9 @@ export const setExamRequest = (payload: {
 
 export const getCurrentQuestionRequest = (token: string) => axios.get<{
     question: IQuestion
+    message?: string
+    status?: string
+    record: IScoresHistory
 }>(`${REST_HOST}/exam/current`, {
     headers: {
         'Authorization': `Bearer ${token}`

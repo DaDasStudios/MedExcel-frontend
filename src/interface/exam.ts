@@ -1,3 +1,4 @@
+import { IScoresHistory } from "./user"
 
 export type QuestionType = "SBA" | "ECQ" | "CBQ" 
 
@@ -54,4 +55,8 @@ export interface IExamContext {
     hasAnswered: boolean
     setHasAnswered: React.Dispatch<React.SetStateAction<boolean>>
     getCurrentQuestion: () => Promise<void>
+    hasFinished: boolean
+    scoresHistory: IScoresHistory
+    setScoresHistory: React.Dispatch<React.SetStateAction<IScoresHistory>>
+    setHasFinished: React.Dispatch<React.SetStateAction<boolean>>
 }

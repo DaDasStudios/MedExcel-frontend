@@ -1,10 +1,10 @@
 import { createContext, PropsWithChildren, useContext, useState } from "react"
-import toast from "react-hot-toast"
 import {
 	IAnsweredQuestionResponse,
 	IExamContext,
 	IQuestion,
 } from "../../interface/exam"
+import { IScoresHistory } from "../../interface/user"
 import { getCurrentQuestionRequest } from "../../lib/exam.request"
 import { useAuthContext } from "../auth/authContext"
 
@@ -22,13 +22,18 @@ export const ExamContextProvider = ({ children }: PropsWithChildren) => {
 	)
 	const [score, setScore] = useState(user?.exam.score || 0)
 	const [hasAnswered, setHasAnswered] = useState(false)
+	const [hasFinished, setHasFinished] = useState(false)
+	const [scoresHistory, setScoresHistory] = useState({} as IScoresHistory)
 
 	async function getCurrentQuestion() {
 		try {
 			const { data } = await getCurrentQuestionRequest(auth.token || "")
 			setCurrentQuestion(data.question)
-		} catch (error) {
-			toast.error("Could not get the current question")
+		} catch (error: any) {
+			if (error.response.status === 401 && error.response.data.message === "Exam not started yet") {
+				//window.location.reload()
+			}
+			//toast.error("Could not get the current question")
 		}
 	}
 
@@ -48,7 +53,11 @@ export const ExamContextProvider = ({ children }: PropsWithChildren) => {
 				setScore,
 				hasAnswered,
 				setHasAnswered,
-				getCurrentQuestion
+				getCurrentQuestion,
+				hasFinished,
+				setHasFinished,
+				scoresHistory,
+				setScoresHistory
 			}}>
 			{children}
 		</ExamContext.Provider>

@@ -1,6 +1,20 @@
+import { toast } from "react-hot-toast"
+import { useAuthContext } from "../../../../context/auth/authContext"
+import { useExamContext } from "../../../../context/exam/examContext"
+import { getCurrentQuestionRequest } from "../../../../lib/exam.request"
+
 const NextButton = () => {
-	function GoNextQuestion() {
-		window.location.reload()
+	const { auth } = useAuthContext()
+	const { setHasFinished, setScoresHistory } = useExamContext()
+	async function GoNextQuestion() {
+		const res = await getCurrentQuestionRequest(auth?.token || '')
+		if (res.data.status && res.data.status === "FINISHED") {
+			setHasFinished(true)
+			setScoresHistory(res.data.record)
+			toast.success("Exam finished!")
+		} else {
+			window.location.reload()
+		}
 	}
 
 	return (

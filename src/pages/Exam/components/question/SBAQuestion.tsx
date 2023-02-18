@@ -1,12 +1,12 @@
 import { FormEvent, useState } from "react"
 import { toast } from "react-hot-toast"
-import MarkdownBody from "../../../components/ui/MarkdownBody"
-import Separator from "../../../components/ui/Separator"
-import { useAuthContext } from "../../../context/auth/authContext"
-import { useExamContext } from "../../../context/exam/examContext"
-import { IQuestion, ISBAQuestion } from "../../../interface/exam"
-import { submitAnswerRequest } from "../../../lib/exam.request"
-import NextButton from "./ui/NextButton"
+import MarkdownBody from "../../../../components/ui/MarkdownBody"
+import Separator from "../../../../components/ui/Separator"
+import { useAuthContext } from "../../../../context/auth/authContext"
+import { useExamContext } from "../../../../context/exam/examContext"
+import { IQuestion, ISBAQuestion } from "../../../../interface/exam"
+import { submitAnswerRequest } from "../../../../lib/exam.request"
+import NextButton from "../ui/NextButton"
 
 const SBAQuestion = () => {
 	const { auth } = useAuthContext()

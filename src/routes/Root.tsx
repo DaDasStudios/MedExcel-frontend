@@ -21,6 +21,7 @@ import Footer from "../components/layout/Footer"
 import Navbar from "../components/layout/Navbar"
 import Exam from "../pages/Exam"
 import ErrorPage from "./ErrorPage"
+import ExamErrorPage from "./ExamErrorPage"
 
 function Layout() {
 	const {
@@ -74,7 +75,7 @@ function Layout() {
 					{user && (
 						<>
 							<Route path='/account' element={<Account />} />
-							<Route path='/exam' element={<Exam />} />
+							<Route errorElement={<ExamErrorPage/>} path='/exam' element={<Exam />} />
 						</>
 					)}
 					{!user && (
