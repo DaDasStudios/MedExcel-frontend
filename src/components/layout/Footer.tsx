@@ -28,7 +28,7 @@ const Footer = ({ cols }: IProps) => {
 							{col.map((elem, j) => (
 								<li className="text-slate-100 hover:text-slate-200" key={id2 + j}>
 									{elem.href ? (
-										<a className="hover:underline" href={elem.href}>{elem.label}</a>
+										<Link className="hover:underline" to={elem.href}>{elem.label}</Link>
 									) : (
 										<p>{elem.label}</p>
 									)}
