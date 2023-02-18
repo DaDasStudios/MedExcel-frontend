@@ -7,6 +7,7 @@ import RecoverAuth from "../pages/Recover/RecoverAuth"
 import Signin from "../pages/Signin"
 import Signup from "../pages/Signup"
 import Subscription from "../pages/Subscription"
+import Admin from "./Admin"
 
 // * Routes
 import { Route, Routes } from "react-router-dom"
@@ -68,6 +69,11 @@ function Layout() {
 					<Route path='/' element={<Home />} />
 					<Route path='/subscription' element={<Subscription />} />
 					<Route path='/more' element={<More />} />
+					{/* ADMIN */}
+					<Route
+						path='/admin/*'
+						element={<Admin />}
+						errorElement={<ErrorPage />}></Route>
 
 					{user && (
 						<>
