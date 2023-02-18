@@ -1,2 +1,2 @@
-
-export const REST_HOST = "https://medexcel.onrender.com";
+export const REST_HOST = import.meta.env.VITE_REST_HOST;
+console.log(REST_HOST)
