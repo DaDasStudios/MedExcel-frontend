@@ -9,6 +9,7 @@ const QuestionExample = () => {
 	const id = useId()
 	const question: IQuestion<ISBAQuestion> = {
 		type: "SBA",
+		topic: "" ,
 		content: {
 			question:
 				"Given this presentation what is the most likely causative agent?",
