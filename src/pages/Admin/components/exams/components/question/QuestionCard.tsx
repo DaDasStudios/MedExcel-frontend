@@ -10,6 +10,7 @@ import { useExamsAdminContext } from "../../../../../../context/admin/examsConte
 import { toast } from "react-hot-toast"
 import { deleteQuestionRequest } from "../../../../../../lib/admin.request"
 import { useAdminContext } from "../../../../../../context/admin/adminContext"
+import { toTitle } from "../../../../../../utils/string"
 
 interface IProps {
 	question: IQuestion
@@ -78,12 +79,7 @@ const QuestionCard = ({ question, index }: IProps) => {
 								onClick={() => {
 									questionForm.setIsEditing(true)
 									questionForm.setEditId(question._id)
-									questionForm.setGeneralQuestionContent({
-										category: question.category,
-										scenario: question.scenario,
-										type: question.type,
-										parent: question.parent
-									})
+									questionForm.setGeneralQuestionContent(question)
 
 									if (question.type === "SBA") {
 										questionForm.setSBAContent({
@@ -192,7 +188,7 @@ const QuestionCard = ({ question, index }: IProps) => {
 				<p>{index + 1}</p>
 			</span>
 			<h6 className="max-w-[80%] truncate">
-				{question.type} - {question.parent} / {question.category}
+				{question.type} - {question.parent} / {question.category} / {toTitle(question.topic || "No topic")}
 			</h6>
 			<ViewButton content={question.scenario} />
 			<Separator />

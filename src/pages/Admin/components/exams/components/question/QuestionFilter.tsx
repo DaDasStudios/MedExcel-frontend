@@ -44,6 +44,7 @@ const QuestionFilter = () => {
 		ECQ: true,
 	} as Record<QuestionType, boolean>)
 	const [categoryString, setCategoryString] = useState("")
+	const [topicString, setTopicString] = useState("")
 
 	async function onSubmit(e: React.FormEvent) {
 		e.preventDefault()
@@ -67,10 +68,22 @@ const QuestionFilter = () => {
 					}
 				}
 
+				const topics = topicString
+					.replace(" ", "")
+					.split(",")
+					.map(s => toTitle(s))
+
 				const res = await getQuestionsFiltered(
 					{
 						type: types,
-						category: !categories[0] && categories.length === 1 ? null : categories,
+						category:
+							!categories[0] && categories.length === 1
+								? null
+								: categories,
+						topic:
+							!topics[0] && topics.length === 1
+								? null
+								: topics,
 					},
 					auth.token
 				)
@@ -102,11 +115,23 @@ const QuestionFilter = () => {
 						</label>
 						<input
 							id='categories'
-							className='py-2 outline-none ml-4 bg-transparent w-[450px]'
+							className='py-2 outline-none ml-4 bg-transparent'
 							placeholder='Separated by commas, ex: Dermatology, Cardiology'
 							type='text'
 							value={categoryString}
 							onChange={e => setCategoryString(e.target.value)}
+						/>
+					</div>
+					<div className='tracking-tight border-2 border-gray-100/10 rounded-md px-4'>
+						<label className='' htmlFor='categories'>
+							Topics:
+						</label>
+						<input
+							id='topic'
+							className='py-2 outline-none ml-4 bg-transparent'
+							placeholder='Type the topic properly, support to several topics'
+							type='text'
+							onChange={e => setTopicString(e.target.value)}
 						/>
 					</div>
 					<div className='flex gap-4'>
@@ -130,7 +155,8 @@ const QuestionFilter = () => {
 						/>
 						<button
 							className='py-1.5 px-3 rounded-md shadow-md border border-blue-200/50 bg-blue-700/50 hover:bg-blue-700/70 text-blue-100 outline-none'
-							type='submit'>
+							type='submit'
+						>
 							Apply
 						</button>
 					</div>

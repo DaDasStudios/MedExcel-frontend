@@ -1,5 +1,5 @@
 import { Form, Formik } from "formik"
-import { Select, TextArea } from "./Input"
+import { Select, TextArea, Input } from "./Input"
 import { IQuestionFormState } from "../../../../../../interface/admin"
 import {
 	markdownExampleText,
@@ -33,6 +33,7 @@ const QuestionForm = () => {
 			initialValues={initialValues}
 			validationSchema={yup.object({
 				scenario: yup.string().required("Required"),
+				topic: yup.string().required("Required")
 			})}
 			enableReinitialize={true}
 			onSubmit={async (values, { setValues, setSubmitting }) => {
@@ -164,7 +165,8 @@ const QuestionForm = () => {
 						category: values.category,
 						scenario: "",
 						type: values.type,
-						parent: "All"
+						parent: "All",
+						topic: ""
 					})
 				} catch (error) {
 					toast.error("Something went wrong... Try later")
@@ -172,7 +174,7 @@ const QuestionForm = () => {
 					setSubmitting(false)
 				}
 			}}>
-			{({ isSubmitting, setValues, values, resetForm }) => (
+			{({ isSubmitting, setValues, values }) => (
 				<Form>
 					<div className='grid grid-cols-2 gap-4'>
 						<div>
@@ -210,6 +212,12 @@ const QuestionForm = () => {
 									</option>
 								))}
 							</Select>
+							<Input
+								id="topic"
+								label="Topic"
+								name="topic"
+								placeholder="A very specified categorization"
+							/>
 							<div>
 								<TextArea
 									setValues={setValues}
@@ -297,7 +305,8 @@ const QuestionForm = () => {
 												category: values.category,
 												scenario: "",
 												type: values.type,
-												parent: values.parent
+												parent: values.parent,
+												topic: values.topic
 											})
 										}}>
 										<div className='flex gap-2 items-center'>

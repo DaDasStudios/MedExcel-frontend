@@ -7,6 +7,7 @@ import {
 	ISBAQuestion,
 	QuestionType,
 } from "../../../../../../interface/exam"
+import { toTitle } from "../../../../../../utils/string"
 import CBQQuestion from "./CBQQuestion"
 
 interface IProps {
@@ -22,7 +23,8 @@ const QuestionPreview = ({ question, type }: IProps) => {
 			return (
 				<>
 					<span className='text-sm text-gray-300'>
-						Category - <b>{data.category}</b>
+						Category - <b>{data.parent}</b> / <b>{data.category}</b>{" "}
+						/ <b>{toTitle(data.topic || "No topic")}</b>
 					</span>
 					<Separator />
 					<MarkdownBody content={data.scenario} />
@@ -33,7 +35,8 @@ const QuestionPreview = ({ question, type }: IProps) => {
 								<label
 									key={option + index}
 									className='first:rounded-t-md last:rounded-b-md border border-gray-100/10 py-2 text-gray-300 px-4'
-									htmlFor={option + index}>
+									htmlFor={option + index}
+								>
 									<input
 										className='mr-4'
 										type='radio'
@@ -47,13 +50,15 @@ const QuestionPreview = ({ question, type }: IProps) => {
 						</div>
 						<button
 							className='flex items-center gap-2 py-2 px-3 border border-blue-500/50 hover:bg-blue-700/50 bg-blue-800/50 rounded-md mt-3 mb-1'
-							type='button'>
+							type='button'
+						>
 							<svg
 								className='w-5'
 								fill='currentColor'
 								viewBox='0 0 20 20'
 								xmlns='http://www.w3.org/2000/svg'
-								aria-hidden='true'>
+								aria-hidden='true'
+							>
 								<path
 									clipRule='evenodd'
 									fillRule='evenodd'
@@ -71,7 +76,7 @@ const QuestionPreview = ({ question, type }: IProps) => {
 					<h5 className='text-sm text-blue-500 mt-2'>
 						Explanation after answering
 					</h5>
-						<MarkdownBody content={data.content.explanation} />
+					<MarkdownBody content={data.content.explanation} />
 				</>
 			)
 		}
@@ -82,7 +87,8 @@ const QuestionPreview = ({ question, type }: IProps) => {
 			return (
 				<>
 					<span className='text-sm text-gray-300'>
-						Category - <b>{data.parent}</b> / <b>{data.category}</b>
+						Category - <b>{data.parent}</b> / <b>{data.category}</b>{" "}
+						/ <b>{toTitle(data.topic || "No topic")}</b>
 					</span>
 					<span className='text-sm text-gray-400 flex items-baseline gap-3'>
 						<svg
@@ -90,7 +96,8 @@ const QuestionPreview = ({ question, type }: IProps) => {
 							fill='currentColor'
 							viewBox='0 0 20 20'
 							xmlns='http://www.w3.org/2000/svg'
-							aria-hidden='true'>
+							aria-hidden='true'
+						>
 							<path
 								clipRule='evenodd'
 								fillRule='evenodd'
@@ -112,7 +119,8 @@ const QuestionPreview = ({ question, type }: IProps) => {
 						{data.content.options.map((option, index) => (
 							<li
 								className='list-decimal text-gray-300'
-								key={index + option}>
+								key={index + option}
+							>
 								{option}
 							</li>
 						))}
@@ -123,22 +131,26 @@ const QuestionPreview = ({ question, type }: IProps) => {
 							{data.content.question.map((question, i) => (
 								<li
 									key={question.question + i}
-									className='list-decimal'>
+									className='list-decimal'
+								>
 									<div className='flex gap-2'>
 										<p className=''>{question.question}</p>
 										<label
 											key={question.question + i}
 											className=''
-											htmlFor={question.question + i}>
+											htmlFor={question.question + i}
+										>
 											<select
 												className='bg-slate-700 rounded-md outline-none border border-gray-100/10 text-slate-300'
 												name={"question " + i}
-												id={question.question + i}>
+												id={question.question + i}
+											>
 												{data.content.options.map(
 													(option, j) => (
 														<option
 															key={option + j}
-															value={j + 1}>
+															value={j + 1}
+														>
 															{option}
 														</option>
 													)
@@ -151,13 +163,15 @@ const QuestionPreview = ({ question, type }: IProps) => {
 						</ul>
 						<button
 							className='flex items-center gap-2 py-2 px-3 border border-blue-500/50 hover:bg-blue-700/50 bg-blue-800/50 rounded-md mt-3 mb-1'
-							type='button'>
+							type='button'
+						>
 							<svg
 								className='w-5'
 								fill='currentColor'
 								viewBox='0 0 20 20'
 								xmlns='http://www.w3.org/2000/svg'
-								aria-hidden='true'>
+								aria-hidden='true'
+							>
 								<path d='M3.105 2.289a.75.75 0 00-.826.95l1.414 4.925A1.5 1.5 0 005.135 9.25h6.115a.75.75 0 010 1.5H5.135a1.5 1.5 0 00-1.442 1.086l-1.414 4.926a.75.75 0 00.826.95 28.896 28.896 0 0015.293-7.154.75.75 0 000-1.115A28.897 28.897 0 003.105 2.289z' />
 							</svg>
 							Check
@@ -178,7 +192,8 @@ const QuestionPreview = ({ question, type }: IProps) => {
 			return (
 				<>
 					<span className='text-sm text-gray-300'>
-						Category - <b>{data.category}</b>
+						Category - <b>{data.parent}</b> / <b>{data.category}</b>{" "}
+						/ <b>{toTitle(data.topic || "No topic")}</b>
 					</span>
 					<span className='text-sm text-gray-400 flex items-baseline gap-3'>
 						<svg
@@ -186,7 +201,8 @@ const QuestionPreview = ({ question, type }: IProps) => {
 							fill='currentColor'
 							viewBox='0 0 20 20'
 							xmlns='http://www.w3.org/2000/svg'
-							aria-hidden='true'>
+							aria-hidden='true'
+						>
 							<path
 								clipRule='evenodd'
 								fillRule='evenodd'

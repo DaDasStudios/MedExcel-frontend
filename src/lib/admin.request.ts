@@ -134,7 +134,7 @@ export const deleteQuestionRequest = (id: string, adminToken: string) => axios.d
     }
 })
 
-export const getQuestionsFiltered = (payload: { type?: string[], category?: string[] | null }, adminToken: string) => axios.post<{
+export const getQuestionsFiltered = (payload: { type?: string[], category?: string[] | null, topic?: string[] | null }, adminToken: string) => axios.post<{
     questions: IQuestion[]
 }>(`${REST_HOST}/question/filter`, payload, {
     headers: {

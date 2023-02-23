@@ -26,6 +26,7 @@ export interface IQuestion<T = any> {
     _id: string
     type: QuestionType
     scenario: IMDString
+    topic: string
     content: T
     category: string    
     parent: string
