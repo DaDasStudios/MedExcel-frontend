@@ -12,7 +12,7 @@ import { Checkbox, Input } from "../../../components/ui/Input"
 
 const SignupForm = () => {
 	return (
-		<div className='bg-slate-900/50 p-8 rounded-md shadow-md border border-slate-100/10 flex flex-col'>
+		<div className='bg-slate-900/50 py-6 px-5 sm:p-8 rounded-md shadow-md border border-slate-100/10 flex flex-col'>
 			<div className='mb-6 text-center flex flex-col justify-center gap-3'>
 				<h1 className='text-4xl font-bold text-slate-100 tracking-tight'>
 					Sign Up

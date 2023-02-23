@@ -20,24 +20,31 @@ const More = () => {
 	return (
 		<>
 			<BackgroundImage url='/img/about-page-image.jpg' />
-			<section className='pt-[260px] pb-32 min-h-screen bg-slate-900/50 shadow-md rounded-md'>
+			<section className='pt-[260px] pb-32 min-h-screen bg-slate-900/50 shadow-md rounded-md px-10'>
 				<article
 					data-aos='fade-up'
-					className='max-w-2xl text-slate-100 mx-auto mb-16'>
+					className='max-w-2xl text-slate-100 mx-auto mb-16'
+				>
 					<Heading animation=''>MedExcel</Heading>
 					<p className='text-slate-200 text-lg text-center mb-8'>
 						Welcome to our website, the leading provider of medical
 						student exam questions!
 					</p>
-					<div className='flex gap-5 justify-center items-center'>
+					<div className='flex gap-3 sm:gap-5 justify-center items-center'>
 						<SolidButton as={ComponentElement.A} href='#categories'>
-							See Categories
+							<p className='hidden sm:block'>See Categories</p>
+							<p className='block sm:hidden'>Categories</p>
 						</SolidButton>
 						<SolidButton as={ComponentElement.A} href='#about-us'>
-							About Us
+							<p className='hidden sm:block'>About Us</p>
+							<p className='block sm:hidden'>About</p>
 						</SolidButton>
-						<SolidButton as={ComponentElement.A} href='#privacy-policy'>
-							Privacy Policy
+						<SolidButton
+							as={ComponentElement.A}
+							href='#privacy-policy'
+						>
+							<p className='hidden sm:block'>Privacy Policy</p>
+							<p className='block sm:hidden'>Legal</p>
 						</SolidButton>
 					</div>
 				</article>
@@ -82,7 +89,8 @@ const More = () => {
 				</article>
 				<article
 					id='about-us'
-					className='max-w-xl mx-auto text-slate-100 mb-16'>
+					className='max-w-xl mx-auto text-slate-100 mb-16'
+				>
 					<Heading>Dive deep and know more about us</Heading>
 					<Paragraph>
 						We understand the importance of being well-prepared for
@@ -123,7 +131,8 @@ const More = () => {
 				</article>
 				<article
 					id='privacy-policy'
-					className='max-w-2xl mx-auto text-slate-100 mb-16'>
+					className='max-w-2xl mx-auto text-slate-100 mb-16'
+				>
 					<Heading>Privacy Policy</Heading>
 					<Paragraph>
 						MedExcel website is owned by Company Name, which is a
@@ -260,7 +269,8 @@ const More = () => {
 				</article>
 				<article
 					id='terms-conditions'
-					className='max-w-2xl mx-auto text-slate-100'>
+					className='max-w-2xl mx-auto text-slate-100'
+				>
 					<Heading>Terms & Conditions</Heading>
 					<Paragraph>
 						These terms and conditions outline the rules and

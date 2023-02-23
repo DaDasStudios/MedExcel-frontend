@@ -19,14 +19,15 @@ const Home = () => {
 			<BackgroundImage url='/img/landing-page-image.jpg' />
 			<section className='pt-[200px] pb-32 min-h-screen bg-slate-900/30'>
 				<div className='mx-auto max-w-7xl'>
-					<div className='grid grid-cols-2 items-center h-[70vh] gap-12 justify-between'>
+					<div className='xl:grid xl:grid-cols-2 items-center xl:h-[70vh] gap-12 justify-between'>
 						<article
-							className='text-slate-50 flex flex-col gap-6 justify-center'
-							data-aos='fade-right'>
-							<h1 className='font-bold tracking-tight text-6xl'>
+							className='text-slate-50 flex flex-col gap-6 justify-center px-6'
+							data-aos='fade-right'
+						>
+							<h1 className='font-bold tracking-tight text-4xl text-center xl:text-left xl:text-6xl'>
 								Begin the process of Excel-ing at Exams Now!
 							</h1>
-							<p className='text-lg text-slate-200'>
+							<p className='text-center xl:text-left xl:text-lg text-slate-200'>
 								MedExcel is a great revision resource for
 								Medical Students supplying questions from a
 								range of different specialties.
@@ -34,11 +35,17 @@ const Home = () => {
 							{!auth.user ? (
 								<>
 									{" "}
-									<div className='flex gap-6 group max-w-fit'>
+									<div className='max-xl:mx-auto flex items-center gap-4 sm:gap-6 group max-w-fit'>
 										<Link
-											className='bg-blue-700/50 transition-all group-hover:translate-x-2 hover:bg-blue-700/70 py-4 px-5 text-lg text-blue-100 rounded-md shadow-md font-medium flex gap-1 border border-blue-100/20 max-w-fit'
-											to='/subscription'>
-											See pricing
+											className='bg-blue-700/50 transition-all group-hover:translate-x-2 hover:bg-blue-700/70 text-base p-4 sm:py-4 sm:px-5 sm:text-lg text-blue-100 rounded-md shadow-md font-medium flex gap-2 border border-blue-100/20 max-w-fit'
+											to='/subscription'
+										>
+											<p className='hidden sm:block'>
+												See pricing
+											</p>
+											<p className='block sm:hidden'>
+												Pricing
+											</p>
 											<svg
 												className='w-5'
 												fill='none'
@@ -46,7 +53,8 @@ const Home = () => {
 												strokeWidth={1.5}
 												viewBox='0 0 24 24'
 												xmlns='http://www.w3.org/2000/svg'
-												aria-hidden='true'>
+												aria-hidden='true'
+											>
 												<path
 													strokeLinecap='round'
 													strokeLinejoin='round'
@@ -55,9 +63,15 @@ const Home = () => {
 											</svg>
 										</Link>
 										<Link
-											className='bg-emerald-700/50 transition-all group-hover:translate-x-2 hover:bg-emerald-700/70 max-w-fit py-4 px-5 text-lg text-emerald-100 rounded-md shadow-md font-medium flex gap-1 border border-emerald-100/10'
-											to='/signin'>
-											Have account?
+											className='bg-emerald-700/50 transition-all group-hover:translate-x-2 hover:bg-emerald-700/70 max-w-fit text-base p-4 sm:py-4 sm:px-5 sm:text-lg text-emerald-100 rounded-md shadow-md font-medium flex gap-2 border border-emerald-100/10'
+											to='/signin'
+										>
+											<p className='hidden sm:block'>
+												Have account?
+											</p>
+											<p className='block sm:hidden'>
+												Sign up
+											</p>
 											<svg
 												className='w-5'
 												fill='none'
@@ -65,7 +79,8 @@ const Home = () => {
 												strokeWidth={1.5}
 												viewBox='0 0 24 24'
 												xmlns='http://www.w3.org/2000/svg'
-												aria-hidden='true'>
+												aria-hidden='true'
+											>
 												<path
 													strokeLinecap='round'
 													strokeLinejoin='round'
@@ -74,17 +89,21 @@ const Home = () => {
 											</svg>
 										</Link>
 									</div>
-									<div className='bg-slate-900/50 p-5 border border-slate-50/10 shadow-md rounded-md max-w-fit flex flex-col justify-center gap-2 transition-transform hover:translate-x-2 group text-center relative'>
-										<h3 className='text-yellow-50 text-2xl font-semibold'>
+									<div className='bg-slate-900/50 p-5 border border-slate-50/10 shadow-md rounded-md max-w-fit flex flex-col justify-center gap-2 transition-transform hover:translate-x-2 group text-center relative max-sm:mt-4 max-xl:mx-auto'>
+										<h3 className='hidden sm:block text-yellow-50 text-2xl font-semibold'>
 											Get started for free!
 										</h3>
+										<p className='block sm:hidden text-yellow-50 text-2xl font-semibold'>
+											Get started
+										</p>
 										<p className='text-yellow-50/90'>
 											You can join us for free on a trial
 											for two weeks!
 										</p>
 										<Link
 											className='font-medium py-3 px-4 text-lg text-amber-100 transition-colors group-hover:text-amber-50 group-hover:bg-yellow-500/50 rounded-md border border-yellow-100/10 bg-yellow-500/40 mt-2 flex justify-center items-center gap-2'
-											to='/signup'>
+											to='/signup'
+										>
 											<svg
 												className='w-6'
 												fill='none'
@@ -92,7 +111,8 @@ const Home = () => {
 												strokeWidth={1.5}
 												viewBox='0 0 24 24'
 												xmlns='http://www.w3.org/2000/svg'
-												aria-hidden='true'>
+												aria-hidden='true'
+											>
 												<path
 													strokeLinecap='round'
 													strokeLinejoin='round'
@@ -109,11 +129,18 @@ const Home = () => {
 									</div>
 								</>
 							) : (
-								<div className='flex gap-6 group max-w-fit'>
+								<div className='flex gap-6 group max-w-fit max-xl:mx-auto'>
 									<Link
-										className='bg-blue-700/50 transition-all group-hover:translate-x-2 hover:bg-blue-700/70 py-4 px-5 text-lg text-blue-100 rounded-md shadow-md font-medium flex gap-2 border border-blue-100/20 max-w-fit'
-										to='/account'>
-										See account
+										className='bg-blue-700/50 transition-all group-hover:translate-x-2 hover:bg-blue-700/70 text-base p-4 sm:py-4 sm:px-5 sm:text-lg text-blue-100 rounded-md shadow-md font-medium flex gap-2 border border-blue-100/20 max-w-fit'
+										to='/account'
+									>
+										<p className='hidden sm:block'>
+											See account
+										</p>
+										<p className='block sm:hidden'>
+											Profile
+										</p>
+
 										<svg
 											className='w-5'
 											fill='none'
@@ -121,7 +148,8 @@ const Home = () => {
 											strokeWidth={1.5}
 											viewBox='0 0 24 24'
 											xmlns='http://www.w3.org/2000/svg'
-											aria-hidden='true'>
+											aria-hidden='true'
+										>
 											<path
 												strokeLinecap='round'
 												strokeLinejoin='round'
@@ -130,9 +158,14 @@ const Home = () => {
 										</svg>
 									</Link>
 									<Link
-										className='bg-yellow-700/50 transition-all group-hover:translate-x-2 hover:bg-yellow-700/70 max-w-fit py-4 px-5 text-lg text-yellow-100 rounded-md shadow-md font-medium flex gap-2 border border-yellow-100/10'
-										to='/exam'>
-										Start exam
+										className='bg-yellow-700/50 transition-all group-hover:translate-x-2 hover:bg-yellow-700/70 max-w-fit text-base p-4 sm:py-4 sm:px-5 sm:text-lg text-yellow-100 rounded-md shadow-md font-medium flex gap-2 border border-yellow-100/10'
+										to='/exam'
+									>
+										<p className='hidden sm:block'>
+											Start exam
+										</p>
+										<p className='block sm:hidden'>Exam</p>
+
 										<svg
 											className='w-5'
 											fill='none'
@@ -140,7 +173,8 @@ const Home = () => {
 											strokeWidth={1.5}
 											viewBox='0 0 24 24'
 											xmlns='http://www.w3.org/2000/svg'
-											aria-hidden='true'>
+											aria-hidden='true'
+										>
 											<path
 												strokeLinecap='round'
 												strokeLinejoin='round'
@@ -151,7 +185,8 @@ const Home = () => {
 								</div>
 							)}
 						</article>
-						<div data-aos='fade-left'>
+							
+						<div className="flex items-center justify-center" data-aos='fade-right'>
 							<QuestionExample />
 						</div>
 					</div>

@@ -97,7 +97,7 @@ Physical examination reveals subcostal recessions, nasal flaring and wheezing. T
 
 	return (
 		<div
-			className={`bg-slate-800 max-h-[600px] rounded-md relative shadow-md border border-gray-100/10 text-white ${
+			className={`max-xl:m-6 sm:max-md:w-[80%] md:max-xl:w-[60%] mx-auto bg-slate-800 max-xl:mt-20 max-h-[600px] rounded-md relative shadow-md border border-gray-100/10 text-white ${
 				showModal ? "overflow-y-hidden" : "overflow-y-auto"
 			}`}
 		>
@@ -110,7 +110,7 @@ Physical examination reveals subcostal recessions, nasal flaring and wheezing. T
 			>
 				<button
 					onClick={startSimulation}
-					className={`flex flex-col gap-4 items-center text-center text-5xl z-10 font-bold text-gray-300 p-5 relative after:absolute after:hover:bg-slate-900/80 after:transition-all after:duration-500 after:left-1/2 after:right-1/2 after:top-0 after:bottom-0 after:hover:left-0 after:hover:right-0 after:-z-10 after:rounded-md after:shadow-xl`}
+					className={`flex flex-col gap-4 items-center text-center text-4xl sm:text-5xl z-10 font-bold text-gray-300 p-5 relative after:absolute after:hover:bg-slate-900/80 after:transition-all after:duration-500 after:left-1/2 after:right-1/2 after:top-0 after:bottom-0 after:hover:left-0 after:hover:right-0 after:-z-10 after:rounded-md after:shadow-xl`}
 				>
 					<h3>Give it a try!</h3>
 					<svg
@@ -206,7 +206,7 @@ Physical examination reveals subcostal recessions, nasal flaring and wheezing. T
 				{hasAnswered && (
 					<>
 						<MarkdownBody content={question.content.explanation} />
-						<div className='flex justify-between'>
+						<div className='flex justify-between gap-5'>
 							<button
 								onClick={restartState}
 								type='button'
@@ -225,9 +225,11 @@ Physical examination reveals subcostal recessions, nasal flaring and wheezing. T
 										d='M7.793 2.232a.75.75 0 01-.025 1.06L3.622 7.25h10.003a5.375 5.375 0 010 10.75H10.75a.75.75 0 010-1.5h2.875a3.875 3.875 0 000-7.75H3.622l4.146 3.957a.75.75 0 01-1.036 1.085l-5.5-5.25a.75.75 0 010-1.085l5.5-5.25a.75.75 0 011.06.025z'
 									/>
 								</svg>
-								Try Again
+								<p className='hidden sm:block'>Try Again</p>
+								<p className='block sm:hidden'>Retry</p>
 							</button>
-							<Link to="/subscription"
+							<Link
+								to='/subscription'
 								type='button'
 								className='self-end flex items-center gap-2 py-2 px-3 border border-blue-500/50 hover:bg-blue-700/50 bg-blue-800/50 rounded-md mt-6 mb-1'
 							>
@@ -244,7 +246,10 @@ Physical examination reveals subcostal recessions, nasal flaring and wheezing. T
 										d='M2 10a.75.75 0 01.75-.75h12.59l-2.1-1.95a.75.75 0 111.02-1.1l3.5 3.25a.75.75 0 010 1.1l-3.5 3.25a.75.75 0 11-1.02-1.1l2.1-1.95H2.75A.75.75 0 012 10z'
 									/>
 								</svg>
-								Keep Excel-ing
+								<p className='hidden sm:block'>
+									Keep Excel-ing
+								</p>
+								<p className='block sm:hidden'>Continue</p>
 							</Link>
 						</div>
 					</>
