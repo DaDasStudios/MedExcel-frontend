@@ -7,10 +7,10 @@ const VisualizeMarkDownModal = () => {
 		visualizerModal: { isVisualizerOpen, closeModal, content },
 	} = useExamsAdminContext()
 	return (
-		<Modal
-			closeModal={closeModal}
-			rendered={isVisualizerOpen}>
-			<MarkdownBody content={content} />
+		<Modal closeModal={closeModal} rendered={isVisualizerOpen}>
+			<div className="max-w-[550px] max-h-[400px] overflow-y-auto pr-4">
+				<MarkdownBody content={content} />
+			</div>
 		</Modal>
 	)
 }

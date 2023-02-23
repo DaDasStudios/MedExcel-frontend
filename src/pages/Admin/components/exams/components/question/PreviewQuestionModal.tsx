@@ -3,12 +3,12 @@ import { useExamsAdminContext } from "../../../../../../context/admin/examsConte
 import QuestionPreview from "./QuestionPreview"
 
 const PreviewQuestionModal = () => {
-    const { previewModal } = useExamsAdminContext()
-    return (
+	const { previewModal } = useExamsAdminContext()
+	return (
 		<Modal
 			closeModal={previewModal.closeModal}
 			rendered={previewModal.rendered}>
-			<article className='flex flex-col gap-2 max-w-min min-w-[600px] overflow-y-auto max-h-[500px] mt-2 pr-3'>
+			<article className='flex flex-col gap-2 max-w-min min-w-[600px] overflow-y-auto max-h-[400px] mt-2 pr-3'>
 				<QuestionPreview
 					type={previewModal.question.type}
 					question={previewModal.question}
@@ -16,6 +16,5 @@ const PreviewQuestionModal = () => {
 			</article>
 		</Modal>
 	)
-  
 }
 export default PreviewQuestionModal

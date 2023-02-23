@@ -191,7 +191,7 @@ const QuestionCard = ({ question, index }: IProps) => {
 				</button>
 				<p>{index + 1}</p>
 			</span>
-			<h6>
+			<h6 className="max-w-[80%] truncate">
 				{question.type} - {question.parent} / {question.category}
 			</h6>
 			<ViewButton content={question.scenario} />

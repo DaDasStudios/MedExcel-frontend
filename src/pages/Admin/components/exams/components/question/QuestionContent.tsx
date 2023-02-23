@@ -27,7 +27,7 @@ function QuestionContent({ content, type }: IProps) {
 									index === data.answer - 1 &&
 									"text-emerald-600 flex gap-1 items-center"
 								}`}
-								key={option}>
+								key={option + index}>
 								{index === data.answer - 1 && (
 									<svg
 										className='w-4 text-emerald-600 -ml-5'

@@ -101,7 +101,7 @@ const QuestionForm = () => {
 							if (
 								!questionForm.SBAContent.explanation ||
 								!questionForm.SBAContent.question ||
-								!questionForm.SBAContent.options
+								questionForm.SBAContent.options.some(singleOption => !singleOption)
 							) {
 								return toast.error("Fill up all the fields")
 							}

@@ -22,8 +22,7 @@ const Home = () => {
 					<div className='grid grid-cols-2 items-center h-[70vh] gap-12 justify-between'>
 						<article
 							className='text-slate-50 flex flex-col gap-6 justify-center'
-							data-aos='fade-right'
-						>
+							data-aos='fade-right'>
 							<h1 className='font-bold tracking-tight text-6xl'>
 								Begin the process of Excel-ing at Exams Now!
 							</h1>
@@ -38,8 +37,7 @@ const Home = () => {
 									<div className='flex gap-6 group max-w-fit'>
 										<Link
 											className='bg-blue-700/50 transition-all group-hover:translate-x-2 hover:bg-blue-700/70 py-4 px-5 text-lg text-blue-100 rounded-md shadow-md font-medium flex gap-1 border border-blue-100/20 max-w-fit'
-											to='/subscription'
-										>
+											to='/subscription'>
 											See pricing
 											<svg
 												className='w-5'
@@ -48,8 +46,7 @@ const Home = () => {
 												strokeWidth={1.5}
 												viewBox='0 0 24 24'
 												xmlns='http://www.w3.org/2000/svg'
-												aria-hidden='true'
-											>
+												aria-hidden='true'>
 												<path
 													strokeLinecap='round'
 													strokeLinejoin='round'
@@ -59,8 +56,7 @@ const Home = () => {
 										</Link>
 										<Link
 											className='bg-emerald-700/50 transition-all group-hover:translate-x-2 hover:bg-emerald-700/70 max-w-fit py-4 px-5 text-lg text-emerald-100 rounded-md shadow-md font-medium flex gap-1 border border-emerald-100/10'
-											to='/signin'
-										>
+											to='/signin'>
 											Have account?
 											<svg
 												className='w-5'
@@ -69,8 +65,7 @@ const Home = () => {
 												strokeWidth={1.5}
 												viewBox='0 0 24 24'
 												xmlns='http://www.w3.org/2000/svg'
-												aria-hidden='true'
-											>
+												aria-hidden='true'>
 												<path
 													strokeLinecap='round'
 													strokeLinejoin='round'
@@ -89,8 +84,7 @@ const Home = () => {
 										</p>
 										<Link
 											className='font-medium py-3 px-4 text-lg text-amber-100 transition-colors group-hover:text-amber-50 group-hover:bg-yellow-500/50 rounded-md border border-yellow-100/10 bg-yellow-500/40 mt-2 flex justify-center items-center gap-2'
-											to='/signup'
-										>
+											to='/signup'>
 											<svg
 												className='w-6'
 												fill='none'
@@ -98,8 +92,7 @@ const Home = () => {
 												strokeWidth={1.5}
 												viewBox='0 0 24 24'
 												xmlns='http://www.w3.org/2000/svg'
-												aria-hidden='true'
-											>
+												aria-hidden='true'>
 												<path
 													strokeLinecap='round'
 													strokeLinejoin='round'
@@ -119,8 +112,7 @@ const Home = () => {
 								<div className='flex gap-6 group max-w-fit'>
 									<Link
 										className='bg-blue-700/50 transition-all group-hover:translate-x-2 hover:bg-blue-700/70 py-4 px-5 text-lg text-blue-100 rounded-md shadow-md font-medium flex gap-2 border border-blue-100/20 max-w-fit'
-										to='/account'
-									>
+										to='/account'>
 										See account
 										<svg
 											className='w-5'
@@ -129,8 +121,7 @@ const Home = () => {
 											strokeWidth={1.5}
 											viewBox='0 0 24 24'
 											xmlns='http://www.w3.org/2000/svg'
-											aria-hidden='true'
-										>
+											aria-hidden='true'>
 											<path
 												strokeLinecap='round'
 												strokeLinejoin='round'
@@ -140,8 +131,7 @@ const Home = () => {
 									</Link>
 									<Link
 										className='bg-yellow-700/50 transition-all group-hover:translate-x-2 hover:bg-yellow-700/70 max-w-fit py-4 px-5 text-lg text-yellow-100 rounded-md shadow-md font-medium flex gap-2 border border-yellow-100/10'
-										to='/exam'
-									>
+										to='/exam'>
 										Start exam
 										<svg
 											className='w-5'
@@ -150,8 +140,7 @@ const Home = () => {
 											strokeWidth={1.5}
 											viewBox='0 0 24 24'
 											xmlns='http://www.w3.org/2000/svg'
-											aria-hidden='true'
-										>
+											aria-hidden='true'>
 											<path
 												strokeLinecap='round'
 												strokeLinejoin='round'
@@ -162,11 +151,8 @@ const Home = () => {
 								</div>
 							)}
 						</article>
-						<div
-							className='bg-black/50 h-full text-white'
-							data-aos='fade-left'
-						>
-							<QuestionExample/>
+						<div data-aos='fade-left'>
+							<QuestionExample />
 						</div>
 					</div>
 				</div>

@@ -4,6 +4,7 @@ import SolidButton, {
 	themeBtns,
 } from "../../../components/ui/Buttons/SolidButton"
 import Separator from "../../../components/ui/Separator"
+import Spin from "../../../components/ui/Spin"
 import Tooltip from "../../../components/ui/Tooltip"
 import { useAuthContext } from "../../../context/auth/authContext"
 import { ComponentElement } from "../../../interface"
@@ -58,7 +59,6 @@ function CategoryCheckbox({
 					</svg>
 				)}
 			</span>
-			<span className='group-focus:block hidden'>asd</span>
 			{toTitle(category)}
 		</label>
 	)
@@ -110,6 +110,7 @@ const GetExam = () => {
 	const [checkAll, setCheckAll] = useState(false)
 	const [filter, setFilter] = useState("" as FilterSetExamType)
 
+	// ? get all the questions and get all the parent/single categories to save a checkbox state tree with the ones that are checked
 	async function fetchCategories() {
 		const res = await getQuestionNoContentRequest(auth.token || "")
 		if (res.status === 200 && res.data.questions) {
@@ -117,13 +118,22 @@ const GetExam = () => {
 
 			setAmountQuestions(res.data.questions.length)
 			res.data.questions.forEach(question => {
-				if (!Object.hasOwn(tempQuestionsState, question.parent)) {
-					tempQuestionsState[question.parent] = {
+				let parentKey = ""
+
+				if (question.parent === "All") {
+					parentKey = "None"
+				} else {
+					parentKey = question.parent
+				}
+
+				if (!Object.hasOwn(tempQuestionsState, parentKey)) {
+					tempQuestionsState[parentKey] = {
 						checked: false,
 						content: [],
 					}
 				}
-				tempQuestionsState[question.parent].content.push({
+
+				tempQuestionsState[parentKey].content.push({
 					...question,
 					checked: false,
 				})
@@ -141,7 +151,10 @@ const GetExam = () => {
 			return toast.error("Must provide categories and one filter")
 		}
 
-		if (new Date(auth.user?.subscription?.access || '').getTime() < Date.now()) {
+		if (
+			new Date(auth.user?.subscription?.access || "").getTime() <
+			Date.now()
+		) {
 			return toast.error(
 				"You cannot start an exam without a subscription plan"
 			)
@@ -173,6 +186,7 @@ const GetExam = () => {
 		}
 	}
 
+	// ? Since the parent category is assigned to a checkbox, it's necessary point to the checkbox that is tagged with the same category. Also this function supports multiple categories, in case it's called by a parent-category checkbox
 	function handleChecking(value: string | string[], checked: boolean) {
 		if (Array.isArray(value)) {
 			if (checked) {
@@ -212,7 +226,7 @@ const GetExam = () => {
 				two exams at once.
 			</p>
 			<Separator />
-			{Object.entries(questions).length > 0 && (
+			{Object.entries(questions).length > 0 ? (
 				<form onSubmit={onSubmit}>
 					<div className='mt-4 rounded-md border border-gray-100/10 '>
 						<h4 className='flex justify-between items-center text-slate-300  py-2 px-5 border-b border-gray-100/10 bg-slate-800/50'>
@@ -275,6 +289,7 @@ const GetExam = () => {
 								</span>
 							</p>
 						</div>
+						{/* Display each category and their children */}
 						{Object.entries(questions).map((questionLoad, i) => (
 							<div
 								className='tracking-normal'
@@ -304,10 +319,13 @@ const GetExam = () => {
 												},
 											})
 											handleChecking(
-												questionLoad[1].content.map(
-													crnCategory =>
-														crnCategory.category
-												),
+												questionLoad[1].content.reduce((arr, cat) => {
+													if (!arr.includes(cat.category)) {
+														return [...arr, cat.category]
+													}
+													
+													return arr
+												}, [] as string[]),
 												e.target.checked
 											)
 										}}
@@ -317,6 +335,7 @@ const GetExam = () => {
 										{questionLoad[1].content.length})
 									</p>
 								</div>
+								{/* Displays the categories of a parent one */}
 								<ul className='flex flex-col'>
 									{questionLoad[1].content
 										.filter((item, k) => {
@@ -331,26 +350,81 @@ const GetExam = () => {
 										.map((question, j) => (
 											<li
 												className='flex items-center pl-8 py-2 justify-between border-b border-gray-100/10'
-												key={question.category + j}>
+												key={question._id}>
 												<CategoryCheckbox
 													category={question.category}
 													id={j}
 													checked={question.checked}
 													onChange={e => {
+														// * Active the parent category automatically
+														let isEveryItemUnchecked: boolean
+														const childrenCategories =
+															questions[
+																question.parent
+															].content.reduce(
+																(arr, item) => {
+																	if (
+																		!arr.some(
+																			it =>
+																				it.name ===
+																				item.category
+																		)
+																	) {
+																		arr.push(
+																			{
+																				name: item.category,
+																				checked:
+																					(!e
+																						.target
+																						.checked
+																						? selectedCategories.filter(
+																								cat =>
+																									cat !==
+																									question.category
+																						  )
+																						: [
+																								...selectedCategories,
+																								e
+																									.target
+																									.checked
+																									? question.category
+																									: null,
+																						  ]
+																					).includes(
+																						item.category
+																					),
+																			}
+																		)
+																	}
+																	return arr
+																},
+																[] as {
+																	name: string
+																	checked: boolean
+																}[]
+															)
+
+														isEveryItemUnchecked =
+															childrenCategories.every(
+																item => !item.checked
+															)
+														// * Toggle the checked state of the single category checkbox
 														setQuestions({
 															...questions,
 															[questionLoad[0]]: {
 																...questionLoad[1],
+																checked:
+																	!isEveryItemUnchecked,
 																content:
 																	questionLoad[1].content.map(
 																		(
 																			crnQuestion,
 																			l
-																		) =>
-																			crnQuestion.category ===
-																			e
-																				.target
-																				.value
+																		) => {
+																			return crnQuestion.category ===
+																				e
+																					.target
+																					.value
 																				? {
 																						...crnQuestion,
 																						checked:
@@ -359,6 +433,7 @@ const GetExam = () => {
 																								.checked,
 																				  }
 																				: crnQuestion
+																		}
 																	),
 															},
 														})
@@ -450,6 +525,10 @@ const GetExam = () => {
 						</SolidButton>
 					</div>
 				</form>
+			) : (
+				<div className='flex items-center justify-center mt-4'>
+					<Spin />
+				</div>
 			)}
 		</div>
 	)
