@@ -53,8 +53,8 @@ const FinishExam = () => {
 				</div>
 			</div>
 			<Separator />
-			<div className='flex items-center justify-between gap-6'>
-				<p className='text-sm text-gray-400'>
+			<div className='flex max-sm:flex-col items-center justify-between gap-6'>
+				<p className='max-sm:order-last max-sm:text-center text-sm text-gray-400'>
 					Only users with an actived subscription plan can see their
 					exam records.
 				</p>
@@ -63,14 +63,16 @@ const FinishExam = () => {
 						window.location.replace("/account")
 					}}
 					as={ComponentElement.BUTTON}
-					theme={themeBtns.greenBtn}>
+					theme={themeBtns.greenBtn}
+				>
 					<div className='flex items-center gap-3'>
 						<svg
 							className='w-6'
 							fill='currentColor'
 							viewBox='0 0 20 20'
 							xmlns='http://www.w3.org/2000/svg'
-							aria-hidden='true'>
+							aria-hidden='true'
+						>
 							<path
 								clipRule='evenodd'
 								fillRule='evenodd'

@@ -83,9 +83,9 @@ const ECQQuestion = () => {
 			<span className='text-sm text-gray-300'>
 				Category - <b>{question.parent}</b> / <b>{question.category}</b>
 			</span>
-			<span className='text-sm text-gray-400 flex items-baseline gap-3'>
+			<span className='text-xs sm:text-sm text-gray-400 flex items-baseline gap-3'>
 				<svg
-					className='w-12 self-center'
+					className='hidden sm:block w-12 self-center'
 					fill='currentColor'
 					viewBox='0 0 20 20'
 					xmlns='http://www.w3.org/2000/svg'
@@ -122,8 +122,8 @@ const ECQQuestion = () => {
 						<li
 							key={eachSubQuestion.question + i}
 							className='list-decimal'>
-							<div className='flex gap-4'>
-								<p className=''>{eachSubQuestion.question}</p>
+							<div className='flex max-sm:flex-col gap-4'>
+								<p >{eachSubQuestion.question}</p>
 								<label
 									key={eachSubQuestion.question + i}
 									className={`${hasAnswered && "correct"}`}
@@ -131,7 +131,7 @@ const ECQQuestion = () => {
 									<select
 										onChange={e => handleOnChange(i, e)}
 										value={answers[i]}
-										className={`rounded-md outline-none border ${
+										className={`rounded-md max-w-min outline-none border ${
 											hasAnswered
 												? answers[i] ==
 												  questionResponse.question
@@ -162,7 +162,7 @@ const ECQQuestion = () => {
 				{!hasAnswered && (
 					<button
 						type='submit'
-						className='flex items-center gap-2 py-2 px-3 border border-blue-500/50 hover:bg-blue-700/50 bg-blue-800/50 rounded-md mt-6 mb-1'>
+						className='flex items-center gap-2 py-2 px-3 border border-blue-500/50 hover:bg-blue-700/50 bg-blue-800/50 rounded-md mt-6 mb-1 max-sm:mx-auto'>
 						<svg
 							className='w-5'
 							fill='currentColor'

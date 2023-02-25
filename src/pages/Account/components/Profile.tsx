@@ -16,13 +16,14 @@ const Profile = () => {
 	}, [])
 
 	return (
-		<div className='bg-slate-900/50 p-8 rounded-md border border-slate-100/10 shadow-md flex flex-col'>
+		<div className='bg-slate-900/50 py-6 px-5 sm:p-8 rounded-md border border-slate-100/10 shadow-md flex flex-col'>
 			<div className='tracking-tight mb-6'>
 				<h3 className='text-slate-300 text-xl text-center font-semibold mb-2'>
 					Profile
 				</h3>
 				<p className='text-slate-400 text-lg mb-4'>
-					Here you can check your account information and update your username.
+					Here you can check your account information and update your
+					username.
 				</p>
 				<Separator></Separator>
 			</div>

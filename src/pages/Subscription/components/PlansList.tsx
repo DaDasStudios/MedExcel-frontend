@@ -36,7 +36,9 @@ const PlansList = () => {
 			) : (
 				<ul
 					className={`text-slate-100 grid ${
-						auth.user ? "grid-cols-3" : "grid-cols-1 min-[500px]:grid-cols-2 lg:grid-cols-4"
+						auth.user
+							? "grid-cols-1 lg:grid-cols-3"
+							: "grid-cols-1 min-[500px]:grid-cols-2 lg:grid-cols-4"
 					} items-center justify-center gap-5`}
 				>
 					{subscriptionPlans.map((sp, idx) => (

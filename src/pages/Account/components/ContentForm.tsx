@@ -38,7 +38,9 @@ const ContentForm = ({ user }: IProps) => {
 							new Date(subscription?.purchaseDate || "")
 					  )
 					: "",
-				activeSubscription: user.subscription?.hasSubscription ? "Active" : "Paused",
+				activeSubscription: user.subscription?.hasSubscription
+					? "Active"
+					: "Paused",
 				correctAnswers: exam?.correctAnswers.length,
 				maxScore:
 					exam.scoresHistory?.length === 0
@@ -76,12 +78,8 @@ const ContentForm = ({ user }: IProps) => {
 		>
 			{({ isSubmitting }) => (
 				<Form>
-					<div className='grid grid-cols-2 gap-x-5'>
-						<Input
-							id='username'
-							label='Username'
-							name='username'
-						/>
+					<div className='grid grid-cols-1 sm:grid-cols-2 gap-x-5'>
+						<Input id='username' label='Username' name='username' />
 						<Input
 							id='email'
 							label='Email'
@@ -147,7 +145,7 @@ const ContentForm = ({ user }: IProps) => {
 								) : (
 									<Spin />
 								)}
-								Update
+								<p className="sm:block hidden">Update</p>
 							</span>
 						</SolidButton>
 					</div>
@@ -181,7 +179,7 @@ const ContentForm = ({ user }: IProps) => {
 							}`}
 						>
 							<Separator></Separator>
-							<div className='grid grid-cols-2 gap-x-5 mt-8'>
+							<div className='grid grid-cols-1 sm:grid-cols-2 gap-x-5 mt-8'>
 								<Input
 									id='correctAnswers'
 									label='Correct answers'

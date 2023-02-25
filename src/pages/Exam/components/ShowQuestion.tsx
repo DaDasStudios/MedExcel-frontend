@@ -34,9 +34,12 @@ const ShowQuestion = () => {
 	return (
 		<div
 			className={`${
-				hasFinished ? "mx-auto max-w-[650px]" : "grid grid-cols-6 gap-6"
-			}`}>
-			<div className='bg-slate-900/80 p-8 rounded-md border border-gray-100/10 shadow-md col-span-4'>
+				hasFinished
+					? "mx-auto max-w-[650px]"
+					: "grid grid-cols-1 lg:grid-cols-6 gap-6"
+			}`}
+		>
+			<div className='bg-slate-900/80 rounded-md border border-gray-100/10 shadow-md lg:col-span-4 max-lg:max-w-xl justify-self-center mx-auto py-6 px-5 sm:p-8'>
 				{hasFinished ? (
 					<FinishExam />
 				) : currentQuestion ? (

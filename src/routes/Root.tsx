@@ -10,7 +10,7 @@ import Subscription from "../pages/Subscription"
 import Admin from "./Admin"
 
 // * Routes
-import { Route, Routes } from "react-router-dom"
+import { Route, Routes, useLocation } from "react-router-dom"
 
 // * Context
 import { useAuthContext } from "../context/auth/authContext"
@@ -28,6 +28,7 @@ function Layout() {
 	const {
 		auth: { user },
 	} = useAuthContext()
+	const location = useLocation()
 	return (
 		<>
 			<Navbar
@@ -88,7 +89,8 @@ function Layout() {
 					<Route
 						path='/admin/*'
 						element={<Admin />}
-						errorElement={<ErrorPage />}></Route>
+						errorElement={<ErrorPage />}
+					></Route>
 
 					{user && (
 						<>
@@ -114,43 +116,45 @@ function Layout() {
 					<Route path='*' element={<ErrorPage />} />
 				</Routes>
 			</main>
-			<Footer
-				cols={[
-					[
-						{
-							label: "About",
-							href: "/more#about-us",
-						},
-						{
-							label: "Recover password",
-							href: "/recover",
-						},
-						{
-							label: "Report",
-							href: "/admin",
-						},
-					],
-					[
-						{
-							label: "Terms & Conditions",
-							href: "/more#terms-conditions",
-						},
-						{
-							label: "Privacy Policy",
-							href: "/more#privacy-policy",
-						},
-					],
-					[
-						{
-							label: "Admin portal",
-							href: "/admin",
-						},
-						{
-							label: "excelatmedicine@gmail.com",
-						},
-					],
-				]}
-			/>
+			{!location.pathname.includes("admin") && (
+				<Footer
+					cols={[
+						[
+							{
+								label: "About",
+								href: "/more#about-us",
+							},
+							{
+								label: "Recover password",
+								href: "/recover",
+							},
+							{
+								label: "Report",
+								href: "/admin",
+							},
+						],
+						[
+							{
+								label: "Terms & Conditions",
+								href: "/more#terms-conditions",
+							},
+							{
+								label: "Privacy Policy",
+								href: "/more#privacy-policy",
+							},
+						],
+						[
+							{
+								label: "Admin portal",
+								href: "/admin",
+							},
+							{
+								label: "excelatmedicine@gmail.com",
+							},
+						],
+					]}
+				/>
+			)}
 		</>
 	)
 }

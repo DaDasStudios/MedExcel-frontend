@@ -114,7 +114,7 @@ const Navbar = ({ elements }: Props) => {
 					)}
 				</ul>
 			</nav>
-			{/* Responsibe box with the links */}
+			{/* Responsive box with the links */}
 			{activeCollapse && (
 				<div onClick={() => setActiveCollapse(false)}>
 					<ul className='flex flex-col items-center gap-y-5'>
