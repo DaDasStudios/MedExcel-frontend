@@ -76,6 +76,8 @@ export interface IExamsAdminContext {
         CBQContent: ICBQQuestion
         setCBQContent: React.Dispatch<React.SetStateAction<ICBQQuestion>>
         resetCBQContent: () => void
+
+        formRef: React.MutableRefObject<HTMLFormElement | null>
     }
 }
 

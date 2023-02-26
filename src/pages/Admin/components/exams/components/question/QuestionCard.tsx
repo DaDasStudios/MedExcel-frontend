@@ -1,8 +1,5 @@
 import Separator from "../../../../../../components/ui/Separator"
-import {
-	IQuestion,
-	QuestionType,
-} from "../../../../../../interface/exam"
+import { IQuestion, QuestionType } from "../../../../../../interface/exam"
 import { formatDate } from "../../../../../../utils/date"
 import QuestionContent from "./QuestionContent"
 import ViewButton from "../ViewButton"
@@ -45,7 +42,8 @@ const QuestionCard = ({ question, index }: IProps) => {
 		<div
 			className={`relative flex flex-col gap-2 p-4 rounded-md shadow-md ${handleStyle(
 				question.type
-			)}`}>
+			)}`}
+		>
 			<span className='absolute flex gap-1.5 items-center text-gray-400 text-xs top-0 right-0 m-3'>
 				<button className='relative outline-none p-1 hover:bg-gray-600 hover:text-gray-200 rounded-md group'>
 					<svg
@@ -53,7 +51,8 @@ const QuestionCard = ({ question, index }: IProps) => {
 						fill='currentColor'
 						viewBox='0 0 20 20'
 						xmlns='http://www.w3.org/2000/svg'
-						aria-hidden='true'>
+						aria-hidden='true'
+					>
 						<path
 							clipRule='evenodd'
 							fillRule='evenodd'
@@ -64,22 +63,29 @@ const QuestionCard = ({ question, index }: IProps) => {
 						<ul className='text-gray-300 flex flex-col gap-1.5'>
 							<li
 								onClick={() => previewModal.openModal(question)}
-								className='flex items-center gap-2 hover:underline'>
+								className='flex items-center gap-2 hover:underline'
+							>
 								<svg
 									className='w-3'
 									fill='currentColor'
 									viewBox='0 0 20 20'
 									xmlns='http://www.w3.org/2000/svg'
-									aria-hidden='true'>
+									aria-hidden='true'
+								>
 									<path d='M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z' />
 								</svg>
 								Preview
 							</li>
 							<li
 								onClick={() => {
+									questionForm.formRef.current?.scrollIntoView(
+										{ behavior: "smooth" }
+									)
 									questionForm.setIsEditing(true)
 									questionForm.setEditId(question._id)
-									questionForm.setGeneralQuestionContent(question)
+									questionForm.setGeneralQuestionContent(
+										question
+									)
 
 									if (question.type === "SBA") {
 										questionForm.setSBAContent({
@@ -119,13 +125,15 @@ const QuestionCard = ({ question, index }: IProps) => {
 										"Use the add question form to edit this question"
 									)
 								}}
-								className='flex items-center gap-2 hover:underline'>
+								className='flex items-center gap-2 hover:underline'
+							>
 								<svg
 									className='w-3'
 									fill='currentColor'
 									viewBox='0 0 20 20'
 									xmlns='http://www.w3.org/2000/svg'
-									aria-hidden='true'>
+									aria-hidden='true'
+								>
 									<path d='M2.695 14.763l-1.262 3.154a.5.5 0 00.65.65l3.155-1.262a4 4 0 001.343-.885L17.5 5.5a2.121 2.121 0 00-3-3L3.58 13.42a4 4 0 00-.885 1.343z' />
 								</svg>
 								Edit
@@ -167,13 +175,15 @@ const QuestionCard = ({ question, index }: IProps) => {
 										}
 									}
 								}}
-								className='flex items-center gap-2 hover:underline'>
+								className='flex items-center gap-2 hover:underline'
+							>
 								<svg
 									className='w-3'
 									fill='currentColor'
 									viewBox='0 0 20 20'
 									xmlns='http://www.w3.org/2000/svg'
-									aria-hidden='true'>
+									aria-hidden='true'
+								>
 									<path
 										clipRule='evenodd'
 										fillRule='evenodd'
@@ -187,8 +197,9 @@ const QuestionCard = ({ question, index }: IProps) => {
 				</button>
 				<p>{index + 1}</p>
 			</span>
-			<h6 className="max-w-[80%] truncate">
-				{question.type} - {question.parent} / {question.category} / {toTitle(question.topic || "No topic")}
+			<h6 className='max-w-[80%] truncate'>
+				{question.type} - {question.parent} / {question.category} /{" "}
+				{toTitle(question.topic || "No topic")}
 			</h6>
 			<ViewButton content={question.scenario} />
 			<Separator />
@@ -202,7 +213,8 @@ const QuestionCard = ({ question, index }: IProps) => {
 						fill='currentColor'
 						viewBox='0 0 20 20'
 						xmlns='http://www.w3.org/2000/svg'
-						aria-hidden='true'>
+						aria-hidden='true'
+					>
 						<path d='M5.25 12a.75.75 0 01.75-.75h.01a.75.75 0 01.75.75v.01a.75.75 0 01-.75.75H6a.75.75 0 01-.75-.75V12zM6 13.25a.75.75 0 00-.75.75v.01c0 .414.336.75.75.75h.01a.75.75 0 00.75-.75V14a.75.75 0 00-.75-.75H6zM7.25 12a.75.75 0 01.75-.75h.01a.75.75 0 01.75.75v.01a.75.75 0 01-.75.75H8a.75.75 0 01-.75-.75V12zM8 13.25a.75.75 0 00-.75.75v.01c0 .414.336.75.75.75h.01a.75.75 0 00.75-.75V14a.75.75 0 00-.75-.75H8zM9.25 10a.75.75 0 01.75-.75h.01a.75.75 0 01.75.75v.01a.75.75 0 01-.75.75H10a.75.75 0 01-.75-.75V10zM10 11.25a.75.75 0 00-.75.75v.01c0 .414.336.75.75.75h.01a.75.75 0 00.75-.75V12a.75.75 0 00-.75-.75H10zM9.25 14a.75.75 0 01.75-.75h.01a.75.75 0 01.75.75v.01a.75.75 0 01-.75.75H10a.75.75 0 01-.75-.75V14zM12 9.25a.75.75 0 00-.75.75v.01c0 .414.336.75.75.75h.01a.75.75 0 00.75-.75V10a.75.75 0 00-.75-.75H12zM11.25 12a.75.75 0 01.75-.75h.01a.75.75 0 01.75.75v.01a.75.75 0 01-.75.75H12a.75.75 0 01-.75-.75V12zM12 13.25a.75.75 0 00-.75.75v.01c0 .414.336.75.75.75h.01a.75.75 0 00.75-.75V14a.75.75 0 00-.75-.75H12zM13.25 10a.75.75 0 01.75-.75h.01a.75.75 0 01.75.75v.01a.75.75 0 01-.75.75H14a.75.75 0 01-.75-.75V10zM14 11.25a.75.75 0 00-.75.75v.01c0 .414.336.75.75.75h.01a.75.75 0 00.75-.75V12a.75.75 0 00-.75-.75H14z' />
 						<path
 							clipRule='evenodd'
@@ -218,7 +230,8 @@ const QuestionCard = ({ question, index }: IProps) => {
 						fill='currentColor'
 						viewBox='0 0 20 20'
 						xmlns='http://www.w3.org/2000/svg'
-						aria-hidden='true'>
+						aria-hidden='true'
+					>
 						<path d='M5.433 13.917l1.262-3.155A4 4 0 017.58 9.42l6.92-6.918a2.121 2.121 0 013 3l-6.92 6.918c-.383.383-.84.685-1.343.886l-3.154 1.262a.5.5 0 01-.65-.65z' />
 						<path d='M3.5 5.75c0-.69.56-1.25 1.25-1.25H10A.75.75 0 0010 3H4.75A2.75 2.75 0 002 5.75v9.5A2.75 2.75 0 004.75 18h9.5A2.75 2.75 0 0017 15.25V10a.75.75 0 00-1.5 0v5.25c0 .69-.56 1.25-1.25 1.25h-9.5c-.69 0-1.25-.56-1.25-1.25v-9.5z' />
 					</svg>

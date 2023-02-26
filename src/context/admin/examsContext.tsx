@@ -1,4 +1,4 @@
-import { createContext, PropsWithChildren, useContext, useState } from "react"
+import { createContext, PropsWithChildren, useContext, useRef, useState } from "react"
 import { IExamsAdminContext } from "../../interface/admin"
 import { ICBQQuestion, IQuestion, QuestionType } from "../../interface/exam"
 
@@ -70,6 +70,8 @@ export const ExamsAdminContextProvider = function ({
 	]
 	const [CBQContent, setCBQContent] = useState(CBQInitialState)
 
+	const formRef = useRef(null)
+
 	function closeVisualizerModal() {
 		setIsVisualizerOpen(false)
 		setVisualizerContent("")
@@ -137,6 +139,7 @@ export const ExamsAdminContextProvider = function ({
 					resetCBQContent() {
 						setCBQContent(CBQInitialState)
 					},
+					formRef
 				},
 			}}>
 			{children}

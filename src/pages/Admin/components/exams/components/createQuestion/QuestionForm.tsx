@@ -33,7 +33,7 @@ const QuestionForm = () => {
 			initialValues={initialValues}
 			validationSchema={yup.object({
 				scenario: yup.string().required("Required"),
-				topic: yup.string().required("Required")
+				topic: yup.string().required("Required"),
 			})}
 			enableReinitialize={true}
 			onSubmit={async (values, { setValues, setSubmitting }) => {
@@ -102,7 +102,9 @@ const QuestionForm = () => {
 							if (
 								!questionForm.SBAContent.explanation ||
 								!questionForm.SBAContent.question ||
-								questionForm.SBAContent.options.some(singleOption => !singleOption)
+								questionForm.SBAContent.options.some(
+									singleOption => !singleOption
+								)
 							) {
 								return toast.error("Fill up all the fields")
 							}
@@ -166,17 +168,20 @@ const QuestionForm = () => {
 						scenario: "",
 						type: values.type,
 						parent: "All",
-						topic: ""
+						topic: "",
 					})
 				} catch (error) {
 					toast.error("Something went wrong... Try later")
 				} finally {
 					setSubmitting(false)
 				}
-			}}>
+			}}
+		>
 			{({ isSubmitting, setValues, values }) => (
-				<Form>
-					<div className='grid grid-cols-2 gap-4'>
+				<Form ref={questionForm.formRef}>
+					<div
+						className='grid grid-cols-2 gap-4'
+					>
 						<div>
 							<Select id='type' label='Type' name='type'>
 								<option value='SBA'>
@@ -194,18 +199,22 @@ const QuestionForm = () => {
 								name='parent'
 								label='Parent category'
 								value={values.parent}
-								>
+							>
 								{parentCategories.map((category, i) => (
 									<option key={category + i}>
 										{category}
 									</option>
 								))}
 							</Select>
-							<p className="mb-4 text-gray-400 text-sm text-center">Specify "None" if the question hasn't a parent category</p>
+							<p className='mb-4 text-gray-400 text-sm text-center'>
+								Specify "None" if the question hasn't a parent
+								category
+							</p>
 							<Select
 								id='category'
 								name='category'
-								label='Category'>
+								label='Category'
+							>
 								{questionCategories.map((category, i) => (
 									<option key={category + i}>
 										{category}
@@ -213,10 +222,10 @@ const QuestionForm = () => {
 								))}
 							</Select>
 							<Input
-								id="topic"
-								label="Topic"
-								name="topic"
-								placeholder="A very specified categorization"
+								id='topic'
+								label='Topic'
+								name='topic'
+								placeholder='A very specified categorization'
 							/>
 							<div>
 								<TextArea
@@ -237,7 +246,8 @@ const QuestionForm = () => {
 											markdownExampleText
 										)
 									}}
-									className='flex items-center text-gray-400 text-sm hover:underline'>
+									className='flex items-center text-gray-400 text-sm hover:underline'
+								>
 									<p>
 										Click over here to see an example of how{" "}
 										<span className='text-blue-400'>
@@ -251,11 +261,13 @@ const QuestionForm = () => {
 									isSubmitting
 										? "pointer-events-none"
 										: "pointer-events-auto"
-								}`}>
+								}`}
+							>
 								<SolidButton
 									as={ComponentElement.BUTTON}
 									submit={true}
-									theme={themeBtns.greenBtn}>
+									theme={themeBtns.greenBtn}
+								>
 									<div className='flex gap-2 items-center'>
 										{isSubmitting ? (
 											<Spin />
@@ -265,7 +277,8 @@ const QuestionForm = () => {
 												fill='currentColor'
 												viewBox='0 0 20 20'
 												xmlns='http://www.w3.org/2000/svg'
-												aria-hidden='true'>
+												aria-hidden='true'
+											>
 												<path d='M2.695 14.763l-1.262 3.154a.5.5 0 00.65.65l3.155-1.262a4 4 0 001.343-.885L17.5 5.5a2.121 2.121 0 00-3-3L3.58 13.42a4 4 0 00-.885 1.343z' />
 											</svg>
 										) : (
@@ -274,7 +287,8 @@ const QuestionForm = () => {
 												fill='currentColor'
 												viewBox='0 0 20 20'
 												xmlns='http://www.w3.org/2000/svg'
-												aria-hidden='true'>
+												aria-hidden='true'
+											>
 												<path
 													clipRule='evenodd'
 													fillRule='evenodd'
@@ -306,16 +320,18 @@ const QuestionForm = () => {
 												scenario: "",
 												type: values.type,
 												parent: values.parent,
-												topic: values.topic
+												topic: "",
 											})
-										}}>
+										}}
+									>
 										<div className='flex gap-2 items-center'>
 											<svg
 												className='w-6'
 												fill='currentColor'
 												viewBox='0 0 20 20'
 												xmlns='http://www.w3.org/2000/svg'
-												aria-hidden='true'>
+												aria-hidden='true'
+											>
 												<path
 													clipRule='evenodd'
 													fillRule='evenodd'

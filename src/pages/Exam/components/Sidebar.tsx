@@ -1,30 +1,37 @@
 import { toast } from "react-hot-toast"
 import { themeBtns } from "../../../components/ui/Buttons/SolidButton"
+import DecitionToast from "../../../components/ui/DecitionToast"
 import { useAuthContext } from "../../../context/auth/authContext"
 import { cancelExamRequest } from "../../../lib/exam.request"
 import { formatDate } from "../../../utils/date"
 import SideBarElement from "./ui/SideBarElement"
 
 const Sidebar = () => {
-	const { auth , refreshUser} = useAuthContext()
+	const { auth, refreshUser } = useAuthContext()
 	const { user } = auth
 
 	async function cancelExam() {
-		const wantsCancel = prompt(
-			"Are you sure you want to cancel this exam? Yes/No",
-			"No"
-		)
-		if (wantsCancel?.toLowerCase() === "yes") {
-			try {
-				const res = await cancelExamRequest(auth.token || "")
-				if (res.status === 204) {
-					toast.success("Exam cancelled")
-					refreshUser()
-				}
-			} catch (error) {
-				toast.error("Something went wrong... Try later")
-			}
-		}
+		toast.custom(t => (
+			<DecitionToast
+				t={t}
+				text='Are you sure you want to cancel this exam?'
+				afirmativeCallback={async () => {
+					try {
+						const res = await cancelExamRequest(auth.token || "")
+						if (res.status === 204) {
+							toast.success("Exam cancelled", {
+								id: t.id,
+							})
+							refreshUser()
+						}
+					} catch (error) {
+						toast.error("Something went wrong... Try later", {
+							id: t.id,
+						})
+					}
+				}}
+			/>
+		))
 	}
 
 	return (
