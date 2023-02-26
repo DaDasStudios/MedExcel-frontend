@@ -135,7 +135,7 @@ const More = () => {
 				>
 					<Heading>Privacy Policy</Heading>
 					<Paragraph>
-						MedExcel website is owned by Company Name, which is a
+						MedExcel website is owned by COMPANY NAME, which is a
 						data controller of your personal data.
 					</Paragraph>
 					<Paragraph>

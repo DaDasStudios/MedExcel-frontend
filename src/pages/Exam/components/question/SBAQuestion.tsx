@@ -6,6 +6,7 @@ import { useAuthContext } from "../../../../context/auth/authContext"
 import { useExamContext } from "../../../../context/exam/examContext"
 import { IQuestion, ISBAQuestion } from "../../../../interface/exam"
 import { submitAnswerRequest } from "../../../../lib/exam.request"
+import { toTitle } from "../../../../utils/string"
 import NextButton from "../ui/NextButton"
 
 const SBAQuestion = () => {
@@ -58,7 +59,7 @@ const SBAQuestion = () => {
 	return (
 		<div className='flex flex-col gap-3 text-gray-200 font-medium'>
 			<span className='text-sm text-gray-300'>
-				Category - <b>{question.category}</b>
+				Category - <b>{question.parent}</b> / <b>{question.category}</b> / <b>{toTitle(question.topic || "No topic")}</b>
 			</span>
 			<span className='text-xs sm:text-sm text-gray-400 flex items-baseline gap-3'>
 				<svg

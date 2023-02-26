@@ -14,6 +14,7 @@ import {
 	getCurrentQuestionRequest,
 	submitAnswerRequest,
 } from "../../../../lib/exam.request"
+import { toTitle } from "../../../../utils/string"
 
 interface IScreenState {
 	page: number
@@ -104,6 +105,7 @@ const CBQQuestion = () => {
 
 	async function handleChangeCase(indexAdvance: number) {
 		const pageIndex = screenOptions.page + indexAdvance
+		console.log(pageIndex, hasAnswered)
 
 		if (
 			!hasAnswered &&
@@ -112,7 +114,7 @@ const CBQQuestion = () => {
 			return
 		}
 
-		if (hasAnswered && pageIndex === screenOptions.cases) {
+		if (hasAnswered && pageIndex === screenOptions.cases + 1) {
 			// ? Reload to fetch next question
 			if (await hasFinishedExam()) {
 				setHasFinished(true)
@@ -132,7 +134,8 @@ const CBQQuestion = () => {
 	return (
 		<div className='flex flex-col gap-3 text-gray-200 font-medium'>
 			<span className='text-sm text-gray-300'>
-				Category - <b>{question.parent}</b> / <b>{question.category}</b>
+				Category - <b>{question.parent}</b> / <b>{question.category}</b>{" "}
+				/ <b>{toTitle(question.topic || "No topic")}</b>
 			</span>
 			<span className='text-xs sm:text-sm text-gray-400 flex items-baseline gap-3'>
 				<svg
@@ -183,7 +186,7 @@ const CBQQuestion = () => {
 					))}
 					<span
 						className={`border  shadow-md rounded-lg p-1 ${
-							screenOptions.page === question.content.length
+							screenOptions.page === screenOptions.cases
 								? "bg-blue-700/50 border-blue-100/10"
 								: "bg-slate-700 border-gray-100/10"
 						}`}
@@ -244,7 +247,11 @@ const CBQQuestion = () => {
 												className={`ml-4`}
 												type='radio'
 												value={option}
-												checked={selectedOptions[screenOptions.page] === option}
+												checked={
+													selectedOptions[
+														screenOptions.page
+													] === option
+												}
 												onChange={e =>
 													handleOnChange(
 														e,
@@ -334,7 +341,7 @@ const CBQQuestion = () => {
 									<p className='hidden sm:block'>
 										Submit answer
 									</p>
-									<p className="block sm:hidden">Submit</p>
+									<p className='block sm:hidden'>Submit</p>
 								</>
 							)
 						) : (
