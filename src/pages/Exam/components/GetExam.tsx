@@ -306,7 +306,13 @@ const GetExam = () => {
 								key={questionLoad[0] + i}
 							>
 								{" "}
-								<div className='pl-6 p4-4 flex items-center justify-between py-2 border-b border-gray-100/10'>
+								<div
+									className={`${
+										questionLoad[0] === "None"
+											? "hidden"
+											: "pl-6 p-4"
+									} flex items-center justify-between py-2 border-b border-gray-100/10`}
+								>
 									<CategoryCheckbox
 										id={questionLoad[0]}
 										category={questionLoad[0]}
@@ -370,7 +376,11 @@ const GetExam = () => {
 										})
 										.map((question, j) => (
 											<li
-												className='flex items-center pl-8 py-2 justify-between border-b border-gray-100/10'
+												className={`${
+													questionLoad[0] === "None"
+														? "pl-4 py-2"
+														: "pl-8 py-2"
+												} flex items-center  justify-between border-b border-gray-100/10`}
 												key={question._id}
 											>
 												<CategoryCheckbox

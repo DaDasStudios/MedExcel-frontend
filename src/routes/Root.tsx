@@ -51,11 +51,11 @@ function Layout() {
 							  ]
 							: [
 									{
-										displayTitle: "More",
+										displayTitle: "Learn More",
 										href: "/more",
 									},
 									{
-										displayTitle: "Exam",
+										displayTitle: "Question Bank",
 										href: "/exam",
 									},
 							  ]
@@ -85,6 +85,8 @@ function Layout() {
 					<Route path='/' element={<Home />} />
 					<Route path='/subscription' element={<Subscription />} />
 					<Route path='/more' element={<More />} />
+					<Route path='/recover' element={<Recover />} />
+					<Route path='/recover/auth' element={<RecoverAuth />} />
 					{/* ADMIN */}
 					<Route
 						path='/admin/*'
@@ -106,11 +108,6 @@ function Layout() {
 						<>
 							<Route path='/signup' element={<Signup />} />
 							<Route path='/signin' element={<Signin />} />
-							<Route path='/recover' element={<Recover />} />
-							<Route
-								path='/recover/auth'
-								element={<RecoverAuth />}
-							/>
 						</>
 					)}
 					<Route path='*' element={<ErrorPage />} />
@@ -130,26 +127,22 @@ function Layout() {
 							},
 							{
 								label: "Report",
-								href: "/admin",
+								href: "mailto:admin@medexcel.co.uk",
+								isAnchorLink: true,
 							},
 						],
 						[
 							{
-								label: "Terms & Conditions",
-								href: "/more#terms-conditions",
+								label: "Legal",
+								href: "/more#legal",
 							},
-							{
-								label: "Privacy Policy",
-								href: "/more#privacy-policy",
-							},
-						],
-						[
 							{
 								label: "Admin portal",
 								href: "/admin",
 							},
 							{
-								label: "excelatmedicine@gmail.com",
+								//label: "excelatmedicine@gmail.com",
+								label: "admin@medexcel.co.uk",
 							},
 						],
 					]}

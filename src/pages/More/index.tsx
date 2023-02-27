@@ -3,11 +3,13 @@ import SolidButton from "../../components/ui/Buttons/SolidButton"
 import Paragraph from "./components/Paragraph"
 import { ComponentElement } from "../../interface"
 import AOS from "aos"
-import { useEffect } from "react"
+import { useEffect, useRef } from "react"
 import Heading from "./components/Heading"
 import CategoriesList from "./components/CategoriesList"
 import Subtitle from "./components/Subtitle"
 import List from "./components/List"
+import { formatDate } from "../../utils/date"
+import { useLocation } from "react-router-dom"
 
 const More = () => {
 	useEffect(() => {
@@ -16,6 +18,17 @@ const More = () => {
 		})
 		AOS.refresh()
 	}, [])
+
+	const legalRef = useRef<HTMLElement>(null)
+	const location = useLocation()
+	
+	useEffect(() => {
+		if (location.hash.includes("legal")) {
+			legalRef.current?.scrollIntoView({
+				behavior: "smooth"
+			})
+		}
+	}, [location.hash])
 	
 	return (
 		<>
@@ -41,10 +54,9 @@ const More = () => {
 						</SolidButton>
 						<SolidButton
 							as={ComponentElement.A}
-							href='#privacy-policy'
+							href='#legal'
 						>
-							<p className='hidden sm:block'>Privacy Policy</p>
-							<p className='block sm:hidden'>Legal</p>
+							<p>Legal</p>
 						</SolidButton>
 					</div>
 				</article>
@@ -62,7 +74,7 @@ const More = () => {
 							},
 							{
 								name: "Cardiology",
-								imageUrl: "/img/cardiology.jpg",
+								imageUrl: "/img/cardiology.jpeg",
 							},
 							{
 								name: "Pharmacology",
@@ -91,7 +103,7 @@ const More = () => {
 					id='about-us'
 					className='max-w-xl mx-auto text-slate-100 mb-16'
 				>
-					<Heading>Dive deep and know more about us</Heading>
+					<Heading>Why choose us?</Heading>
 					<Paragraph>
 						We understand the importance of being well-prepared for
 						medical exams, which is why we have created a
@@ -117,7 +129,7 @@ const More = () => {
 					</Paragraph>
 					<Paragraph>
 						We believe that everyone should have access to quality
-						educational resources at a an accessible price which is
+						educational resources at an accessible price which is
 						why our website is completely affordable. With our help,
 						you can achieve your goals and excel in your medical
 						studies.
@@ -130,141 +142,109 @@ const More = () => {
 					</Paragraph>
 				</article>
 				<article
-					id='privacy-policy'
+					ref={legalRef}
+					id='legal'
 					className='max-w-2xl mx-auto text-slate-100 mb-16'
 				>
 					<Heading>Privacy Policy</Heading>
 					<Paragraph>
-						MedExcel website is owned by COMPANY NAME, which is a
-						data controller of your personal data.
+						MedExcel ("us", "we", or "our") operates
+						www.medexcel.co.uk (the "Site"). This page informs you
+						of our policies regarding the collection, use and
+						disclosure of Personal Information we receive from users
+						of the Site.
 					</Paragraph>
 					<Paragraph>
-						We have adopted this Privacy Policy, which determines
-						how we are processing the information collected by
-						MedExcel, which also provides the reasons why we must
-						collect certain personal data about you. Therefore, you
-						must read this Privacy Policy before using MedExcel
-						website.
+						We use your Personal Information only for providing and
+						improving the Site. By using the Site, you agree to the
+						collection and use of information in accordance with
+						this policy.
+					</Paragraph>
+					<Subtitle>Information Collection And Use:</Subtitle>
+					<Paragraph>
+						While using our Site, we may ask you to provide us with
+						certain personally identifiable information that can be
+						used to contact or identify you. Personally identifiable
+						information may include, but is not limited to your
+						name, email address, mailing address, and phone number
+						("Personal Information").
+					</Paragraph>
+					<Subtitle>Log Data</Subtitle>
+					<Paragraph>
+						Like many site operators, we collect information that
+						your browser sends whenever you visit our Site ("Log
+						Data"). This Log Data may include information such as
+						your computer's Internet Protocol ("IP") address,
+						browser type, browser version, the pages of our Site
+						that you visit, the time and date of your visit, the
+						time spent on those pages and other statistics.
 					</Paragraph>
 					<Paragraph>
-						We take care of your personal data and undertake to
-						guarantee its confidentiality and security.
+						In addition, we may use third-party services such as
+						Google Analytics that collect, monitor and analyze this
+						data.
 					</Paragraph>
-					<Subtitle>Personal information we collect:</Subtitle>
+					<Subtitle>Communications</Subtitle>
 					<Paragraph>
-						When you visit the MedExcel, we automatically collect
-						certain information about your device, including
-						information about your web browser, IP address, time
-						zone, and some of the installed cookies on your device.
-						Additionally, as you browse the Site, we collect
-						information about the individual web pages or products
-						you view, what websites or search terms referred you to
-						the Site, and how you interact with the Site. We refer
-						to this automatically-collected information as “Device
-						Information.” Moreover, we might collect the personal
-						data you provide to us (including but not limited to
-						Name, Surname, Address, payment information, etc.)
-						during registration to be able to fulfill the agreement.
+						We may use your Personal Information to contact you with
+						newsletters, marketing or promotional materials and
+						other information that may be of interest to you. You
+						may opt out of receiving any, or all, of these
+						communications from us by following the unsubscribe link
+						or instructions provided in any email we send.
 					</Paragraph>
-					<Subtitle>Why do we process your data?</Subtitle>
+					<Subtitle>Cookies</Subtitle>
 					<Paragraph>
-						Our top priority is customer data security, and, as
-						such, we may process only minimal user data, only as
-						much as it is absolutely necessary to maintain the
-						website. Information collected automatically is used
-						only to identify potential cases of abuse and establish
-						statistical information regarding website usage. This
-						statistical information is not otherwise aggregated in
-						such a way that it would identify any particular user of
-						the system.
+						Cookies are files with small amount of data, which may
+						include an anonymous unique identifier. Cookies are sent
+						to your browser from a website and stored on your
+						computer's hard drive.
 					</Paragraph>
 					<Paragraph>
-						You can visit the website without telling us who you are
-						or revealing any information, by which someone could
-						identify you as a specific, identifiable individual. If,
-						however, you wish to use some of the website’s features,
-						or you wish to receive our newsletter or provide other
-						details by filling a form, you may provide personal data
-						to us, such as your email, first name, last name, city
-						of residence, organization, telephone number. You can
-						choose not to provide us with your personal data, but
-						then you may not be able to take advantage of some of
-						the website’s features. For example, you won’t be able
-						to receive our Newsletter or contact us directly from
-						the website. Users who are uncertain about what
-						information is mandatory are welcome to contact us via
-						excelatmedicine@gmail.com.
+						Like many sites, we use "cookies" to collect
+						information. You can instruct your browser to refuse all
+						cookies or to indicate when a cookie is being sent.
+						However, if you do not accept cookies, you may not be
+						able to use some portions of our Site.
 					</Paragraph>
-					<Subtitle>Your rights:</Subtitle>
+					<Subtitle>Security</Subtitle>
 					<Paragraph>
-						If you are a European resident, you have the following
-						rights related to your personal data:
+						The security of your Personal Information is important
+						to us, but remember that no method of transmission over
+						the Internet, or method of electronic storage, is 100%
+						secure. While we strive to use commercially acceptable
+						means to protect your Personal Information, we cannot
+						guarantee its absolute security.
 					</Paragraph>
-					<ul>
-						<List>The right to be informed.</List>
-						<List>The right of access.</List>
-						<List>The right to rectification.</List>
-						<List>The right to erasure.</List>
-						<List>The right to restrict processing.</List>
-						<List>The right to data portability.</List>
-						<List>The right to object.</List>
-						<List>
-							Rights in relation to automated decision-making and
-							profiling.
-						</List>
-					</ul>
+					<Subtitle>Changes To This Privacy Policy</Subtitle>
 					<Paragraph>
-						If you would like to exercise this right, please contact
-						us through the contact information below.
+						This Privacy Policy is effective as of{" "}
+						<span className='underline'>
+							{formatDate.format(new Date())}
+						</span>{" "}
+						and will remain in effect except with respect to any
+						changes in its provisions in the future, which will be
+						in effect immediately after being posted on this page.
 					</Paragraph>
 					<Paragraph>
-						Additionally, if you are a European resident, we note
-						that we are processing your information in order to
-						fulfill contracts we might have with you (for example,
-						if you make an order through the Site), or otherwise to
-						pursue our legitimate business interests listed above.
-						Additionally, please note that your information might be
-						transferred outside of Europe, including Canada and the
-						United States.
+						We reserve the right to update or change our Privacy
+						Policy at any time and you should check this Privacy
+						Policy periodically. Your continued use of the Site
+						after we post any modifications to the Privacy Policy on
+						this page will constitute your acknowledgment of the
+						modifications and your consent to abide and be bound by
+						the modified Privacy Policy.
 					</Paragraph>
-					<Subtitle>Links to other websites:</Subtitle>
+					<Subtitle>Contact Us</Subtitle>
 					<Paragraph>
-						Our website may contain links to other websites that are
-						not owned or controlled by us. Please be aware that we
-						are not responsible for such other websites or third
-						parties' privacy practices. We encourage you to be aware
-						when you leave our website and read the privacy
-						statements of each website that may collect personal
-						information.
-					</Paragraph>
-					<Subtitle>Information security:</Subtitle>
-					<Paragraph>
-						We secure information you provide on computer servers in
-						a controlled, secure environment, protected from
-						unauthorized access, use, or disclosure. We keep
-						reasonable administrative, technical, and physical
-						safeguards to protect against unauthorized access, use,
-						modification, and personal data disclosure in its
-						control and custody. However, no data transmission over
-						the Internet or wireless network can be guaranteed.
-					</Paragraph>
-					<Subtitle>Legal disclosure:</Subtitle>
-					<Paragraph>
-						We will disclose any information we collect, use or
-						receive if required or permitted by law, such as to
-						comply with a subpoena or similar legal process, and
-						when we believe in good faith that disclosure is
-						necessary to protect our rights, protect your safety or
-						the safety of others, investigate fraud, or respond to a
-						government request.
-					</Paragraph>
-					<Subtitle>Contact information:</Subtitle>
-					<Paragraph>
-						If you would like to contact us to understand more about
-						this Policy or wish to contact us concerning any matter
-						relating to individual rights and your Personal
-						Information, you may send an email to
-						excelatmedicine@gmail.com.
+						If you have any questions about this Privacy Policy,
+						please contact us at{" "}
+						<a
+							className='underline'
+							href='mailto:admin@medexcel.co.uk'
+						>
+							admin@medexcel.co.uk.
+						</a>
 					</Paragraph>
 				</article>
 				<article

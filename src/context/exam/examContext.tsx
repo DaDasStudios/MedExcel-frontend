@@ -1,4 +1,4 @@
-import { createContext, PropsWithChildren, useContext, useState } from "react"
+import { createContext, PropsWithChildren, useContext, useEffect, useState } from "react"
 import {
 	IAnsweredQuestionResponse,
 	IExamContext,
@@ -20,10 +20,14 @@ export const ExamContextProvider = ({ children }: PropsWithChildren) => {
 	const [questionResponse, setQuestionResponse] = useState(
 		{} as IAnsweredQuestionResponse
 	)
-	const [score, setScore] = useState(user?.exam.score || 0)
+	const [score, setScore] = useState(user?.exam.score as number)
 	const [hasAnswered, setHasAnswered] = useState(false)
 	const [hasFinished, setHasFinished] = useState(false)
 	const [scoresHistory, setScoresHistory] = useState({} as IScoresHistory)
+
+	useEffect(() => {
+		setScore(user?.exam.score as number)
+	}, [user?.exam.score])
 
 	async function getCurrentQuestion() {
 		try {

@@ -2,12 +2,14 @@ import { toast } from "react-hot-toast"
 import { themeBtns } from "../../../components/ui/Buttons/SolidButton"
 import DecitionToast from "../../../components/ui/DecitionToast"
 import { useAuthContext } from "../../../context/auth/authContext"
+import { useExamContext } from "../../../context/exam/examContext"
 import { cancelExamRequest } from "../../../lib/exam.request"
 import { formatDate } from "../../../utils/date"
 import SideBarElement from "./ui/SideBarElement"
 
 const Sidebar = () => {
 	const { auth, refreshUser } = useAuthContext()
+	const { score } = useExamContext()
 	const { user } = auth
 
 	async function cancelExam() {
@@ -52,7 +54,7 @@ const Sidebar = () => {
 						/>
 					</svg>
 					<h4>
-						Correct questions <b>{user?.exam.score.toFixed(0)}</b>%
+						Correct questions <b>{score ? score.toFixed(0) : user?.exam.score.toFixed(0)}</b>%
 					</h4>
 				</SideBarElement>
 				<SideBarElement>

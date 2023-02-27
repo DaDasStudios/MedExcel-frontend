@@ -10,6 +10,7 @@ const Category = ({ category }: IProps) => {
 	return (
 		<li data-aos="zoom-in-up" className='rounded-md shadow-lg border border-slate-100/10 overflow-hidden relative group'>
 			<img
+				className="object-cover h-full"
 				src={category.imageUrl}
 				alt={category.name}
 			/>
