@@ -179,9 +179,7 @@ const QuestionForm = () => {
 		>
 			{({ isSubmitting, setValues, values }) => (
 				<Form ref={questionForm.formRef}>
-					<div
-						className='grid grid-cols-2 gap-4'
-					>
+					<div className='grid grid-cols-2 gap-4'>
 						<div>
 							<Select id='type' label='Type' name='type'>
 								<option value='SBA'>
@@ -194,6 +192,7 @@ const QuestionForm = () => {
 									Case Based Questions
 								</option>
 							</Select>
+
 							<Select
 								id='parent'
 								name='parent'
@@ -210,6 +209,7 @@ const QuestionForm = () => {
 								Specify "None" if the question hasn't a parent
 								category
 							</p>
+
 							<Select
 								id='category'
 								name='category'
@@ -221,6 +221,7 @@ const QuestionForm = () => {
 									</option>
 								))}
 							</Select>
+
 							<Input
 								id='topic'
 								label='Topic'

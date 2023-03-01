@@ -308,11 +308,13 @@ const GetExam = () => {
 								{" "}
 								<div
 									className={`${
-										questionLoad[0] === "None"
+										questionLoad[0] === "None" ||
+										questionLoad[0] === "All"
 											? "hidden"
-											: "pl-6 p-4"
-									} flex items-center justify-between py-2 border-b border-gray-100/10`}
+											: ""
+									} flex p-4 pl-6 items-center justify-between py-2 border-b border-gray-100/10`}
 								>
+									{/** Show the parent label */}
 									<CategoryCheckbox
 										id={questionLoad[0]}
 										category={questionLoad[0]}
@@ -335,6 +337,7 @@ const GetExam = () => {
 														),
 												},
 											})
+											// Check if the category is an array or a single string
 											handleChecking(
 												questionLoad[1].content.reduce(
 													(arr, cat) => {
@@ -366,6 +369,7 @@ const GetExam = () => {
 								<ul className='flex flex-col'>
 									{questionLoad[1].content
 										.filter((item, k) => {
+											// Filter the categories to remove the questions repeated
 											return (
 												questionLoad[1].content.findIndex(
 													question =>
@@ -377,8 +381,10 @@ const GetExam = () => {
 										.map((question, j) => (
 											<li
 												className={`${
-													questionLoad[0] === "None"
-														? "pl-4 py-2"
+													questionLoad[0] ===
+														"None" ||
+													questionLoad[0] === "All"
+														? "pl-6 py-2"
 														: "pl-8 py-2"
 												} flex items-center  justify-between border-b border-gray-100/10`}
 												key={question._id}
@@ -392,7 +398,7 @@ const GetExam = () => {
 														let isEveryItemUnchecked: boolean
 														const childrenCategories =
 															questions[
-																question.parent
+																["All", "None"].includes(question.parent) ? "None" : question.parent
 															].content.reduce(
 																(arr, item) => {
 																	if (

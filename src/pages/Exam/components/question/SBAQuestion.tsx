@@ -59,7 +59,12 @@ const SBAQuestion = () => {
 	return (
 		<div className='flex flex-col gap-3 text-gray-200 font-medium'>
 			<span className='text-sm text-gray-300'>
-				Category - <b>{question.parent}</b> / <b>{question.category}</b> / <b>{toTitle(question.topic || "No topic")}</b>
+				Category -{" "}
+				{!["None", "All"].includes(question.parent) && (
+					<b>{question.parent} / </b>
+				)}
+				<b>{question.category}</b> /{" "}
+				<b>{toTitle(question.topic || "No topic")}</b>
 			</span>
 			<span className='text-xs sm:text-sm text-gray-400 flex items-baseline gap-3'>
 				<svg

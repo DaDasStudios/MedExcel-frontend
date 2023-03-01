@@ -8,6 +8,7 @@ import { toast } from "react-hot-toast"
 import { deleteQuestionRequest } from "../../../../../../lib/admin.request"
 import { useAdminContext } from "../../../../../../context/admin/adminContext"
 import { toTitle } from "../../../../../../utils/string"
+import DecitionToast from "../../../../../../components/ui/DecitionToast"
 
 interface IProps {
 	question: IQuestion
@@ -139,41 +140,44 @@ const QuestionCard = ({ question, index }: IProps) => {
 								Edit
 							</li>
 							<li
-								onClick={async () => {
-									const wantsDelete = prompt(
-										"Sure you want to delete this question? Yes/No",
-										"No"
-									)
-									if (wantsDelete?.toLowerCase() === "yes") {
-										try {
-											const res =
-												await deleteQuestionRequest(
-													question._id,
-													auth.token
-												)
+								onClick={() => {
+									toast.custom(t => (
+										<DecitionToast
+											t={t}
+											text='Sure you want to delete this question?'
+											afirmativeCallback={async () => {
+												try {
+													const res =
+														await deleteQuestionRequest(
+															question._id,
+															auth.token
+														)
 
-											if (
-												res.status === 200 &&
-												res.data.message ===
-													"Question deleted"
-											) {
-												setQuestions(questions =>
-													questions.filter(
-														q =>
-															q._id !==
-															question._id
+													if (
+														res.status === 200 &&
+														res.data.message ===
+															"Question deleted"
+													) {
+														setQuestions(
+															questions =>
+																questions.filter(
+																	q =>
+																		q._id !==
+																		question._id
+																)
+														)
+														return toast.success(
+															"Question deleted"
+														)
+													}
+												} catch (error) {
+													toast.error(
+														"Failed to delete this question"
 													)
-												)
-												return toast.success(
-													"Question deleted"
-												)
-											}
-										} catch (error) {
-											toast.error(
-												"Failed to delete this question"
-											)
-										}
-									}
+												}
+											}}
+										/>
+									))
 								}}
 								className='flex items-center gap-2 hover:underline'
 							>

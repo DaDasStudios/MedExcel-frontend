@@ -13,7 +13,6 @@ const DecitionToast = ({
 	afirmativeCallback,
 	negativeCallback,
 }: IProps) => {
-    console.log(t.visible)
 	return (
 		<div
 			className={`bg-white rounded-md shadow-md p-3 ${

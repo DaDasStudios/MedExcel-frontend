@@ -8,6 +8,7 @@ import AddSubscription from "./components/SubscriptionPlanForm"
 import SubscriptionsGroup from "./components/SubscriptionsGroup"
 import Spin from "../../../../components/ui/Spin"
 import { deleteSubscriptionPlanRequest } from "../../../../lib/admin.request"
+import DecitionToast from "../../../../components/ui/DecitionToast"
 
 const Pricing = () => {
 	const { auth } = useAdminContext()
@@ -55,24 +56,35 @@ const Pricing = () => {
 		setIsEditing(false)
 	}
 
-	async function deleteSubscriptionPlan(id: string) {
-		const wantsDelete = prompt("Are you sure you want to delete this subscription? Type yes", 'No')
-		if (wantsDelete?.toLowerCase() !== 'yes') return toast.error("Deletion cancelled")
-		try {
-			const res = await deleteSubscriptionPlanRequest(id, auth.token)
+	function deleteSubscriptionPlan(id: string) {
+		toast.custom(t => (
+			<DecitionToast
+				t={t}
+				text='Are you sure you want to delete this subscription?'
+				afirmativeCallback={async () => {
+					try {
+						const res = await deleteSubscriptionPlanRequest(
+							id,
+							auth.token
+						)
 
-			if (
-				res.status === 200 &&
-				res.data.message === "Subscription deleted"
-			) {
-				setSubscriptions(subscriptions)
-				return toast.success("Subscription plan deleted")
-			}
+						if (
+							res.status === 200 &&
+							res.data.message === "Subscription deleted"
+						) {
+							setSubscriptions(subscriptions)
+							return toast.success("Subscription plan deleted", {
+								id: t.id,
+							})
+						}
 
-			throw new Error("Could not create subscription plan")
-		} catch (error: any) {
-			toast.error("Something went wrong... Try later")
-		}
+						throw new Error("Could not create subscription plan")
+					} catch (error: any) {
+						toast.error("Something went wrong... Try later")
+					}
+				}}
+			/>
+		))
 	}
 
 	return (
@@ -85,7 +97,8 @@ const Pricing = () => {
 							fill='currentColor'
 							viewBox='0 0 20 20'
 							xmlns='http://www.w3.org/2000/svg'
-							aria-hidden='true'>
+							aria-hidden='true'
+						>
 							<path
 								clipRule='evenodd'
 								fillRule='evenodd'
@@ -115,7 +128,8 @@ const Pricing = () => {
 					className={`col-span-2 ${
 						!subscriptions &&
 						"flex items-center justify-center flex-col gap-3"
-					}`}>
+					}`}
+				>
 					{subscriptions ? (
 						<SubscriptionsGroup
 							editPlan={editPlan}
