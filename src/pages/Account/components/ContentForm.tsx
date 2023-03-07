@@ -10,19 +10,50 @@ import SolidButton, {
 } from "../../../components/ui/Buttons/SolidButton"
 import { ComponentElement } from "../../../interface"
 import Spin from "../../../components/ui/Spin"
-import { updateUserRequest } from "../../../lib/user.request"
+import {
+	resetExamHistoryRequest,
+	updateUserRequest,
+} from "../../../lib/user.request"
 import { useAuthContext } from "../../../context/auth/authContext"
 import { toast } from "react-hot-toast"
+import DecitionToast from "../../../components/ui/DecitionToast"
 
 interface IProps {
 	user: IUser
 }
 
 const ContentForm = ({ user }: IProps) => {
-	const { username, email, createdAt, subscription, exam } = user
+	const { username, email, createdAt, subscription, exam, _id } = user
 	const {
 		auth: { id, token },
+		refreshUser
 	} = useAuthContext()
+
+	function resetExamHistory() {
+		toast.custom(t => (
+			<DecitionToast
+				t={t}
+				text='Are you sure you want to delete your records?'
+				afirmativeCallback={async () => {
+					try {
+						const { data } = await resetExamHistoryRequest(
+							_id,
+							token || ""
+						)
+						if (data?.message === "History reseted")
+							refreshUser()
+							return toast.success("History reseted", {
+								id: t.id,
+							})
+					} catch (error) {
+						return toast.error("Ups... Something went wrong", {
+							id: t.id,
+						})
+					}
+				}}
+			/>
+		))
+	}
 
 	return (
 		<Formik
@@ -145,7 +176,7 @@ const ContentForm = ({ user }: IProps) => {
 								) : (
 									<Spin />
 								)}
-								<p className="sm:block hidden">Update</p>
+								<p className='sm:block hidden'>Update</p>
 							</span>
 						</SolidButton>
 					</div>
@@ -197,6 +228,32 @@ const ContentForm = ({ user }: IProps) => {
 								Exam records
 							</h3>
 							<ExamRecordTable />
+							<div className='flex justify-end'>
+								<SolidButton
+									onClick={resetExamHistory}
+									as={ComponentElement.BUTTON}
+									theme={themeBtns.redBtn}
+								>
+									<div className='flex items-center gap-3 justify-center'>
+										<svg
+											className='w-5'
+											fill='none'
+											stroke='currentColor'
+											stroke-width='1.5'
+											viewBox='0 0 24 24'
+											xmlns='http://www.w3.org/2000/svg'
+											aria-hidden='true'
+										>
+											<path
+												stroke-linecap='round'
+												stroke-linejoin='round'
+												d='M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636'
+											></path>
+										</svg>
+										Reset
+									</div>
+								</SolidButton>
+							</div>
 						</div>
 					</div>
 				</Form>

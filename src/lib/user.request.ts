@@ -31,3 +31,11 @@ export const sendNewPasswordRequest = (newPassword: string, recoverToken: string
         'Content-Type': 'application/json'
     }
 })
+
+export const resetExamHistoryRequest = (id: string, token: string) => axios.put<{
+    message: string
+}>(`${REST_HOST}/users/user/owner/reset-exam-history/${id}`, {}, {
+    headers: {
+        'Authorization': `Bearer ${token}`
+    }
+})

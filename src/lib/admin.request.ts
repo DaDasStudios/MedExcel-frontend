@@ -152,3 +152,14 @@ export const updateQuestionRequest = (id: string, payload: any, adminToken: stri
         "Content-Type": "application/json"
     }
 })
+
+export const setAccessDaysRequest = (id: string, payload: {
+    days: number
+}, adminToken: string) => axios.put<{
+    message: string
+}>(`${REST_HOST}/users/user/subscription/${id}`, payload, {
+    headers: {
+        'Authorization': `Bearer ${adminToken}`,
+        "Content-Type": "application/json"
+    }
+})

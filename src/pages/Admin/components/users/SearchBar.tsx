@@ -9,9 +9,10 @@ import { getUsersByFilterRequest } from "../../../../lib/admin.request"
 
 interface ISearchBarProps {
 	setUsers: React.Dispatch<React.SetStateAction<IUser[]>>
+	fetchUsers: Function
 }
 
-function SearchBar({ setUsers }: ISearchBarProps) {
+function SearchBar({ setUsers, fetchUsers }: ISearchBarProps) {
 	const {
 		auth: { token },
 	} = useAdminContext()
@@ -36,7 +37,8 @@ function SearchBar({ setUsers }: ISearchBarProps) {
 				} finally {
 					helpers.setSubmitting(false)
 				}
-			}}>
+			}}
+		>
 			{({ isSubmitting, values, setValues }) => (
 				<Form className='flex gap-2 items-center'>
 					<input
@@ -57,13 +59,15 @@ function SearchBar({ setUsers }: ISearchBarProps) {
 						<div className='flex gap-1'>
 							<button
 								type='submit'
-								className='p-2 rounded-md hover:text-gray-200 hover:bg-gray-700'>
+								className='p-2 rounded-md hover:text-gray-200 hover:bg-gray-700'
+							>
 								<svg
 									className='w-6'
 									fill='currentColor'
 									viewBox='0 0 20 20'
 									xmlns='http://www.w3.org/2000/svg'
-									aria-hidden='true'>
+									aria-hidden='true'
+								>
 									<path
 										clipRule='evenodd'
 										fillRule='evenodd'
@@ -76,13 +80,15 @@ function SearchBar({ setUsers }: ISearchBarProps) {
 								type='button'
 								onClick={() => {
 									setShowFilter(!showFilter)
-								}}>
+								}}
+							>
 								<svg
 									className='w-6'
 									fill='currentColor'
 									viewBox='0 0 20 20'
 									xmlns='http://www.w3.org/2000/svg'
-									aria-hidden='true'>
+									aria-hidden='true'
+								>
 									<path d='M17 2.75a.75.75 0 00-1.5 0v5.5a.75.75 0 001.5 0v-5.5zM17 15.75a.75.75 0 00-1.5 0v1.5a.75.75 0 001.5 0v-1.5zM3.75 15a.75.75 0 01.75.75v1.5a.75.75 0 01-1.5 0v-1.5a.75.75 0 01.75-.75zM4.5 2.75a.75.75 0 00-1.5 0v5.5a.75.75 0 001.5 0v-5.5zM10 11a.75.75 0 01.75.75v5.5a.75.75 0 01-1.5 0v-5.5A.75.75 0 0110 11zM10.75 2.75a.75.75 0 00-1.5 0v1.5a.75.75 0 001.5 0v-1.5zM10 6a2 2 0 100 4 2 2 0 000-4zM3.75 10a2 2 0 100 4 2 2 0 000-4zM16.25 10a2 2 0 100 4 2 2 0 000-4z' />
 								</svg>
 								<div
@@ -90,7 +96,8 @@ function SearchBar({ setUsers }: ISearchBarProps) {
 										showFilter
 											? "flex gap-2 flex-col"
 											: "hidden"
-									} p-3.5 rounded-md text-gray-300 bg-slate-800 border border-gray-100/10 text-center absolute h-fit w-fit whitespace-nowrap left-1/2 right-1/2 -translate-x-1/2 -bottom-40 z-20`}>
+									} p-3.5 rounded-md text-gray-300 bg-slate-800 border border-gray-100/10 text-center absolute h-fit w-fit whitespace-nowrap left-1/2 right-1/2 -translate-x-1/2 -bottom-40 z-20`}
+								>
 									<div
 										className='flex gap-2.5 items-center hover:underline'
 										onClick={() => {
@@ -101,13 +108,15 @@ function SearchBar({ setUsers }: ISearchBarProps) {
 															?.hasSubscription
 												)
 											)
-										}}>
+										}}
+									>
 										<svg
 											className='w-4'
 											fill='currentColor'
 											viewBox='0 0 20 20'
 											xmlns='http://www.w3.org/2000/svg'
-											aria-hidden='true'>
+											aria-hidden='true'
+										>
 											<path
 												clipRule='evenodd'
 												fillRule='evenodd'
@@ -137,13 +146,15 @@ function SearchBar({ setUsers }: ISearchBarProps) {
 																?.score
 													)
 											)
-										}>
+										}
+									>
 										<svg
 											className='w-4'
 											fill='currentColor'
 											viewBox='0 0 20 20'
 											xmlns='http://www.w3.org/2000/svg'
-											aria-hidden='true'>
+											aria-hidden='true'
+										>
 											<path
 												clipRule='evenodd'
 												fillRule='evenodd'
@@ -173,13 +184,15 @@ function SearchBar({ setUsers }: ISearchBarProps) {
 																?.score
 													)
 											)
-										}>
+										}
+									>
 										<svg
 											className='w-4'
 											fill='currentColor'
 											viewBox='0 0 20 20'
 											xmlns='http://www.w3.org/2000/svg'
-											aria-hidden='true'>
+											aria-hidden='true'
+										>
 											<path
 												clipRule='evenodd'
 												fillRule='evenodd'
@@ -190,15 +203,15 @@ function SearchBar({ setUsers }: ISearchBarProps) {
 									</div>
 									<div
 										className='flex gap-2.5 items-center hover:underline'
-										onClick={() =>
-											window.location.reload()
-										}>
+										onClick={() => window.location.reload()}
+									>
 										<svg
 											className='w-4'
 											fill='currentColor'
 											viewBox='0 0 20 20'
 											xmlns='http://www.w3.org/2000/svg'
-											aria-hidden='true'>
+											aria-hidden='true'
+										>
 											<path d='M3.196 12.87l-.825.483a.75.75 0 000 1.294l7.25 4.25a.75.75 0 00.758 0l7.25-4.25a.75.75 0 000-1.294l-.825-.484-5.666 3.322a2.25 2.25 0 01-2.276 0L3.196 12.87z' />
 											<path d='M3.196 8.87l-.825.483a.75.75 0 000 1.294l7.25 4.25a.75.75 0 00.758 0l7.25-4.25a.75.75 0 000-1.294l-.825-.484-5.666 3.322a2.25 2.25 0 01-2.276 0L3.196 8.87z' />
 											<path d='M10.38 1.103a.75.75 0 00-.76 0l-7.25 4.25a.75.75 0 000 1.294l7.25 4.25a.75.75 0 00.76 0l7.25-4.25a.75.75 0 000-1.294l-7.25-4.25z' />
@@ -206,6 +219,27 @@ function SearchBar({ setUsers }: ISearchBarProps) {
 										No filter
 									</div>
 								</div>
+							</button>
+							<button
+								onClick={() => fetchUsers()}
+								type='button'
+								className='p-2 rounded-md hover:text-gray-200 hover:bg-gray-700'
+							>
+								<svg
+									className='w-6'
+									fill='none'
+									stroke='currentColor'
+									stroke-width='1.5'
+									viewBox='0 0 24 24'
+									xmlns='http://www.w3.org/2000/svg'
+									aria-hidden='true'
+								>
+									<path
+										stroke-linecap='round'
+										stroke-linejoin='round'
+										d='M19.5 12c0-1.232-.046-2.453-.138-3.662a4.006 4.006 0 00-3.7-3.7 48.678 48.678 0 00-7.324 0 4.006 4.006 0 00-3.7 3.7c-.017.22-.032.441-.046.662M19.5 12l3-3m-3 3l-3-3m-12 3c0 1.232.046 2.453.138 3.662a4.006 4.006 0 003.7 3.7 48.656 48.656 0 007.324 0 4.006 4.006 0 003.7-3.7c.017-.22.032-.441.046-.662M4.5 12l3 3m-3-3l-3 3'
+									></path>
+								</svg>
 							</button>
 						</div>
 					)}

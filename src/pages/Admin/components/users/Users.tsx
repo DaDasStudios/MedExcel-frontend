@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react"
+import { toast } from "react-hot-toast"
 import Breadcrumb from "../../../../components/ui/Breadcrumb"
 import { useAdminContext } from "../../../../context/admin/adminContext"
 import { IUser } from "../../../../interface/user"
@@ -10,7 +11,7 @@ import UsersTable from "./UsersTable"
 const Users = () => {
 	const { auth } = useAdminContext()
 	const [users, setUsers] = useState([] as IUser[])
-	
+
 	// * Modal
 	const [renderModal, setRenderModal] = useState(false)
 	const [userId, setUserId] = useState("") // ? To edit users
@@ -28,13 +29,24 @@ const Users = () => {
 		setRenderModal(false)
 	}
 
+	const fetchUsers = () => {
+		const promise = getAllUsersRequest(auth.token)
+		toast.promise(promise, {
+			success(res) {
+				if (res.status === 200 && res.data.users) {
+					setUsers(res.data.users)
+				}
+				return "Loaded"
+			},
+			error(err) {
+				return "Error loading users"
+			},
+			loading: "Loading",
+		})
+	}
+
 	useEffect(() => {
-		;(async () => {
-			const res = await getAllUsersRequest(auth.token)
-			if (res.status === 200 && res.data.users) {
-				setUsers(res.data.users)
-			}
-		})()
+		fetchUsers()
 	}, [])
 
 	return (
@@ -47,7 +59,8 @@ const Users = () => {
 							fill='currentColor'
 							viewBox='0 0 20 20'
 							xmlns='http://www.w3.org/2000/svg'
-							aria-hidden='true'>
+							aria-hidden='true'
+						>
 							<path
 								clipRule='evenodd'
 								fillRule='evenodd'
@@ -62,11 +75,15 @@ const Users = () => {
 			/>
 			<h1 className='text-2xl font-semibold my-4'>All users</h1>
 			<div>
-				<SearchBar setUsers={setUsers}></SearchBar>
+				<SearchBar
+					setUsers={setUsers}
+					fetchUsers={fetchUsers}
+				></SearchBar>
 				<UsersTable
 					users={users}
 					setUsers={setUsers}
-					displayModal={displayModal}></UsersTable>
+					displayModal={displayModal}
+				></UsersTable>
 			</div>
 			<UpdateUserModal
 				userId={userId}
