@@ -32,9 +32,9 @@ export const sendNewPasswordRequest = (newPassword: string, recoverToken: string
     }
 })
 
-export const resetExamHistoryRequest = (id: string, token: string) => axios.put<{
+export const resetExamHistoryRequest = (id: string, token: string) => axios.delete<{
     message: string
-}>(`${REST_HOST}/users/user/owner/reset-exam-history/${id}`, {}, {
+}>(`${REST_HOST}/users/user/owner/reset-exam-history/${id}`, {
     headers: {
         'Authorization': `Bearer ${token}`
     }
