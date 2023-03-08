@@ -37,11 +37,11 @@ function Layout() {
 						? !user.subscription?.hasSubscription
 							? [
 									{
-										displayTitle: "More",
+										displayTitle: "Learn More",
 										href: "/more",
 									},
 									{
-										displayTitle: "Exam",
+										displayTitle: "Question Bank",
 										href: "/exam",
 									},
 									{
@@ -65,7 +65,7 @@ function Layout() {
 									href: "/subscription",
 								},
 								{
-									displayTitle: "More",
+									displayTitle: "Learn More",
 									href: "/more",
 								},
 
@@ -143,6 +143,16 @@ function Layout() {
 							{
 								//label: "excelatmedicine@gmail.com",
 								label: "admin@medexcel.co.uk",
+							},
+						],
+						[
+							{
+								label: "Instagram",
+								href: "https://www.instagram.com/med.excel/?igshid=YmMyMTA2M2Y%3D",
+							},
+							{
+								label: "Tik Tok",
+								href: "https://www.tiktok.com/@medexcel?_t=8aS99ljw2Cr&_r=1",
 							},
 						],
 					]}
