@@ -25,13 +25,7 @@ const FinishExam = () => {
 			</p>
 			<div className='my-3'>
 				<h2 className='text-center text-gray-200 font-bold text-3xl'>
-					Got {currentScore.score.toFixed(0)}% in{" "}
-					{(
-						(new Date(currentScore.finishedAt).getTime() -
-							new Date(currentScore.startedAt).getTime()) /
-						(1000 * 60)
-					).toFixed(1)}{" "}
-					minutes
+					Score in {currentScore.score.toFixed(0)}%
 				</h2>
 				<div className='grid grid-cols-2 gap-3 justify-around mt-6'>
 					<h3 className='text-center text-gray-300 text-lg font-semibold tracking-tight'>
