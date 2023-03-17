@@ -145,16 +145,6 @@ function Layout() {
 								label: "admin@medexcel.co.uk",
 							},
 						],
-						[
-							{
-								label: "Instagram",
-								href: "https://www.instagram.com/med.excel/?igshid=YmMyMTA2M2Y%3D",
-							},
-							{
-								label: "Tik Tok",
-								href: "https://www.tiktok.com/@medexcel?_t=8aS99ljw2Cr&_r=1",
-							},
-						],
 					]}
 				/>
 			)}
