@@ -105,7 +105,6 @@ const CBQQuestion = () => {
 
 	async function handleChangeCase(indexAdvance: number) {
 		const pageIndex = screenOptions.page + indexAdvance
-		console.log(pageIndex, hasAnswered)
 
 		if (
 			!hasAnswered &&

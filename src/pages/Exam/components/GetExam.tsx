@@ -509,7 +509,7 @@ const GetExam = () => {
 								value='INCORRECT'
 							/>
 							<FilterRadioButton
-								description='Get the most recent added questions'
+								description="Not answered questions"
 								value='NEW'
 								onChange={e =>
 									setFilter(

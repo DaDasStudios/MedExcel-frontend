@@ -96,7 +96,6 @@ const ContentForm = ({ user }: IProps) => {
 					loading: "Sending...",
 					success: res => {
 						setSubmitting(false)
-						console.log(res)
 
 						return "Username updated, reload the page please"
 					},

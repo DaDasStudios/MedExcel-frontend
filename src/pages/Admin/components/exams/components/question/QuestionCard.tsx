@@ -180,7 +180,7 @@ const QuestionCard = ({ question, index }: IProps) => {
 				question.type
 			)}`}
 		>
-			<span className='absolute z-50 flex gap-1.5 items-center text-gray-400 text-xs top-0 right-0 m-3'>
+			<span className='absolute  flex gap-1.5 items-center text-gray-400 text-xs top-0 right-0 m-3'>
 				<p>{index + 1}</p>
 			</span>
 			<h6 className='max-w-[80%] truncate'>
