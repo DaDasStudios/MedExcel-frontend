@@ -187,6 +187,11 @@ const GetExam = () => {
 			if (error.response.data.message === "Must get a subscripton plan") {
 				return toast.error("Get a subscripton plan to start an exam")
 			}
+
+			if (error.response.data.message === "No question found with the specified filters") {
+				return toast.error("You have finished the question bank, please reset your data to continue")
+			}
+			
 			return toast.error("Something went wrong... Try later")
 		}
 	}

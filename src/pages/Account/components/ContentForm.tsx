@@ -33,16 +33,16 @@ const ContentForm = ({ user }: IProps) => {
 		toast.custom(t => (
 			<DecitionToast
 				t={t}
-				text='Are you sure you want to delete your records?'
+				text='Are you sure you want to reset your well answered questions and records?'
 				afirmativeCallback={async () => {
 					try {
 						const { data } = await resetExamHistoryRequest(
 							_id,
 							token || ""
 						)
-						if (data?.message === "History reseted")
+						if (data?.message === "Histories reseted")
 							refreshUser()
-							return toast.success("History reseted", {
+							return toast.success("Data reseted", {
 								id: t.id,
 							})
 					} catch (error) {
