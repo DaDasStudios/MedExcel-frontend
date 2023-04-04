@@ -6,7 +6,12 @@ import { IUser } from "../../../interface/user"
 import { formatDate } from "../../../utils/date"
 import ContentForm from "./ContentForm"
 
-const Profile = () => {
+interface IProps {
+	setShowChartModal: React.Dispatch<React.SetStateAction<boolean>>
+	setModalChildren: React.Dispatch<React.SetStateAction<string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | React.ReactFragment | React.ReactPortal | null | undefined>>
+}
+
+const Profile = ({ setShowChartModal, setModalChildren }: IProps) => {
 	const {
 		auth: { user },
 	} = useAuthContext()
@@ -27,7 +32,11 @@ const Profile = () => {
 				</p>
 				<Separator></Separator>
 			</div>
-			<ContentForm user={user as IUser} />
+			<ContentForm
+				user={user as IUser}
+				setShowChartModal={setShowChartModal}
+				setModalChildren={setModalChildren}
+			/>
 			<span className='text-center block text-sm text-slate-400'>
 				Last updated{" "}
 				{formatDate.format(new Date(user?.updatedAt || ""))}

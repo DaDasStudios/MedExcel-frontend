@@ -3,6 +3,7 @@ export interface IScoresHistory {
     startedAt: Date
     finishedAt: Date
     questions: string[]
+    correctAnswers: string[]
     score: number
 }
 

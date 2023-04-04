@@ -19,12 +19,16 @@ import { useAuthContext } from "../../../context/auth/authContext"
 import { toast } from "react-hot-toast"
 import DecitionToast from "../../../components/ui/DecitionToast"
 import Tooltip from "../../../components/ui/Tooltip"
+import GeneralStats from "./GeneralStats"
+import CategoryStats from "./CategoryStats"
 
 interface IProps {
 	user: IUser
+	setShowChartModal: React.Dispatch<React.SetStateAction<boolean>>
+	setModalChildren: React.Dispatch<React.SetStateAction<string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | React.ReactFragment | React.ReactPortal | null | undefined>>
 }
 
-const ContentForm = ({ user }: IProps) => {
+const ContentForm = ({ user, setShowChartModal, setModalChildren }: IProps) => {
 	const { username, email, createdAt, subscription, exam, _id } = user
 	const {
 		auth: { id, token },
@@ -211,6 +215,7 @@ const ContentForm = ({ user }: IProps) => {
 							</span>
 						</SolidButton>
 					</div>
+					{/** ONLY FOR SUBSCRIBED USERS */}
 					<div className='relative'>
 						{!subscription?.hasSubscription && (
 							<span className='flex flex-col gap-2 items-center justify-center text-lg font- text-center inset-0 text-slate-400 absolute'>
@@ -234,6 +239,8 @@ const ContentForm = ({ user }: IProps) => {
 						)}
 
 						<div
+							unselectable='on'
+							draggable='false'
 							className={`${
 								!subscription?.hasSubscription
 									? "blur-sm pointer-events-none"
@@ -241,6 +248,7 @@ const ContentForm = ({ user }: IProps) => {
 							}`}
 						>
 							<Separator></Separator>
+							{/** GENERAL PERFORMANCE INFORMATION */}
 							<div className='grid grid-cols-1 sm:grid-cols-2 gap-x-5 mt-8'>
 								<Input
 									id='correctAnswers'
@@ -255,7 +263,8 @@ const ContentForm = ({ user }: IProps) => {
 									readOnly={true}
 								/>
 							</div>
-							<div className='flex justify-end'>
+							<CategoryStats />
+							<div className='flex justify-end mb-8'>
 								<Tooltip message='Reset correct answers and performance records'>
 									<SolidButton
 										onClick={resetPerformanceRecords}
@@ -283,10 +292,16 @@ const ContentForm = ({ user }: IProps) => {
 									</SolidButton>
 								</Tooltip>
 							</div>
-							<h3 className='text-base text-slate-300 font-medium mb-6'>
+							<Separator></Separator>
+							{/* EXAM RECORDS */}
+							<h3 className='text-base text-slate-300 font-medium mb-6 mt-8'>
 								Exam records
 							</h3>
-							<ExamRecordTable />
+							<ExamRecordTable
+								setShowChartModal={setShowChartModal}
+								setModalChildren={setModalChildren}
+							/>
+							<GeneralStats />
 							<div className='flex justify-end mb-8'>
 								{exam.scoresHistory.length > 0 && (
 									<Tooltip message='Reset the exam history'>

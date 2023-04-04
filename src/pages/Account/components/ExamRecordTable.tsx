@@ -1,13 +1,118 @@
+import { toast } from "react-hot-toast"
 import { Link } from "react-router-dom"
+import { BarChart, CartesianGrid, YAxis, XAxis, Bar } from "recharts"
 import { themeBtns } from "../../../components/ui/Buttons/SolidButton"
+import Tooltip from "../../../components/ui/Tooltip"
 import { useAuthContext } from "../../../context/auth/authContext"
+import { IScoresHistory } from "../../../interface/user"
+import { getSpecificPerformanceRequest } from "../../../lib/user.request"
+import { neutralChartTheme } from "../../../utils/charts"
 import { formatDate } from "../../../utils/date"
+import { toTitle } from "../../../utils/string"
 
-const ExamRecordTable = () => {
-	const {
-		auth: { user },
-	} = useAuthContext()
+interface IProps {
+	setShowChartModal: React.Dispatch<React.SetStateAction<boolean>>
+	setModalChildren: React.Dispatch<
+		React.SetStateAction<
+			| string
+			| number
+			| boolean
+			| React.ReactElement<any, string | React.JSXElementConstructor<any>>
+			| React.ReactFragment
+			| React.ReactPortal
+			| null
+			| undefined
+		>
+	>
+}
+
+const ExamRecordTable = ({ setShowChartModal, setModalChildren }: IProps) => {
+	const { auth } = useAuthContext()
+	const { user } = auth
+
 	const records = user?.exam.scoresHistory
+
+	async function displayChart(record: IScoresHistory) {
+		try {
+			const res = await getSpecificPerformanceRequest(
+				record.correctAnswers,
+				auth.id || "",
+				auth.token || ""
+			)
+
+			if (res.data.status !== "CORRECT") {
+				return toast.error("Something went wrong")
+			}
+
+			setShowChartModal(true)
+			setModalChildren(
+				<div className="grid">
+					<h3 className='text-center text-slate-300 font-medium mb-6'>
+						Exam date at{" "}
+						{formatDate.format(new Date(record.startedAt))} -
+						Performance in categories
+					</h3>
+					<div className='grid grid-cols-1 sm:grid-cols-2 gap-x-5'>
+						<div className='flex flex-col gap-3 mb-6 tracking-tight'>
+							<label className='text-base text-slate-300 font-medium'>
+								Best Category
+							</label>
+							<input
+								className={`bg-transparent border-2 border-slate-100/10 rounded-md text-slate-300 py-3 px-4 placeholder:text-slate-400 outline-none focus:outline-none placeholder:tracking-tight focus-within:bg-transparent `}
+								value={toTitle(
+									res.data.statistics.bestCategory
+								)}
+							/>
+						</div>
+						<div className='flex flex-col gap-3 mb-6 tracking-tight'>
+							<label className='text-base text-slate-300 font-medium'>
+								Worst Category
+							</label>
+							<input
+								className={`bg-transparent border-2 border-slate-100/10 rounded-md text-slate-300 py-3 px-4 placeholder:text-slate-400 outline-none focus:outline-none placeholder:tracking-tight focus-within:bg-transparent `}
+								value={toTitle(
+									res.data.statistics.worstCategory
+								)}
+							/>
+						</div>
+					</div>
+					<BarChart
+						className='max-md:hidden justify-self-center -ml-[40px]'
+						width={450}
+						height={300}
+						data={Object.entries(
+							res.data.statistics.categoriesPerformance
+						).map(stat => {
+							return {
+								name: toTitle(stat[0]),
+								count: stat[1].count,
+							}
+						})}
+					>
+						<CartesianGrid
+							strokeDasharray={10}
+							stroke={neutralChartTheme.backgroundColor}
+						/>
+						<YAxis stroke={neutralChartTheme.borderColor} />
+						<XAxis
+							dataKey='name'
+							stroke={neutralChartTheme.borderColor}
+							tickCount={4}
+							fontSize={14}
+						/>
+						<Bar
+							dataKey='count'
+							fill={neutralChartTheme.backgroundColor}
+							stroke={neutralChartTheme.borderColor}
+						/>
+					</BarChart>
+				</div>
+			)
+		} catch (error) {
+			console.log(error)
+			toast.error("Could not display chart")
+		}
+	}
 
 	return (
 		<div className='relative overflow-x-auto shadow-md rounded-md mb-6 border border-slate-100/10'>
@@ -36,9 +141,42 @@ const ExamRecordTable = () => {
 						>
 							<th
 								scope='row'
-								className='px-6 py-4 font-medium whitespace-nowrap'
+								className='px-6 py-4 font-medium whitespace-nowrap flex gap-x-2 items-center'
 							>
 								{record.score.toFixed(0)}%
+								<Tooltip message='View chart'>
+									<button
+										onClick={() => displayChart(record)}
+										className={
+											themeBtns.neutralBtn +
+											" p-px rounded-md"
+										}
+										type='button'
+									>
+										<span>
+											<svg
+												className='w-5'
+												fill='none'
+												stroke='currentColor'
+												strokeWidth={1.5}
+												viewBox='0 0 24 24'
+												xmlns='http://www.w3.org/2000/svg'
+												aria-hidden='true'
+											>
+												<path
+													strokeLinecap='round'
+													strokeLinejoin='round'
+													d='M10.5 6a7.5 7.5 0 107.5 7.5h-7.5V6z'
+												/>
+												<path
+													strokeLinecap='round'
+													strokeLinejoin='round'
+													d='M13.5 10.5H21A7.5 7.5 0 0013.5 3v7.5z'
+												/>
+											</svg>
+										</span>
+									</button>
+								</Tooltip>
 							</th>
 							<td className='px-6 py-4'>
 								{record.questions.length}
@@ -72,7 +210,7 @@ const ExamRecordTable = () => {
 							}
 						>
 							<svg
-								className="w-6"
+								className='w-6'
 								fill='none'
 								stroke='currentColor'
 								strokeWidth={1.5}
