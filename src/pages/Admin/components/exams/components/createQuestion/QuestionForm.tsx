@@ -33,7 +33,7 @@ const QuestionForm = () => {
 			initialValues={initialValues}
 			validationSchema={yup.object({
 				scenario: yup.string().required("Required"),
-				topic: yup.string().required("Required"),
+				topic: yup.string(),
 			})}
 			enableReinitialize={true}
 			onSubmit={async (values, { setValues, setSubmitting }) => {

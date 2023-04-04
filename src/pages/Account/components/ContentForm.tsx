@@ -12,11 +12,13 @@ import { ComponentElement } from "../../../interface"
 import Spin from "../../../components/ui/Spin"
 import {
 	resetExamHistoryRequest,
+	resetPerformanceHistoryRequest,
 	updateUserRequest,
 } from "../../../lib/user.request"
 import { useAuthContext } from "../../../context/auth/authContext"
 import { toast } from "react-hot-toast"
 import DecitionToast from "../../../components/ui/DecitionToast"
+import Tooltip from "../../../components/ui/Tooltip"
 
 interface IProps {
 	user: IUser
@@ -26,25 +28,51 @@ const ContentForm = ({ user }: IProps) => {
 	const { username, email, createdAt, subscription, exam, _id } = user
 	const {
 		auth: { id, token },
-		refreshUser
+		refreshUser,
 	} = useAuthContext()
 
 	function resetExamHistory() {
 		toast.custom(t => (
 			<DecitionToast
 				t={t}
-				text='Are you sure you want to reset your well answered questions and records?'
+				text='Are you sure you want to reset your exam history?'
 				afirmativeCallback={async () => {
 					try {
 						const { data } = await resetExamHistoryRequest(
 							_id,
 							token || ""
 						)
-						if (data?.message === "Histories reseted")
+						if (data?.message === "History reseted")
 							refreshUser()
-							return toast.success("Data reseted", {
-								id: t.id,
-							})
+						return toast.success("Exam history reseted", {
+							id: t.id,
+						})
+					} catch (error) {
+						return toast.error("Ups... Something went wrong", {
+							id: t.id,
+						})
+					}
+				}}
+			/>
+		))
+	}
+
+	function resetPerformanceRecords() {
+		toast.custom(t => (
+			<DecitionToast
+				t={t}
+				text='Are you sure you want to reset your performance statistics?'
+				afirmativeCallback={async () => {
+					try {
+						const { data } = await resetPerformanceHistoryRequest(
+							_id,
+							token || ""
+						)
+						if (data?.message === "Statistics reseted")
+							refreshUser()
+						return toast.success("Statistics reseted", {
+							id: t.id,
+						})
 					} catch (error) {
 						return toast.error("Ups... Something went wrong", {
 							id: t.id,
@@ -76,7 +104,11 @@ const ContentForm = ({ user }: IProps) => {
 				maxScore:
 					exam.scoresHistory?.length === 0
 						? "Don't have exams answered"
-						: exam.scoresHistory[0]?.score.toFixed(0) + "%",
+						: Math.max(
+								...exam.scoresHistory?.map(
+									record => record.score
+								)
+						  ).toFixed(0) + "%",
 			}}
 			validationSchema={yup.object({
 				username: yup
@@ -223,35 +255,67 @@ const ContentForm = ({ user }: IProps) => {
 									readOnly={true}
 								/>
 							</div>
+							<div className='flex justify-end'>
+								<Tooltip message='Reset correct answers and performance records'>
+									<SolidButton
+										onClick={resetPerformanceRecords}
+										as={ComponentElement.BUTTON}
+										theme={themeBtns.redBtn}
+									>
+										<div className='flex items-center gap-3 justify-center'>
+											<svg
+												className='w-5'
+												fill='none'
+												stroke='currentColor'
+												strokeWidth='1.5'
+												viewBox='0 0 24 24'
+												xmlns='http://www.w3.org/2000/svg'
+												aria-hidden='true'
+											>
+												<path
+													strokeLinecap='round'
+													strokeLinejoin='round'
+													d='M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636'
+												></path>
+											</svg>
+											Reset
+										</div>
+									</SolidButton>
+								</Tooltip>
+							</div>
 							<h3 className='text-base text-slate-300 font-medium mb-6'>
 								Exam records
 							</h3>
 							<ExamRecordTable />
-							<div className='flex justify-end'>
-								<SolidButton
-									onClick={resetExamHistory}
-									as={ComponentElement.BUTTON}
-									theme={themeBtns.redBtn}
-								>
-									<div className='flex items-center gap-3 justify-center'>
-										<svg
-											className='w-5'
-											fill='none'
-											stroke='currentColor'
-											strokeWidth='1.5'
-											viewBox='0 0 24 24'
-											xmlns='http://www.w3.org/2000/svg'
-											aria-hidden='true'
+							<div className='flex justify-end mb-8'>
+								{exam.scoresHistory.length > 0 && (
+									<Tooltip message='Reset the exam history'>
+										<SolidButton
+											onClick={resetExamHistory}
+											as={ComponentElement.BUTTON}
+											theme={themeBtns.redBtn}
 										>
-											<path
-												strokeLinecap='round'
-												strokeLinejoin='round'
-												d='M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636'
-											></path>
-										</svg>
-										Reset
-									</div>
-								</SolidButton>
+											<div className='flex items-center gap-3 justify-center'>
+												<svg
+													className='w-5'
+													fill='none'
+													stroke='currentColor'
+													strokeWidth='1.5'
+													viewBox='0 0 24 24'
+													xmlns='http://www.w3.org/2000/svg'
+													aria-hidden='true'
+												>
+													<path
+														strokeLinecap='round'
+														strokeLinejoin='round'
+														d='M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636'
+													></path>
+												</svg>
+												Reset
+											</div>
+										</SolidButton>
+									</Tooltip>
+								)}
 							</div>
 						</div>
 					</div>

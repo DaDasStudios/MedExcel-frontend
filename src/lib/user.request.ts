@@ -39,3 +39,11 @@ export const resetExamHistoryRequest = (id: string, token: string) => axios.dele
         'Authorization': `Bearer ${token}`
     }
 })
+
+export const resetPerformanceHistoryRequest = (id: string, token: string) => axios.delete<{
+    message: string
+}>(`${REST_HOST}/users/user/owner/reset-performance-history/${id}`, {
+    headers: {
+        'Authorization': `Bearer ${token}`
+    }
+})
