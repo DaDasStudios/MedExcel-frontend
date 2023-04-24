@@ -1,5 +1,5 @@
 import { useField } from "formik"
-import { PropsWithChildren } from "react"
+import { ChangeEvent, PropsWithChildren } from "react"
 import { useExamsAdminContext } from "../../../../../../context/admin/examsContext"
 
 interface IProps {
@@ -13,12 +13,11 @@ interface IProps {
 }
 
 interface ITextAreaProps extends IProps {
-	setValues: (
-		values: any
-	) => void
+	onChange?: (e: ChangeEvent<HTMLTextAreaElement>) => void
+	setValues?: (values: any) => void
 }
 
-export const TextArea = ({ label, setValues, ...props }: ITextAreaProps) => {
+export const TextArea = ({ label, setValues, onChange, ...props }: ITextAreaProps) => {
 	const [field, meta] = useField({ ...props, as: "textarea" })
 	const { questionForm } = useExamsAdminContext()
 	return (
@@ -37,9 +36,15 @@ export const TextArea = ({ label, setValues, ...props }: ITextAreaProps) => {
 				{...props}
 				onChange={e => {
 					questionForm.setMarkdownContent(e.target.value)
-					setValues((values: any) => {
-						return { ...values, [props.name]: e.target.value }
-					})
+					if (onChange) {
+						return onChange(e)
+					}
+
+					if (setValues) {
+						setValues((values: any) => {
+							return { ...values, [props.name]: e.target.value }
+						})
+					}
 				}}
 			/>
 			{meta.touched && meta.error ? (

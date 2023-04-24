@@ -41,6 +41,7 @@ const CategoryStats = () => {
                 setWorstCategory(res.data.statistics.worstCategory)
 			}
 		} catch (error: any) {
+			console.log(error)
 			switch (error.response.status) {
 				case 500:
 					toast.error("Something went wrong during stats calculation")
@@ -57,11 +58,11 @@ const CategoryStats = () => {
 
 	useEffect(() => {
 		if (auth.user?.subscription?.hasSubscription) {
-			getStats()
+			setTimeout(getStats, 1000)
 		} else {
 			setStats([])
 		}
-	}, [])
+	}, [auth.user?.subscription])
 
 	return (
 		<div>
@@ -115,7 +116,7 @@ const CategoryStats = () => {
 							</div>
 						</>
 					) : (
-						<p className='font-medium text-lg text-center text-slate-300 underline mb-4'>
+						<p className='font-medium text-2xl text-center text-slate-300 underline mb-4'>
 							Don't have questions to analyze
 						</p>
 					)}

@@ -108,9 +108,12 @@ const ExamRecordTable = ({ setShowChartModal, setModalChildren }: IProps) => {
 					</BarChart>
 				</div>
 			)
-		} catch (error) {
-			console.log(error)
-			toast.error("Could not display chart")
+		} catch (error: any) {
+			if (error.response.data.status === "NOT_FOUND_QUESTIONS" ){
+				toast.error("Not found questions")
+			} else {
+				toast.error("Could not display chart")
+			}
 		}
 	}
 

@@ -87,7 +87,7 @@ const SBAQuestion = () => {
 			</span>
 			<Separator />
 			<MarkdownBody content={question.scenario} />
-			<p className='text-gray-300'>{question.content.question}</p>
+			<MarkdownBody content={question.content.question}/>
 			<form onSubmit={submitAnswer}>
 				<ol type='A' className='inline-flex flex-col mt-2 mb-1'>
 					{question.content.options.map((option, index) => (

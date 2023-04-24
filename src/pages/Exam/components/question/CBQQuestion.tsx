@@ -218,9 +218,17 @@ const CBQQuestion = () => {
 					</div>
 				) : (
 					<>
-						<MarkdownBody content={question.scenario} />
+						<p className="mt-4">
+							<MarkdownBody content={question.scenario} />
+						</p>
+
 						<p className='text-gray-300 mt-4 mb-2'>
-							{question.content[screenOptions.page].question}
+							<MarkdownBody
+								content={
+									question.content[screenOptions.page]
+										.question
+								}
+							/>
 						</p>
 
 						<ol type='A' className='inline-flex flex-col mt-2 mb-1'>

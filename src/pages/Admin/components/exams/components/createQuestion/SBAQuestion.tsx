@@ -24,15 +24,13 @@ const SBAQuetion = () => {
 
 	return (
 		<>
-			<SimpleInput
+			<TextArea
 				id='question'
 				label='Question'
 				name='question'
-				placeholder='The question body'
+				placeholder='The question body, support for markdown syntax'
 				value={content.question}
-				onChange={e =>
-					setContent({ ...content, question: e.target.value })
-				}
+				setValues={setContent}
 			/>
 			<TextArea
 				id='explanation'
@@ -44,9 +42,7 @@ const SBAQuetion = () => {
 			/>
 			<h4 className='tracking-tight mb-2'>Options</h4>
 			{content.options.map((_, index) => (
-				<div
-					className='flex items-center gap-2'
-					key={id + index}>
+				<div className='flex items-center gap-2' key={id + index}>
 					<Tooltip message='Alternate'>
 						<button
 							type='button'
@@ -57,14 +53,16 @@ const SBAQuetion = () => {
 							}`}
 							onClick={() => {
 								setContent({ ...content, answer: index })
-							}}>
+							}}
+						>
 							{content.answer === index ? (
 								<svg
 									className='w-5'
 									fill='currentColor'
 									viewBox='0 0 20 20'
 									xmlns='http://www.w3.org/2000/svg'
-									aria-hidden='true'>
+									aria-hidden='true'
+								>
 									<path
 										clipRule='evenodd'
 										fillRule='evenodd'
@@ -77,7 +75,8 @@ const SBAQuetion = () => {
 									fill='currentColor'
 									viewBox='0 0 20 20'
 									xmlns='http://www.w3.org/2000/svg'
-									aria-hidden='true'>
+									aria-hidden='true'
+								>
 									<path d='M6.28 5.22a.75.75 0 00-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 101.06 1.06L10 11.06l3.72 3.72a.75.75 0 101.06-1.06L11.06 10l3.72-3.72a.75.75 0 00-1.06-1.06L10 8.94 6.28 5.22z' />
 								</svg>
 							)}
@@ -107,13 +106,15 @@ const SBAQuetion = () => {
 					<button
 						onClick={addOption}
 						type='button'
-						className='outline-none p-1 hover:bg-gray-700 text-gray-300 rounded-md'>
+						className='outline-none p-1 hover:bg-gray-700 text-gray-300 rounded-md'
+					>
 						<svg
 							className='w-5'
 							fill='currentColor'
 							viewBox='0 0 20 20'
 							xmlns='http://www.w3.org/2000/svg'
-							aria-hidden='true'>
+							aria-hidden='true'
+						>
 							<path d='M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z' />
 						</svg>
 					</button>
@@ -123,13 +124,15 @@ const SBAQuetion = () => {
 						<button
 							onClick={removeOption}
 							type='button'
-							className='outline-none p-1 hover:bg-gray-700 text-gray-300 rounded-md'>
+							className='outline-none p-1 hover:bg-gray-700 text-gray-300 rounded-md'
+						>
 							<svg
 								className='w-5'
 								fill='currentColor'
 								viewBox='0 0 20 20'
 								xmlns='http://www.w3.org/2000/svg'
-								aria-hidden='true'>
+								aria-hidden='true'
+							>
 								<path
 									clipRule='evenodd'
 									fillRule='evenodd'

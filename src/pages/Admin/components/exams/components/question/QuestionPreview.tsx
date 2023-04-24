@@ -28,7 +28,7 @@ const QuestionPreview = ({ question, type }: IProps) => {
 					</span>
 					<Separator />
 					<MarkdownBody content={data.scenario} />
-					<p className='text-gray-300'>{data.content.question}</p>
+					<MarkdownBody content={data.content.question}/>
 					<form>
 						<div className='inline-flex flex-col mt-2 mb-1'>
 							{data.content.options.map((option, index) => (

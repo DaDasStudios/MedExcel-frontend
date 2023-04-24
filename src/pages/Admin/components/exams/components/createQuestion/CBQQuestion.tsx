@@ -59,11 +59,11 @@ const CBQQUestion = () => {
 			<div className='max-h-[500px] overflow-y-auto pr-3'>
 				{content.map((singleCase, index) => (
 					<div key={id + index}>
-						<SimpleInput
+						<TextArea
 							id={"question" + index}
 							label={`Case ${index + 1} - Question`}
 							name={"question" + index}
-							placeholder='The question body'
+							placeholder='The question body, support for markdown syntax'
 							value={content[index].question}
 							onChange={e =>
 								setContent(
@@ -89,7 +89,8 @@ const CBQQUestion = () => {
 						{content[index].options.map((_, i) => (
 							<div
 								className='flex items-center gap-2'
-								key={id + i}>
+								key={id + i}
+							>
 								<Tooltip message='Alternate'>
 									<button
 										type='button'
@@ -106,14 +107,16 @@ const CBQQUestion = () => {
 														: c
 												)
 											)
-										}}>
+										}}
+									>
 										{content[index].answer === i ? (
 											<svg
 												className='w-5'
 												fill='currentColor'
 												viewBox='0 0 20 20'
 												xmlns='http://www.w3.org/2000/svg'
-												aria-hidden='true'>
+												aria-hidden='true'
+											>
 												<path
 													clipRule='evenodd'
 													fillRule='evenodd'
@@ -126,7 +129,8 @@ const CBQQUestion = () => {
 												fill='currentColor'
 												viewBox='0 0 20 20'
 												xmlns='http://www.w3.org/2000/svg'
-												aria-hidden='true'>
+												aria-hidden='true'
+											>
 												<path d='M6.28 5.22a.75.75 0 00-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 101.06 1.06L10 11.06l3.72 3.72a.75.75 0 101.06-1.06L11.06 10l3.72-3.72a.75.75 0 00-1.06-1.06L10 8.94 6.28 5.22z' />
 											</svg>
 										)}
@@ -162,13 +166,15 @@ const CBQQUestion = () => {
 								<button
 									onClick={() => addOption(index)}
 									type='button'
-									className='outline-none p-1 hover:bg-gray-700 text-gray-300 rounded-md'>
+									className='outline-none p-1 hover:bg-gray-700 text-gray-300 rounded-md'
+								>
 									<svg
 										className='w-5'
 										fill='currentColor'
 										viewBox='0 0 20 20'
 										xmlns='http://www.w3.org/2000/svg'
-										aria-hidden='true'>
+										aria-hidden='true'
+									>
 										<path d='M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z' />
 									</svg>
 								</button>
@@ -178,13 +184,15 @@ const CBQQUestion = () => {
 									<button
 										onClick={() => removeOption(index)}
 										type='button'
-										className='outline-none p-1 hover:bg-gray-700 text-gray-300 rounded-md'>
+										className='outline-none p-1 hover:bg-gray-700 text-gray-300 rounded-md'
+									>
 										<svg
 											className='w-5'
 											fill='currentColor'
 											viewBox='0 0 20 20'
 											xmlns='http://www.w3.org/2000/svg'
-											aria-hidden='true'>
+											aria-hidden='true'
+										>
 											<path
 												clipRule='evenodd'
 												fillRule='evenodd'
@@ -202,14 +210,16 @@ const CBQQUestion = () => {
 						as={ComponentElement.BUTTON}
 						submit={false}
 						theme={themeBtns.blueBtn}
-						onClick={addCase}>
+						onClick={addCase}
+					>
 						<div className='flex gap-2 items-center'>
 							<svg
 								className='w-6'
 								fill='currentColor'
 								viewBox='0 0 20 20'
 								xmlns='http://www.w3.org/2000/svg'
-								aria-hidden='true'>
+								aria-hidden='true'
+							>
 								<path d='M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z' />
 							</svg>
 							New Case
@@ -220,14 +230,16 @@ const CBQQUestion = () => {
 							as={ComponentElement.BUTTON}
 							submit={false}
 							theme={themeBtns.redBtn}
-							onClick={removeCase}>
+							onClick={removeCase}
+						>
 							<div className='flex gap-2 items-center'>
 								<svg
 									className='w-6'
 									fill='currentColor'
 									viewBox='0 0 20 20'
 									xmlns='http://www.w3.org/2000/svg'
-									aria-hidden='true'>
+									aria-hidden='true'
+								>
 									<path
 										clipRule='evenodd'
 										fillRule='evenodd'
