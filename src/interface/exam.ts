@@ -38,6 +38,8 @@ export type FilterSetExamType = "ALL" | "INCORRECT" | "NEW"
 
 export type AnsweredQuestionStatus = "CORRECT" | "INCORRECT" | "NOT ALL CORRECT"
 
+export type ExamMode = "LIVE" | "CANCELLED"
+
 export interface IAnsweredQuestionResponse {
     score: number
     status: AnsweredQuestionStatus
@@ -48,6 +50,7 @@ export interface IAnsweredQuestionResponse {
 export interface IExamContext {
     currentQuestion: IQuestion
     setCurrentQuestion: React.Dispatch<React.SetStateAction<IQuestion>>
+    useCurrentQuestion<T>(): IQuestion<T>
     questionResponse: IAnsweredQuestionResponse
     resetQuestionResponse: () => void
     setQuestionResponse: React.Dispatch<React.SetStateAction<IAnsweredQuestionResponse>>
@@ -60,4 +63,11 @@ export interface IExamContext {
     scoresHistory: IScoresHistory
     setScoresHistory: React.Dispatch<React.SetStateAction<IScoresHistory>>
     setHasFinished: React.Dispatch<React.SetStateAction<boolean>>
+    mode: ExamMode
+    setMode: React.Dispatch<React.SetStateAction<ExamMode>>
+    questionNumber: number
+    setQuestionNumber: React.Dispatch<React.SetStateAction<number>>
+    questionsAfterCancelling: IQuestion[] | undefined
+    setQuestionsAfterCancelling: React.Dispatch<React.SetStateAction<IQuestion[] | undefined>>
+    advanceNextQuestionAfterCancelling: (questionsAfterCancellingInit?: IQuestion[]) => void
 }

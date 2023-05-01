@@ -3,6 +3,7 @@ import Users from "./users/Users"
 import Settings from "./settings/Settings"
 import Pricing from "./pricing/Pricing"
 import Exams from "./exams/Exams"
+import Reviews from "./reviews/Reviews"
 
 const Dashboard = () => {
 	return (
@@ -27,6 +28,10 @@ const Dashboard = () => {
 				<Route
 					path='exams'
 					element={<Exams />}
+				/>
+				<Route
+					path='reviews'
+					element={<Reviews />}
 				/>
 			</Routes>
 		</div>

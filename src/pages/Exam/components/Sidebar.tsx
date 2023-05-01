@@ -9,7 +9,12 @@ import SideBarElement from "./ui/SideBarElement"
 
 const Sidebar = () => {
 	const { auth, refreshUser } = useAuthContext()
-	const { score } = useExamContext()
+	const {
+		score,
+		mode,
+		setMode,
+		advanceNextQuestionAfterCancelling
+	} = useExamContext()
 	const { user } = auth
 
 	async function cancelExam() {
@@ -19,12 +24,25 @@ const Sidebar = () => {
 				text='Are you sure you want to cancel this exam?'
 				afirmativeCallback={async () => {
 					try {
-						const res = await cancelExamRequest(auth.token || "")
-						if (res.status === 204) {
-							toast.success("Exam cancelled", {
-								id: t.id,
-							})
-							refreshUser()
+						const { data } = await cancelExamRequest(
+							auth.token || ""
+						)
+
+						if (data.statusCode === 204) {
+							if (data.incorrectQuestions.length === 0) {
+								return refreshUser()
+							}
+
+							toast.success(
+								"Take a look of the incorrect answers",
+								{
+									id: t.id,
+								}
+							)
+							setMode("CANCELLED")
+							advanceNextQuestionAfterCancelling(
+								data.incorrectQuestions
+							)
 						}
 					} catch (error) {
 						toast.error("Something went wrong... Try later", {
@@ -37,7 +55,7 @@ const Sidebar = () => {
 	}
 
 	return (
-		<aside className='min-[400px]:max-lg:w-[300px] max-lg:max-w-[300px] max-lg:mx-auto lg:col-span-2 py-6 px-5 sm:p-5 bg-slate-900/80 h-fit rounded-md border border-gray-100/10 shadow-md'>
+		<div className='py-6 px-5 sm:p-5 bg-slate-900/80 h-fit rounded-md border border-gray-100/10 shadow-md mb-6'>
 			<div className='font-medium text-gray-300 text-normal'>
 				<SideBarElement>
 					<svg
@@ -54,7 +72,13 @@ const Sidebar = () => {
 						/>
 					</svg>
 					<h4>
-						Correct questions <b>{score ? score.toFixed(0) : user?.exam.score.toFixed(0)}</b>%
+						Correct questions{" "}
+						<b>
+							{score
+								? score.toFixed(0)
+								: user?.exam.score.toFixed(0)}
+						</b>
+						%
 					</h4>
 				</SideBarElement>
 				<SideBarElement>
@@ -102,27 +126,29 @@ const Sidebar = () => {
 					</p>
 				</SideBarElement>
 			</div>
-			<button
-				className={`flex justify-center items-center gap-2 py-2 px-3 border rounded-md mt-6 mb-1 w-full ${themeBtns.redBtn}`}
-				type='button'
-				onClick={cancelExam}
-			>
-				<svg
-					className='w-5'
-					fill='currentColor'
-					viewBox='0 0 20 20'
-					xmlns='http://www.w3.org/2000/svg'
-					aria-hidden='true'
+			{mode === "LIVE" && (
+				<button
+					className={`flex justify-center items-center gap-2 py-2 px-3 border rounded-md mt-6 mb-1 w-full ${themeBtns.redBtn}`}
+					type='button'
+					onClick={cancelExam}
 				>
-					<path
-						clipRule='evenodd'
-						fillRule='evenodd'
-						d='M5.965 4.904l9.131 9.131a6.5 6.5 0 00-9.131-9.131zm8.07 10.192L4.904 5.965a6.5 6.5 0 009.131 9.131zM4.343 4.343a8 8 0 1111.314 11.314A8 8 0 014.343 4.343z'
-					/>
-				</svg>
-				Cancel exam
-			</button>
-		</aside>
+					<svg
+						className='w-5'
+						fill='currentColor'
+						viewBox='0 0 20 20'
+						xmlns='http://www.w3.org/2000/svg'
+						aria-hidden='true'
+					>
+						<path
+							clipRule='evenodd'
+							fillRule='evenodd'
+							d='M5.965 4.904l9.131 9.131a6.5 6.5 0 00-9.131-9.131zm8.07 10.192L4.904 5.965a6.5 6.5 0 009.131 9.131zM4.343 4.343a8 8 0 1111.314 11.314A8 8 0 014.343 4.343z'
+						/>
+					</svg>
+					Cancel exam
+				</button>
+			)}
+		</div>
 	)
 }
 export default Sidebar

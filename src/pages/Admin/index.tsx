@@ -8,7 +8,7 @@ const Admin = () => {
 	return (
 		<div className='min-h-screen min-w-max bg-gray-900'>
 			{auth?.user && <Navbar></Navbar>}
-			<main className='py-[120px]'>
+			<main className='py-[80px]'>
 				{auth?.user ? <Dashboard></Dashboard> : <SigninForm />}
 			</main>
 		</div>

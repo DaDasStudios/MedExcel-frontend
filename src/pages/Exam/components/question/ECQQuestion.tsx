@@ -7,13 +7,12 @@ import { useAuthContext } from "../../../../context/auth/authContext"
 import { useExamContext } from "../../../../context/exam/examContext"
 import { IECQQuestion, IQuestion } from "../../../../interface/exam"
 import { submitAnswerRequest } from "../../../../lib/exam.request"
-import { toTitle } from "../../../../utils/string"
 import NextButton from "../ui/NextButton"
 
 const ECQQuestion = () => {
 	const { auth } = useAuthContext()
 	const {
-		currentQuestion,
+		useCurrentQuestion,
 		questionResponse,
 		setQuestionResponse,
 		setScore,
@@ -21,9 +20,7 @@ const ECQQuestion = () => {
 		setHasAnswered,
 	} = useExamContext()
 
-	const [question, setQuestion] = useState(
-		currentQuestion as IQuestion<IECQQuestion>
-	)
+	const question = useCurrentQuestion<IECQQuestion>()
 	const [answers, setAnswers] = useState([] as (number | string)[])
 
 	async function submitAnswer(e: React.FormEvent) {
@@ -83,11 +80,11 @@ const ECQQuestion = () => {
 		<div className='flex flex-col gap-3 text-gray-200 font-medium'>
 			<span className='text-sm text-gray-300'>
 				Category -{" "}
-				{!["None", "All"].includes(question.parent) && (
-					<b>{question.parent} / </b>
-				)}{" "}
-				<b>{question.category}</b> /{" "}
-				<b>{toTitle(question.topic || "No topic")}</b>
+				{!["None", "All"].includes(question.parent) ? (
+					<b>{question.parent}</b>
+				) : (
+					question.category
+				)}
 			</span>
 			<span className='text-xs sm:text-sm text-gray-400 flex items-baseline gap-3'>
 				<svg

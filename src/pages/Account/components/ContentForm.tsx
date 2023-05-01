@@ -13,6 +13,7 @@ import Spin from "../../../components/ui/Spin"
 import {
 	resetExamHistoryRequest,
 	resetPerformanceHistoryRequest,
+	sendAccountDeletionRequest,
 	updateUserRequest,
 } from "../../../lib/user.request"
 import { useAuthContext } from "../../../context/auth/authContext"
@@ -21,11 +22,23 @@ import DecitionToast from "../../../components/ui/DecitionToast"
 import Tooltip from "../../../components/ui/Tooltip"
 import GeneralStats from "./GeneralStats"
 import CategoryStats from "./CategoryStats"
+import { useNavigate } from "react-router-dom"
 
 interface IProps {
 	user: IUser
 	setShowChartModal: React.Dispatch<React.SetStateAction<boolean>>
-	setModalChildren: React.Dispatch<React.SetStateAction<string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | React.ReactFragment | React.ReactPortal | null | undefined>>
+	setModalChildren: React.Dispatch<
+		React.SetStateAction<
+			| string
+			| number
+			| boolean
+			| React.ReactElement<any, string | React.JSXElementConstructor<any>>
+			| React.ReactFragment
+			| React.ReactPortal
+			| null
+			| undefined
+		>
+	>
 }
 
 const ContentForm = ({ user, setShowChartModal, setModalChildren }: IProps) => {
@@ -33,7 +46,41 @@ const ContentForm = ({ user, setShowChartModal, setModalChildren }: IProps) => {
 	const {
 		auth: { id, token },
 		refreshUser,
+		reset
 	} = useAuthContext()
+	const navigate = useNavigate()
+
+	function deleteAccountRequest() {
+		toast.custom(t => (
+			<DecitionToast
+				t={t}
+				text='Are you sure you want to request your account deletion?'
+				afirmativeCallback={async () => {
+					try {
+						const res = await sendAccountDeletionRequest(
+							_id,
+							token || ""
+						)
+						if (res.status === 202) {
+							reset()
+							navigate('/')
+							return toast.success(
+								"Request accepted (expires in five minutes) visit your email " +
+									username,
+								{
+									id: t.id,
+								}
+							)
+						}
+					} catch (error) {
+						return toast.error("Ups... Something went wrong", {
+							id: t.id,
+						})
+					}
+				}}
+			/>
+		))
+	}
 
 	function resetExamHistory() {
 		toast.custom(t => (
@@ -46,8 +93,7 @@ const ContentForm = ({ user, setShowChartModal, setModalChildren }: IProps) => {
 							_id,
 							token || ""
 						)
-						if (data?.message === "History reseted")
-							refreshUser()
+						if (data?.message === "History reseted") refreshUser()
 						return toast.success("Exam history reseted", {
 							id: t.id,
 						})
@@ -180,7 +226,7 @@ const ContentForm = ({ user, setShowChartModal, setModalChildren }: IProps) => {
 						/>
 					</div>
 					<div
-						className={`flex justify-end mb-6 ${
+						className={`flex justify-end gap-x-4 mb-6 ${
 							isSubmitting
 								? "pointer-events-none"
 								: "pointer-events-auto"
@@ -212,6 +258,25 @@ const ContentForm = ({ user, setShowChartModal, setModalChildren }: IProps) => {
 									<Spin />
 								)}
 								<p className='sm:block hidden'>Update</p>
+							</span>
+						</SolidButton>
+						<SolidButton
+							submit={false}
+							as={ComponentElement.BUTTON}
+							theme={themeBtns.redBtn}
+							onClick={deleteAccountRequest}
+						>
+							<span className='flex gap-2'>
+								<svg
+									className="w-6"
+									fill='currentColor'
+									viewBox='0 0 20 20'
+									xmlns='http://www.w3.org/2000/svg'
+									aria-hidden='true'
+								>
+									<path d='M11 5a3 3 0 11-6 0 3 3 0 016 0zM2.046 15.253c-.058.468.172.92.57 1.175A9.953 9.953 0 008 18c1.982 0 3.83-.578 5.384-1.573.398-.254.628-.707.57-1.175a6.001 6.001 0 00-11.908 0zM12.75 7.75a.75.75 0 000 1.5h5.5a.75.75 0 000-1.5h-5.5z' />
+								</svg>
+								<p className='sm:block hidden'>Delete</p>
 							</span>
 						</SolidButton>
 					</div>

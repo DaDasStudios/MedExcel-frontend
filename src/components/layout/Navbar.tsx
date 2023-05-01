@@ -18,7 +18,7 @@ const Navbar = ({ elements }: Props) => {
 	const [activeCollapse, setActiveCollapse] = useState(false)
 
 	return (
-		<header className='py-6 text-white bg-slate-900/80 border-b border-slate-50/10 text-base fixed left-0 right-0 top-0 shadow-2xl z-30'>
+		<header className='py-6 text-white bg-slate-900/80 border-b border-slate-50/10 text-base fixed left-0 right-0 top-0 shadow-2xl z-10'>
 			<nav className='max-w-4xl mx-auto flex gap-x-7 items-center justify-between px-8'>
 				<Link className='block' to='/'>
 					{image.url ? (

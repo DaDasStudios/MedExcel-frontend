@@ -66,7 +66,7 @@ const CategoryStats = () => {
 
 	return (
 		<div>
-			{!stats ? (
+			{stats === null ? (
 				<div className='flex items-center justify-center'>
 					<Spin />
 				</div>

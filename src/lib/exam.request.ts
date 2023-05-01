@@ -47,6 +47,9 @@ export const submitAnswerRequest = (payload: {
 
 export const cancelExamRequest = (token: string) => axios.delete<{
     message: string
+    status: string
+    statusCode: number
+    incorrectQuestions: IQuestion[]
 }>(`${REST_HOST}/exam/cancel`, {
     headers: {
         'Authorization': `Bearer ${token}`

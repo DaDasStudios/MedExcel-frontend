@@ -23,6 +23,7 @@ import Navbar from "../components/layout/Navbar"
 import Exam from "../pages/Exam"
 import ErrorPage from "./ErrorPage"
 import ExamErrorPage from "./ExamErrorPage"
+import DeleteAccountScreen from "../pages/Account/DeleteAccountScreen"
 
 function Layout() {
 	const {
@@ -31,61 +32,64 @@ function Layout() {
 	const location = useLocation()
 	return (
 		<>
-			<Navbar
-				elements={
-					user
-						? !user.subscription?.hasSubscription
-							? [
-									{
-										displayTitle: "Learn More",
-										href: "/more",
-									},
-									{
-										displayTitle: "Question Bank",
-										href: "/exam",
-									},
+			{!location.pathname.includes("admin") && (
+				<Navbar
+					elements={
+						user
+							? !user.subscription?.hasSubscription
+								? [
+										{
+											displayTitle: "Learn More",
+											href: "/more",
+										},
+										{
+											displayTitle: "Question Bank",
+											href: "/exam",
+										},
+										{
+											displayTitle: "Subscriptions",
+											href: "/subscription",
+										},
+								  ]
+								: [
+										{
+											displayTitle: "Learn More",
+											href: "/more",
+										},
+										{
+											displayTitle: "Question Bank",
+											href: "/exam",
+										},
+								  ]
+							: [
 									{
 										displayTitle: "Subscriptions",
 										href: "/subscription",
 									},
-							  ]
-							: [
 									{
 										displayTitle: "Learn More",
 										href: "/more",
 									},
+
 									{
-										displayTitle: "Question Bank",
-										href: "/exam",
+										displayTitle: "Sign up",
+										href: "/signup",
+									},
+									{
+										displayTitle: "Sign In",
+										href: "/signin",
 									},
 							  ]
-						: [
-								{
-									displayTitle: "Subscriptions",
-									href: "/subscription",
-								},
-								{
-									displayTitle: "Learn More",
-									href: "/more",
-								},
-
-								{
-									displayTitle: "Sign up",
-									href: "/signup",
-								},
-								{
-									displayTitle: "Sign In",
-									href: "/signin",
-								},
-						  ]
-				}
-			/>
+					}
+				/>
+			)}
 			<main className='min-h-screen relative'>
 				<Routes>
 					<Route path='/' element={<Home />} />
 					<Route path='/subscription' element={<Subscription />} />
 					<Route path='/more' element={<More />} />
 					<Route path='/recover' element={<Recover />} />
+					<Route path='/account/delete' element={<DeleteAccountScreen />} />
 					<Route path='/recover/auth' element={<RecoverAuth />} />
 					{/* ADMIN */}
 					<Route

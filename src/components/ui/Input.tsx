@@ -9,6 +9,8 @@ interface IProps {
 	type?: string
 	value?: any
 	readOnly?: boolean
+	showLabel?: boolean
+	as?: string
 }
 
 export const Checkbox = ({
@@ -84,23 +86,39 @@ export const Select = ({ label, children, ...props }: IProps & PropsWithChildren
 	)
 }
 
-export const Input = ({ label, ...props }: IProps) => {
+export const Input = ({ label, as, showLabel = true, ...props }: IProps) => {
 	const [field, meta] = useField(props)
 	return (
 		<div className='flex flex-col gap-3 mb-6 tracking-tight'>
-			<label
-				className='text-base text-slate-300 font-medium'
-				htmlFor={props.id || props.name}>
-				{label}
-			</label>
-			<input
-				style={{
-					animation: meta.touched && meta.error ? "0.4s shake" : "",
-				}}
-				className={`bg-transparent border-2 border-slate-100/10 rounded-md text-slate-300 py-3 px-4 placeholder:text-slate-400 outline-none focus:outline-none placeholder:tracking-tight focus-within:bg-transparent `}
-				{...field}
-				{...props}
-			/>
+			{showLabel && (
+				<label
+					className='text-base text-slate-300 font-medium'
+					htmlFor={props.id || props.name}
+				>
+					{label}
+				</label>
+			)}
+			{as === "textarea" ? (
+				<textarea
+					style={{
+						animation:
+							meta.touched && meta.error ? "0.4s shake" : "",
+					}}
+					className={`bg-transparent border-2 border-slate-100/10 rounded-md text-slate-300 py-3 px-4 placeholder:text-slate-400 outline-none focus:outline-none placeholder:tracking-tight focus-within:bg-transparent `}
+					{...field}
+					{...props}
+				/>
+			) : (
+				<input
+					style={{
+						animation:
+							meta.touched && meta.error ? "0.4s shake" : "",
+					}}
+					className={`bg-transparent border-2 border-slate-100/10 rounded-md text-slate-300 py-3 px-4 placeholder:text-slate-400 outline-none focus:outline-none placeholder:tracking-tight focus-within:bg-transparent `}
+					{...field}
+					{...props}
+				/>
+			)}
 			{meta.touched && meta.error ? (
 				<p className='text-right text-rose-500 font-medium text-base'>
 					{meta.error}

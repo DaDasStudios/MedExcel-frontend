@@ -14,7 +14,6 @@ import {
 	getCurrentQuestionRequest,
 	submitAnswerRequest,
 } from "../../../../lib/exam.request"
-import { toTitle } from "../../../../utils/string"
 
 interface IScreenState {
 	page: number
@@ -24,7 +23,7 @@ interface IScreenState {
 
 const CBQQuestion = () => {
 	const {
-		currentQuestion,
+		useCurrentQuestion,
 		hasAnswered,
 		questionResponse,
 		setHasAnswered,
@@ -32,12 +31,14 @@ const CBQQuestion = () => {
 		setScore,
 		setHasFinished,
 		setScoresHistory,
+		mode,
+		questionNumber,
+		questionsAfterCancelling,
+		advanceNextQuestionAfterCancelling,
 	} = useExamContext()
 	const { auth } = useAuthContext()
 
-	const [question, setQuestion] = useState(
-		currentQuestion as IQuestion<ICBQQuestion>
-	)
+	const question = useCurrentQuestion<ICBQQuestion>()
 	const [screenOptions, setScreenOptions] = useState({
 		page: 0,
 		cases: question.content.length,
@@ -115,6 +116,9 @@ const CBQQuestion = () => {
 
 		if (hasAnswered && pageIndex === screenOptions.cases + 1) {
 			// ? Reload to fetch next question
+			if (mode === "CANCELLED") {
+				return advanceNextQuestionAfterCancelling()
+			}
 			if (await hasFinishedExam()) {
 				setHasFinished(true)
 				toast.success("Exam finished!")
@@ -134,11 +138,11 @@ const CBQQuestion = () => {
 		<div className='flex flex-col gap-3 text-gray-200 font-medium'>
 			<span className='text-sm text-gray-300'>
 				Category -{" "}
-				{!["None", "All"].includes(question.parent) && (
-					<b>{question.parent} / </b>
-				)}{" "}
-				<b>{question.category}</b> /{" "}
-				<b>{toTitle(question.topic || "No topic")}</b>
+				{!["None", "All"].includes(question.parent) ? (
+					<b>{question.parent}</b>
+				) : (
+					question.category
+				)}
 			</span>
 			<span className='text-xs sm:text-sm text-gray-400 flex items-baseline gap-3'>
 				<svg
@@ -218,7 +222,7 @@ const CBQQuestion = () => {
 					</div>
 				) : (
 					<>
-						<p className="mt-4">
+						<p className='mt-4'>
 							<MarkdownBody content={question.scenario} />
 						</p>
 
@@ -250,28 +254,40 @@ const CBQQuestion = () => {
 														? "text-emerald-500"
 														: "text-red-500"
 													: "text-gray-300"
+											} ${
+												hasAnswered &&
+												selectedOptions[
+													screenOptions.page
+												] === option &&
+												"underline"
 											}`}
 											htmlFor={option + optionIndex}
 										>
 											{option}
-											<input
-												className={`ml-4`}
-												type='radio'
-												value={option}
-												checked={
-													selectedOptions[
-														screenOptions.page
-													] === option
-												}
-												onChange={e =>
-													handleOnChange(
-														e,
-														screenOptions.page
-													)
-												}
-												id={option + optionIndex}
-												name='optionSelected'
-											/>
+											{!hasAnswered &&
+												mode !== "CANCELLED" && (
+													<input
+														className={`ml-4`}
+														type='radio'
+														value={option}
+														checked={
+															selectedOptions[
+																screenOptions
+																	.page
+															] === option
+														}
+														onChange={e =>
+															handleOnChange(
+																e,
+																screenOptions.page
+															)
+														}
+														id={
+															option + optionIndex
+														}
+														name='optionSelected'
+													/>
+												)}
 										</label>
 									</li>
 								)
@@ -350,9 +366,25 @@ const CBQQuestion = () => {
 										<path d='M3.105 2.289a.75.75 0 00-.826.95l1.414 4.925A1.5 1.5 0 005.135 9.25h6.115a.75.75 0 010 1.5H5.135a1.5 1.5 0 00-1.442 1.086l-1.414 4.926a.75.75 0 00.826.95 28.896 28.896 0 0015.293-7.154.75.75 0 000-1.115A28.897 28.897 0 003.105 2.289z' />
 									</svg>
 									<p className='hidden sm:block'>
-										Submit answer
+										{mode === "LIVE"
+											? "Submit answer"
+											: questionsAfterCancelling &&
+											  questionNumber ===
+													questionsAfterCancelling.length -
+														1
+											? "Leave"
+											: "Submit answer"}
 									</p>
-									<p className='block sm:hidden'>Submit</p>
+									<p className='block sm:hidden'>
+										{mode === "LIVE"
+											? "Next"
+											: questionsAfterCancelling &&
+											  questionNumber ===
+													questionsAfterCancelling.length -
+														1
+											? "Leave"
+											: "Next"}
+									</p>
 								</>
 							)
 						) : (

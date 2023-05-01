@@ -4,24 +4,22 @@ import MarkdownBody from "../../../../components/ui/MarkdownBody"
 import Separator from "../../../../components/ui/Separator"
 import { useAuthContext } from "../../../../context/auth/authContext"
 import { useExamContext } from "../../../../context/exam/examContext"
-import { IQuestion, ISBAQuestion } from "../../../../interface/exam"
+import { ISBAQuestion } from "../../../../interface/exam"
 import { submitAnswerRequest } from "../../../../lib/exam.request"
-import { toTitle } from "../../../../utils/string"
 import NextButton from "../ui/NextButton"
 
 const SBAQuestion = () => {
 	const { auth } = useAuthContext()
 	const {
-		currentQuestion,
+		useCurrentQuestion,
 		hasAnswered,
 		questionResponse,
 		setHasAnswered,
 		setQuestionResponse,
 		setScore,
+		mode,
 	} = useExamContext()
-	const [question, setQuestion] = useState(
-		currentQuestion as IQuestion<ISBAQuestion>
-	)
+	const question = useCurrentQuestion<ISBAQuestion>()
 	const [selectedOption, setSelectedOption] = useState("")
 
 	function handleOnChange(e: React.ChangeEvent<HTMLInputElement>) {
@@ -60,11 +58,11 @@ const SBAQuestion = () => {
 		<div className='flex flex-col gap-3 text-gray-200 font-medium'>
 			<span className='text-sm text-gray-300'>
 				Category -{" "}
-				{!["None", "All"].includes(question.parent) && (
-					<b>{question.parent} / </b>
+				{!["None", "All"].includes(question.parent) ? (
+					<b>{question.parent}</b>
+				) : (
+					question.category
 				)}
-				<b>{question.category}</b> /{" "}
-				<b>{toTitle(question.topic || "No topic")}</b>
 			</span>
 			<span className='text-xs sm:text-sm text-gray-400 flex items-baseline gap-3'>
 				<svg
@@ -87,12 +85,12 @@ const SBAQuestion = () => {
 			</span>
 			<Separator />
 			<MarkdownBody content={question.scenario} />
-			<MarkdownBody content={question.content.question}/>
+			<MarkdownBody content={question.content.question} />
 			<form onSubmit={submitAnswer}>
 				<ol type='A' className='inline-flex flex-col mt-2 mb-1'>
 					{question.content.options.map((option, index) => (
 						<li
-							className='list-[upper-latin] list-inside first:rounded-t-md last:rounded-b-md border border-gray-100/10 py-2 px-4'
+							className={`list-[upper-latin] list-inside first:rounded-t-md last:rounded-b-md border border-gray-100/10 py-2 px-4`}
 							key={option + index}
 						>
 							<label
@@ -105,18 +103,25 @@ const SBAQuestion = () => {
 											? "text-emerald-500"
 											: "text-red-500"
 										: "text-gray-300"
+								} ${
+									hasAnswered &&
+									selectedOption === option &&
+									"underline"
 								}`}
 								htmlFor={option + index}
 							>
 								{option}
-								<input
-									className={`ml-4`}
-									type='radio'
-									value={option}
-									onChange={handleOnChange}
-									id={option + index}
-									name='optionSelected'
-								/>
+
+								{!hasAnswered && mode !== "CANCELLED" && (
+									<input
+										className={`ml-4`}
+										type='radio'
+										value={option}
+										onChange={handleOnChange}
+										id={option + index}
+										name='optionSelected'
+									/>
+								)}
 							</label>
 						</li>
 					))}

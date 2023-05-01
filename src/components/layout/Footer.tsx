@@ -17,7 +17,7 @@ const Footer = ({ cols }: IProps) => {
 	const id2 = useId()
 
 	return (
-		<footer className='text-slate-50 font-normal bg-slate-900/80 border-t border-t-slate-50/30'>
+		<footer className='min-w-max text-slate-50 font-normal bg-slate-900/80 border-t border-t-slate-50/30'>
 			<div className='max-w-2xl mx-auto py-20'>
 				<div className='text-center grid md:grid-cols-2 gap-6'>
 					{cols.map((col, i) => (

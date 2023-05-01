@@ -51,7 +51,7 @@ const SigninForm = () => {
 								id: res.data.id,
 								user: null,
 							})
-							toast.success("Authenticated")
+							toast.success("Welcome back!")
 							navigate("/account")
 							resetForm()
 						}

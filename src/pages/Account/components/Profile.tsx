@@ -16,10 +16,6 @@ const Profile = ({ setShowChartModal, setModalChildren }: IProps) => {
 		auth: { user },
 	} = useAuthContext()
 
-	useEffect(() => {
-		toast.success(`Welcome back ${user?.username}`)
-	}, [])
-
 	return (
 		<div className='bg-slate-900/50 py-6 px-5 sm:p-8 rounded-md border border-slate-100/10 shadow-md flex flex-col'>
 			<div className='tracking-tight mb-6'>

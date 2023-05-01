@@ -1,6 +1,4 @@
 import BackgroundImage from "../../components/ui/BackgroundImage"
-import AOS from "aos"
-import { useEffect } from "react"
 import GetExam from "./components/GetExam"
 import { useAuthContext } from "../../context/auth/authContext"
 import ShowQuestion from "./components/ShowQuestion"
@@ -9,10 +7,7 @@ import Confetti from "./Confetti"
 
 const Exam = () => {
 	const { auth } = useAuthContext()
-	useEffect(() => {
-		AOS.init()
-		AOS.refresh()
-	}, [])
+
 	return (
 		<ExamContextProvider>
 			<BackgroundImage
@@ -22,9 +17,8 @@ const Exam = () => {
 						: "/img/exam-page-image.jpg"
 				}
 			/>
-			<section className='pt-[230px] pb-32 min-h-screen bg-slate-900/50 shadow-md rounded-md px-4'>
+			<section className='pt-[230px] pb-32 min-h-screen bg-slate-900/50 shadow-md rounded-md px-4 animate-enter'>
 				<article
-					data-aos='fade-up'
 					className={`${
 						auth.user?.exam.startedAt ? "max-w-4xl" : "max-w-xl"
 					} mx-auto `}>

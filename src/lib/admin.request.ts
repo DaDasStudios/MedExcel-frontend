@@ -4,6 +4,7 @@ import { IQuestion } from '../interface/exam'
 import { IUser } from '../interface/user'
 import { ISignIn } from './auth.request'
 import { REST_HOST } from './env'
+import { IQuestionReview } from '../interface/questionReview'
 
 export const signInAdminRequest = (payload: ISignIn) => axios.post<{
     message: string
@@ -158,6 +159,30 @@ export const setAccessDaysRequest = (id: string, payload: {
 }, adminToken: string) => axios.put<{
     message: string
 }>(`${REST_HOST}/users/user/subscription/${id}`, payload, {
+    headers: {
+        'Authorization': `Bearer ${adminToken}`,
+        "Content-Type": "application/json"
+    }
+})
+
+export const getQuestionReviews = (adminToken: string) => axios.get<{
+    questionReviews: IQuestionReview[]
+    status: string
+}>(`${REST_HOST}/question/review`, {
+    headers: {
+        'Authorization': `Bearer ${adminToken}`,
+    }
+})
+
+export const deleteQuestionReview = (adminToken: string, id: string) => axios.delete(`${REST_HOST}/question/review/${id}`, {
+    headers: {
+        'Authorization': `Bearer ${adminToken}`,
+    }
+})
+
+export const getQuestionById = (adminToken: string, id: string) => axios.post<{
+    question: IQuestion
+}>(`${REST_HOST}/question/filter`, { id }, {
     headers: {
         'Authorization': `Bearer ${adminToken}`,
         "Content-Type": "application/json"
