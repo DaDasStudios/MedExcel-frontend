@@ -1,8 +1,8 @@
 import axios from 'axios'
-import { ISite } from '../interface'
+import { ISiteInformation } from '../interface'
 import { REST_HOST } from './env'
 
-export const getSiteData = () => axios.get<ISite>(`${REST_HOST}/site`)
+export const getSiteData = () => axios.get<ISiteInformation>(`${REST_HOST}/site`)
 
 export const requestForPayment = (planId: string, token: string) => axios.post<
     {

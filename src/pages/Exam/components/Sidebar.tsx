@@ -6,16 +6,19 @@ import { useExamContext } from "../../../context/exam/examContext"
 import { cancelExamRequest } from "../../../lib/exam.request"
 import { formatDate } from "../../../utils/date"
 import SideBarElement from "./ui/SideBarElement"
+import { useState } from "react"
 
 const Sidebar = () => {
 	const { auth, refreshUser } = useAuthContext()
-	const {
-		score,
-		mode,
-		setMode,
-		advanceNextQuestionAfterCancelling
-	} = useExamContext()
+	const { score, mode, setMode, advanceNextQuestionAfterCancelling, setQuestionsAfterCancelling } =
+		useExamContext()
 	const { user } = auth
+	const [isClosed, setIsClosed] = useState(true)
+
+	function previewLastQuestion(indexQuestion: number) {
+		if (user && indexQuestion < user?.exam.current) {
+		}
+	}
 
 	async function cancelExam() {
 		toast.custom(t => (
@@ -39,7 +42,7 @@ const Sidebar = () => {
 									id: t.id,
 								}
 							)
-							setMode("CANCELLED")
+							setMode("PREVIEW")
 							advanceNextQuestionAfterCancelling(
 								data.incorrectQuestions
 							)
@@ -57,6 +60,100 @@ const Sidebar = () => {
 	return (
 		<div className='py-6 px-5 sm:p-5 bg-slate-900/80 h-fit rounded-md border border-gray-100/10 shadow-md mb-6'>
 			<div className='font-medium text-gray-300 text-normal'>
+				<div className={`grid grid-cols-6 gap-2.5 mb-4`}>
+					{user?.exam.questions.map((questionID, index) => (
+						<>
+							{isClosed ? (
+								index > user.exam.current - 10 &&
+								index < user.exam.current + 10 && (
+									<span
+										key={`Question:${index}:ID:${questionID}`}
+										className={`flex items-center justify-center rounded-full border text-center w-8 h-8 ${
+											index === user.exam.current
+												? "border-blue-100/20 bg-blue-700/50 hover:bg-blue-700/70 text-blue-100"
+												: user.exam.correctAnswers.includes(
+														questionID
+												  )
+												? "border-emerald-100/20 bg-emerald-700/50 hover:bg-emerald-700/70 text-emerald-100"
+												: index < user.exam.current
+												? "border-rose-100/20 bg-rose-700/50 hover:bg-rose-700/70 text-rose-100"
+												: "border-slate-100/10 bg-slate-800 hover:bg-slate-700 text-slate-200"
+										}
+							`}
+									>
+										{index + 1}
+									</span>
+								)
+							) : (
+								<button
+									onClick={() => previewLastQuestion(index)}
+									type='button'
+									key={`Question:${index}:ID:${questionID}`}
+									className={`flex items-center justify-center rounded-full border text-center w-8 h-8 ${
+										index === user.exam.current
+											? "border-blue-100/20 bg-blue-700/50 hover:bg-blue-700/70 text-blue-100"
+											: user.exam.correctAnswers.includes(
+													questionID
+											  )
+											? "border-emerald-100/20 bg-emerald-700/50 hover:bg-emerald-700/70 text-emerald-100"
+											: index < user.exam.current
+											? "border-rose-100/20 bg-rose-700/50 hover:bg-rose-700/70 text-rose-100"
+											: "border-slate-100/10 bg-slate-800 hover:bg-slate-700 text-slate-200"
+									}
+							`}
+								>
+									{index + 1}
+								</button>
+							)}
+						</>
+					))}
+				</div>
+				{user && user?.exam.questions.length > 19 && (
+					<button
+						onClick={() => setIsClosed(closed => !closed)}
+						className={
+							themeBtns.neutralBtn +
+							` flex items-center gap-x-2 justify-center rounded-md px-3 py-2 mb-4 w-full`
+						}
+						type='button'
+					>
+						<p>
+							{isClosed
+								? "Show all questions"
+								: "Show fewer questions"}
+						</p>
+						{isClosed ? (
+							<svg
+								className='w-6'
+								fill='currentColor'
+								viewBox='0 0 20 20'
+								xmlns='http://www.w3.org/2000/svg'
+								aria-hidden='true'
+							>
+								<path
+									clipRule='evenodd'
+									fillRule='evenodd'
+									d='M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z'
+								/>
+							</svg>
+						) : (
+							<svg
+								className='w-6'
+								fill='currentColor'
+								viewBox='0 0 20 20'
+								xmlns='http://www.w3.org/2000/svg'
+								aria-hidden='true'
+							>
+								<path
+									clipRule='evenodd'
+									fillRule='evenodd'
+									d='M14.77 12.79a.75.75 0 01-1.06-.02L10 8.832 6.29 12.77a.75.75 0 11-1.08-1.04l4.25-4.5a.75.75 0 011.08 0l4.25 4.5a.75.75 0 01-.02 1.06z'
+								/>
+							</svg>
+						)}
+					</button>
+				)}
+
 				<SideBarElement>
 					<svg
 						className='w-5'
@@ -139,13 +236,14 @@ const Sidebar = () => {
 						xmlns='http://www.w3.org/2000/svg'
 						aria-hidden='true'
 					>
+						<path d='M2 3a1 1 0 00-1 1v1a1 1 0 001 1h16a1 1 0 001-1V4a1 1 0 00-1-1H2z' />
 						<path
 							clipRule='evenodd'
 							fillRule='evenodd'
-							d='M5.965 4.904l9.131 9.131a6.5 6.5 0 00-9.131-9.131zm8.07 10.192L4.904 5.965a6.5 6.5 0 009.131 9.131zM4.343 4.343a8 8 0 1111.314 11.314A8 8 0 014.343 4.343z'
+							d='M2 7.5h16l-.811 7.71a2 2 0 01-1.99 1.79H4.802a2 2 0 01-1.99-1.79L2 7.5zm5.22 1.72a.75.75 0 011.06 0L10 10.94l1.72-1.72a.75.75 0 111.06 1.06L11.06 12l1.72 1.72a.75.75 0 11-1.06 1.06L10 13.06l-1.72 1.72a.75.75 0 01-1.06-1.06L8.94 12l-1.72-1.72a.75.75 0 010-1.06z'
 						/>
 					</svg>
-					Cancel exam
+					End and review
 				</button>
 			)}
 		</div>

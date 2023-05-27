@@ -1,4 +1,3 @@
-import { Link } from "react-router-dom"
 import SolidButton, { themeBtns } from "../../components/ui/Buttons/SolidButton"
 import Separator from "../../components/ui/Separator"
 import { useExamContext } from "../../context/exam/examContext"
@@ -10,18 +9,19 @@ const FinishExam = () => {
 	return (
 		<div className='flex flex-col gap-3 font-medium'>
 			<h1 className='text-gray-200 text-center font-bold text-4xl'>
-				Congratulations 🎉
+				Congratulations! 🎉
 			</h1>
 			<p className='text-gray-400 mt-3 text-lg text-center'>
-				You completed the whole exam so you can see your exams records
-				in your{" "}
-				<Link to={"/account"} className='hover:underline text-gray-300'>
-					account section
-				</Link>{" "}
-				at the bottom.
+				You’ve completed all new Questions for now! We regularly add new
+				questions so check back soon to see if there’s more content for
+				you to test yourself with!
 			</p>
 			<p className='text-gray-400 mt-3 text-lg text-center'>
-				Let's take a look at your results
+				In the mean time you can review all the questions you’ve not
+				quite got correct yet!
+			</p>
+			<p className='text-gray-300 mt-3 text-lg text-center'>
+				Good luck & Continue Excel-Ing!
 			</p>
 			<div className='my-3'>
 				<h2 className='text-center text-gray-200 font-bold text-3xl'>

@@ -7,6 +7,7 @@ import { useExamContext } from "../../../../context/exam/examContext"
 import { ISBAQuestion } from "../../../../interface/exam"
 import { submitAnswerRequest } from "../../../../lib/exam.request"
 import NextButton from "../ui/NextButton"
+import ShortNextButton from "../ui/ShortNextButton"
 
 const SBAQuestion = () => {
 	const { auth } = useAuthContext()
@@ -55,7 +56,8 @@ const SBAQuestion = () => {
 	}
 
 	return (
-		<div className='flex flex-col gap-3 text-gray-200 font-medium'>
+		<div className='flex flex-col gap-3 text-gray-200 font-medium relative'>
+			{hasAnswered && <ShortNextButton />}
 			<span className='text-sm text-gray-300'>
 				Category -{" "}
 				{!["None", "All"].includes(question.parent) ? (
@@ -112,7 +114,7 @@ const SBAQuestion = () => {
 							>
 								{option}
 
-								{!hasAnswered && mode !== "CANCELLED" && (
+								{!hasAnswered && mode !== "PREVIEW" && (
 									<input
 										className={`ml-4`}
 										type='radio'

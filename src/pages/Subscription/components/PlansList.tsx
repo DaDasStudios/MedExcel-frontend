@@ -15,7 +15,7 @@ const PlansList = () => {
 		const paymentToken = searchParams.get("token")
 		const status = searchParams.get("status")
 
-		if (status === "CANCELLED") {
+		if (status === "PREVIEW") {
 			setTimeout(() => {
 				toast.error("Payment cancelled")
 			}, 1000)

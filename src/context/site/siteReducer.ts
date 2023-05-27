@@ -1,4 +1,4 @@
-import { ISite } from "../../interface";
+import { ISiteInformation } from "../../interface";
 
 export enum SiteTypes {
     SET = "SET"
@@ -6,10 +6,10 @@ export enum SiteTypes {
 
 interface ICountAction  {
     type: SiteTypes
-    payload: ISite
+    payload: ISiteInformation
 }
 
-export const siteReducer = (state: ISite, action: ICountAction): ISite => {
+export const siteReducer = (state: ISiteInformation, action: ICountAction): ISiteInformation => {
     switch (action.type) {
         case SiteTypes.SET:
             return {

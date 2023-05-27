@@ -20,8 +20,8 @@ const ReviewCard = ({ review }: IProps) => {
 						key={`StarId:${review._id}&value:${starValue}`}
 						className={`${
 							starValue <= review.rate
-								? "text-gray-300"
-								: "text-slate-400"
+								? "text-yellow-300"
+								: "text-yellow-100"
 						}`}
 					>
 						<svg

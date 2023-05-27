@@ -14,7 +14,7 @@ import { Route, Routes, useLocation } from "react-router-dom"
 
 // * Context
 import { useAuthContext } from "../context/auth/authContext"
-import { SiteContextProvider } from "../context/site/siteContext"
+import { SiteContextProvider, useSiteContext } from "../context/site/siteContext"
 import { AuthContextProvider } from "../context/auth/authContext"
 
 // * Components
@@ -24,12 +24,14 @@ import Exam from "../pages/Exam"
 import ErrorPage from "./ErrorPage"
 import ExamErrorPage from "./ExamErrorPage"
 import DeleteAccountScreen from "../pages/Account/DeleteAccountScreen"
+import Modal from "../components/ui/Modal"
 
 function Layout() {
 	const {
 		auth: { user },
 	} = useAuthContext()
 	const location = useLocation()
+	const { modal: { close, isOpen, children } } = useSiteContext()
 	return (
 		<>
 			{!location.pathname.includes("admin") && (
@@ -84,12 +86,16 @@ function Layout() {
 				/>
 			)}
 			<main className='min-h-screen relative'>
+				<Modal children={children} closeModal={close} rendered={isOpen} />
 				<Routes>
 					<Route path='/' element={<Home />} />
 					<Route path='/subscription' element={<Subscription />} />
 					<Route path='/more' element={<More />} />
 					<Route path='/recover' element={<Recover />} />
-					<Route path='/account/delete' element={<DeleteAccountScreen />} />
+					<Route
+						path='/account/delete'
+						element={<DeleteAccountScreen />}
+					/>
 					<Route path='/recover/auth' element={<RecoverAuth />} />
 					{/* ADMIN */}
 					<Route

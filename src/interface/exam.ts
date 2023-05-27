@@ -38,7 +38,7 @@ export type FilterSetExamType = "ALL" | "INCORRECT" | "NEW"
 
 export type AnsweredQuestionStatus = "CORRECT" | "INCORRECT" | "NOT ALL CORRECT"
 
-export type ExamMode = "LIVE" | "CANCELLED"
+export type ExamMode = "LIVE" | "PREVIEW"
 
 export interface IAnsweredQuestionResponse {
     score: number

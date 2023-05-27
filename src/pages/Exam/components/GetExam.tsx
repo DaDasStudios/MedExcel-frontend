@@ -188,10 +188,15 @@ const GetExam = () => {
 				return toast.error("Get a subscripton plan to start an exam")
 			}
 
-			if (error.response.data.message === "No question found with the specified filters") {
-				return toast.error("You have finished the question bank, please reset your data to continue")
+			if (
+				error.response.data.message ===
+				"No question found with the specified filters"
+			) {
+				return toast.error(
+					"You have finished the question bank, please reset your data to continue"
+				)
 			}
-			
+
 			return toast.error("Something went wrong... Try later")
 		}
 	}
@@ -230,15 +235,8 @@ const GetExam = () => {
 			<h3 className='mb-4 text-3xl sm:text-4xl font-bold text-center'>
 				Start Excel-ing at Exams!
 			</h3>
-			<div className='text-slate-400 mb-4 text-lg'>
-				<p className='sm:block hidden'>
-					Select the categories you want to be asked, and you'll get
-					started with this amazing process. Don't forget you cannot
-					start two exams at once.
-				</p>
-				<p className='block sm:hidden text-center'>
-					Select the categories you want to practice.
-				</p>
+			<div className='text-slate-400 mb-4 text-lg text-center'>
+				<p>Select the categories you would like to be tested on!</p>
 			</div>
 			<Separator />
 			{Object.entries(questions).length > 0 ? (
@@ -403,7 +401,14 @@ const GetExam = () => {
 														let isEveryItemUnchecked: boolean
 														const childrenCategories =
 															questions[
-																["All", "None"].includes(question.parent) ? "None" : question.parent
+																[
+																	"All",
+																	"None",
+																].includes(
+																	question.parent
+																)
+																	? "None"
+																	: question.parent
 															].content.reduce(
 																(arr, item) => {
 																	if (
@@ -514,7 +519,7 @@ const GetExam = () => {
 								value='INCORRECT'
 							/>
 							<FilterRadioButton
-								description="Not answered questions"
+								description='Not answered questions'
 								value='NEW'
 								onChange={e =>
 									setFilter(

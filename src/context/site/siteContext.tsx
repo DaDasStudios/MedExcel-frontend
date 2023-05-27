@@ -4,28 +4,33 @@ import {
 	useContext,
 	useReducer,
 	useEffect,
+	useState,
 } from "react"
-import { ISite } from "../../interface"
+import { ISite, ISiteInformation } from "../../interface"
 import { getSiteData } from "../../lib/site.request"
 import { useAuthContext } from "../auth/authContext"
 import { siteReducer, SiteTypes } from "./siteReducer"
 
-const SiteContext = createContext({} as ISite)
+const SiteContext = createContext({} as ISiteInformation & ISite)
+
 SiteContext.displayName = "Site Information"
 
 export const useSiteContext = () => useContext(SiteContext)
 
-const siteInitialState: ISite = {
+const siteInitialState: ISiteInformation = {
 	image: {
 		url: "",
 	},
 	name: "",
-	subscriptionPlans: [],
+	subscriptionPlans: []
 }
+
 
 export const SiteContextProvider = ({ children }: PropsWithChildren) => {
 	const { auth } = useAuthContext()
 	const [state, dispatch] = useReducer(siteReducer, siteInitialState)
+	const [isOpenModal, setIsOpenModal] = useState(false)
+	const [modalChildren, setModalChildren] = useState(<></>)
 
 	useEffect(() => {
 		;(async () => {
@@ -65,6 +70,18 @@ export const SiteContextProvider = ({ children }: PropsWithChildren) => {
 		<SiteContext.Provider
 			value={{
 				...state,
+				modal: {
+					close() {
+						setModalChildren(<></>)
+						setIsOpenModal(false)
+					},
+					isOpen: isOpenModal,
+					open(children) {
+						setModalChildren(children)
+						setIsOpenModal(true)
+					},
+					children: modalChildren
+				}
 			}}
 		>
 			{children}

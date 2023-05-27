@@ -105,8 +105,8 @@ const QuestionReview = () => {
 													key={"start" + starValue}
 													className={`${
 														starValue <= stars
-															? "text-gray-300"
-															: "text-gray-400"
+															? "text-yellow-300"
+															: "text-yellow-100"
 													}`}
 												>
 													<svg
@@ -132,9 +132,9 @@ const QuestionReview = () => {
 													key={"start" + starValue}
 													className={`${
 														starValue <= stars
-															? "text-gray-300"
-															: "text-gray-400"
-													} hover:text-gray-300 cursor-pointer`}
+															? "text-yellow-300"
+															: "text-yellow-100"
+													} hover:text-yellow-300 cursor-pointer`}
 													onMouseOver={() =>
 														setStars(starValue)
 													}

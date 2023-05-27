@@ -14,6 +14,7 @@ import {
 	getCurrentQuestionRequest,
 	submitAnswerRequest,
 } from "../../../../lib/exam.request"
+import ShortNextButton from "../ui/ShortNextButton"
 
 interface IScreenState {
 	page: number
@@ -116,7 +117,7 @@ const CBQQuestion = () => {
 
 		if (hasAnswered && pageIndex === screenOptions.cases + 1) {
 			// ? Reload to fetch next question
-			if (mode === "CANCELLED") {
+			if (mode === "PREVIEW") {
 				return advanceNextQuestionAfterCancelling()
 			}
 			if (await hasFinishedExam()) {
@@ -135,7 +136,8 @@ const CBQQuestion = () => {
 	}
 
 	return (
-		<div className='flex flex-col gap-3 text-gray-200 font-medium'>
+		<div className='flex flex-col gap-3 text-gray-200 font-medium relative'>
+			{hasAnswered && <ShortNextButton />}
 			<span className='text-sm text-gray-300'>
 				Category -{" "}
 				{!["None", "All"].includes(question.parent) ? (
@@ -265,7 +267,7 @@ const CBQQuestion = () => {
 										>
 											{option}
 											{!hasAnswered &&
-												mode !== "CANCELLED" && (
+												mode !== "PREVIEW" && (
 													<input
 														className={`ml-4`}
 														type='radio'

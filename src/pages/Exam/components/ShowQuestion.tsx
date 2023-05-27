@@ -9,6 +9,7 @@ import ECQQuestion from "./question/ECQQuestion"
 import SBAQuestion from "./question/SBAQuestion"
 import Sidebar from "./Sidebar"
 import QuestionReview from "./QuestionReview"
+import ReferenceRanges from "../ReferenceRanges"
 
 const ShowQuestion = () => {
 	const { currentQuestion, getCurrentQuestion, hasFinished, mode, questionNumber } =
@@ -61,6 +62,7 @@ const ShowQuestion = () => {
 			</div>
 			{!hasFinished && (
 				<aside className='min-[400px]:max-lg:w-[300px] max-lg:max-w-[300px] max-lg:mx-auto lg:col-span-2'>
+					<ReferenceRanges/>
 					<Sidebar />
 					{mode === "LIVE" && <QuestionReview />}
 				</aside>
