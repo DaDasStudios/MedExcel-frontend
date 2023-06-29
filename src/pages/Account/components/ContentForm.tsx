@@ -18,7 +18,7 @@ import {
 } from "../../../lib/user.request"
 import { useAuthContext } from "../../../context/auth/authContext"
 import { toast } from "react-hot-toast"
-import DecitionToast from "../../../components/ui/DecitionToast"
+import DecitionToast from "../../../components/toast/DecitionToast"
 import Tooltip from "../../../components/ui/Tooltip"
 import GeneralStats from "./GeneralStats"
 import CategoryStats from "./CategoryStats"

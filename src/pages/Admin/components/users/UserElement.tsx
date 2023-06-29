@@ -1,5 +1,5 @@
 import toast from "react-hot-toast"
-import DecitionToast from "../../../../components/ui/DecitionToast"
+import DecitionToast from "../../../../components/toast/DecitionToast"
 import { useAdminContext } from "../../../../context/admin/adminContext"
 import { IUser } from "../../../../interface/user"
 import { deleteUserRequest } from "../../../../lib/admin.request"

@@ -8,7 +8,7 @@ import { toast } from "react-hot-toast"
 import { deleteQuestionRequest } from "../../../../../../lib/admin.request"
 import { useAdminContext } from "../../../../../../context/admin/adminContext"
 import { toTitle } from "../../../../../../utils/string"
-import DecitionToast from "../../../../../../components/ui/DecitionToast"
+import DecitionToast from "../../../../../../components/toast/DecitionToast"
 import { useRef } from "react"
 import { useHoverDirty } from "react-use"
 

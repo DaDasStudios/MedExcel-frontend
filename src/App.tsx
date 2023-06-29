@@ -7,7 +7,6 @@ import {
 } from "react-router-dom"
 import Root from "./routes/Root"
 import ErrorPage from "./routes/ErrorPage"
-import { Toaster } from "react-hot-toast"
 
 const router = createBrowserRouter(
 	createRoutesFromElements(
@@ -21,7 +20,6 @@ const router = createBrowserRouter(
 const App = () => {
 	return <>
 		<RouterProvider router={router} />
-		<Toaster />
 	</>
 }
 

@@ -15,7 +15,7 @@ import {
 import Spin from "../../../../components/ui/Spin"
 import React, { useRef } from "react"
 import { IUser } from "../../../../interface/user"
-import DecitionToast from "../../../../components/ui/DecitionToast"
+import DecitionToast from "../../../../components/toast/DecitionToast"
 import { toTitle } from "../../../../utils/string"
 
 interface IProps {

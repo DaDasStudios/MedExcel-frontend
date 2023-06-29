@@ -8,7 +8,7 @@ import AddSubscription from "./components/SubscriptionPlanForm"
 import SubscriptionsGroup from "./components/SubscriptionsGroup"
 import Spin from "../../../../components/ui/Spin"
 import { deleteSubscriptionPlanRequest } from "../../../../lib/admin.request"
-import DecitionToast from "../../../../components/ui/DecitionToast"
+import DecitionToast from "../../../../components/toast/DecitionToast"
 
 const Pricing = () => {
 	const { auth } = useAdminContext()

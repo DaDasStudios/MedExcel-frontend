@@ -37,10 +37,12 @@ const ShortNextButton = () => {
 			<button
 				onClick={GoNextQuestion}
 				type='submit'
-				className={`self-end flex items-center gap-2 py-1.5 px-3 border border-blue-500/50 hover:bg-blue-700/50 bg-blue-800/50 rounded-md -m-2`}
+				aria-label="Next question button"
+				title="Next question"
+				className='flex items-center gap-2 py-1.5 px-3 rounded-md -m-2 hover:bg-slate-500/20 transition-colors'
 			>
 				<svg
-					className='w-5'
+					className='w-6'
 					fill='currentColor'
 					viewBox='0 0 20 20'
 					xmlns='http://www.w3.org/2000/svg'

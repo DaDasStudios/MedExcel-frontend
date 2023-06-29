@@ -6,5 +6,6 @@
     "tabWidth": 4,
     "editorconfig": false,
     "useTabs": true,
-    "quoteProps": "as-needed"
+    "quoteProps": "as-needed",
+    "printWidth": 120
 }

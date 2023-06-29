@@ -8,23 +8,29 @@ import { ISBAQuestion } from "../../../../interface/exam"
 import { submitAnswerRequest } from "../../../../lib/exam.request"
 import NextButton from "../ui/NextButton"
 import ShortNextButton from "../ui/ShortNextButton"
+import useExpiredPlanToast from "../../hooks/useExpiredPlanToast"
+import SBAOption from "../ui/SBAOption"
+import CategoryHeader from "../ui/CategoryHeader"
+import HelpBox from "../ui/HelpBox"
+import SubmitButton from "../ui/SubmitButton"
 
 const SBAQuestion = () => {
 	const { auth } = useAuthContext()
-	const {
-		useCurrentQuestion,
-		hasAnswered,
-		questionResponse,
-		setHasAnswered,
-		setQuestionResponse,
-		setScore,
-		mode,
-	} = useExamContext()
+	const { useCurrentQuestion, hasAnswered, questionResponse, setHasAnswered, setQuestionResponse, setScore, mode } =
+		useExamContext()
 	const question = useCurrentQuestion<ISBAQuestion>()
-	const [selectedOption, setSelectedOption] = useState("")
 
-	function handleOnChange(e: React.ChangeEvent<HTMLInputElement>) {
+	const [selectedOption, setSelectedOption] = useState("")
+	const [excludedOptions, setExcludedOptions] = useState<Array<boolean>>(
+		new Array(question.content.options.length).fill(false)
+	)
+
+	function handleSelectOption(e: React.ChangeEvent<HTMLInputElement>) {
 		setSelectedOption(e.target.value)
+	}
+
+	function toggleExcludeOption(index: number) {
+		setExcludedOptions(prevExcludedOptions => prevExcludedOptions.map((value, i) => (i === index ? !value : value)))
 	}
 
 	async function submitAnswer(e: FormEvent) {
@@ -34,13 +40,11 @@ const SBAQuestion = () => {
 			const payload = {
 				answer: selectedOption,
 			}
-			const { data } = await submitAnswerRequest(
-				payload,
-				auth.token || ""
-			)
+			const { data } = await submitAnswerRequest(payload, auth.token || "")
 			setHasAnswered(true)
 			setQuestionResponse(data)
 			setScore(data.score)
+			setExcludedOptions(excludedOptions.fill(false))
 
 			if (data.status === "CORRECT") {
 				return toast.success("Correct answer")
@@ -50,7 +54,11 @@ const SBAQuestion = () => {
 			}
 
 			return toast.error("Something went wrong... Try later")
-		} catch (error) {
+		} catch (error: any) {
+			if (error.response.status === 401) {
+				useExpiredPlanToast()
+			}
+
 			toast.error("Something went wrong when submitting the answer")
 		}
 	}
@@ -58,99 +66,34 @@ const SBAQuestion = () => {
 	return (
 		<div className='flex flex-col gap-3 text-gray-200 font-medium relative'>
 			{hasAnswered && <ShortNextButton />}
-			<span className='text-sm text-gray-300'>
-				Category -{" "}
-				{!["None", "All"].includes(question.parent) ? (
-					<b>{question.parent}</b>
-				) : (
-					question.category
-				)}
-			</span>
-			<span className='text-xs sm:text-sm text-gray-400 flex items-baseline gap-3'>
-				<svg
-					className='hidden sm:block w-6 self-center'
-					fill='currentColor'
-					viewBox='0 0 20 20'
-					xmlns='http://www.w3.org/2000/svg'
-					aria-hidden='true'
-				>
-					<path
-						clipRule='evenodd'
-						fillRule='evenodd'
-						d='M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a.75.75 0 000 1.5h.253a.25.25 0 01.244.304l-.459 2.066A1.75 1.75 0 0010.747 15H11a.75.75 0 000-1.5h-.253a.25.25 0 01-.244-.304l.459-2.066A1.75 1.75 0 009.253 9H9z'
-					/>
-				</svg>
-				<p>
-					Answer the question based on the scenario presented below,
-					just select an option and click on "Submit answer".
-				</p>
-			</span>
+			<CategoryHeader question={question} />
+			<HelpBox
+				content='Answer the question based on the scenario presented below, just select an option and click on
+					"Submit answer"'
+			/>
 			<Separator />
 			<MarkdownBody content={question.scenario} />
 			<MarkdownBody content={question.content.question} />
 			<form onSubmit={submitAnswer}>
-				<ol type='A' className='inline-flex flex-col mt-2 mb-1'>
+				<ol type='A' role='list' className='flex flex-col mt-2 mb-1 '>
 					{question.content.options.map((option, index) => (
-						<li
-							className={`list-[upper-latin] list-inside first:rounded-t-md last:rounded-b-md border border-gray-100/10 py-2 px-4`}
-							key={option + index}
-						>
-							<label
-								className={`${
-									hasAnswered
-										? index ===
-										  questionResponse.question.content
-												.answer -
-												1
-											? "text-emerald-500"
-											: "text-red-500"
-										: "text-gray-300"
-								} ${
-									hasAnswered &&
-									selectedOption === option &&
-									"underline"
-								}`}
-								htmlFor={option + index}
-							>
-								{option}
-
-								{!hasAnswered && mode !== "PREVIEW" && (
-									<input
-										className={`ml-4`}
-										type='radio'
-										value={option}
-										onChange={handleOnChange}
-										id={option + index}
-										name='optionSelected'
-									/>
-								)}
-							</label>
-						</li>
+						<SBAOption
+							key={`option:${index}`}
+							optionIndex={index}
+							optionContent={option}
+							isExcluded={excludedOptions[index]}
+							excludedOptions={excludedOptions}
+							selectedOption={selectedOption}
+							toggleExcludeOption={toggleExcludeOption}
+							handleSelectOption={handleSelectOption}
+						/>
 					))}
 				</ol>
-				{!hasAnswered && (
-					<button
-						type='submit'
-						className='flex items-center gap-2 py-2 px-3 border border-blue-500/50 hover:bg-blue-700/50 bg-blue-800/50 rounded-md mt-6 mb-1'
-					>
-						<svg
-							className='w-5'
-							fill='currentColor'
-							viewBox='0 0 20 20'
-							xmlns='http://www.w3.org/2000/svg'
-							aria-hidden='true'
-						>
-							<path d='M3.105 2.289a.75.75 0 00-.826.95l1.414 4.925A1.5 1.5 0 005.135 9.25h6.115a.75.75 0 010 1.5H5.135a1.5 1.5 0 00-1.442 1.086l-1.414 4.926a.75.75 0 00.826.95 28.896 28.896 0 0015.293-7.154.75.75 0 000-1.115A28.897 28.897 0 003.105 2.289z' />
-						</svg>
-						Submit answer
-					</button>
-				)}
+				{!hasAnswered && <SubmitButton />}
 			</form>
 			{hasAnswered && (
 				<>
-					<MarkdownBody
-						content={questionResponse.question.content.explanation}
-					/>
+					<MarkdownBody content={questionResponse.question.content.explanation} />
 					<NextButton />
 				</>
 			)}

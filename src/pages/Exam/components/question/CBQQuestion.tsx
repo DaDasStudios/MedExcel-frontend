@@ -1,20 +1,18 @@
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { toast } from "react-hot-toast"
-import { themeBtns } from "../../../../components/ui/Buttons/SolidButton"
 import MarkdownBody from "../../../../components/ui/MarkdownBody"
 import Separator from "../../../../components/ui/Separator"
 import { useAuthContext } from "../../../../context/auth/authContext"
 import { useExamContext } from "../../../../context/exam/examContext"
-import {
-	ICBQQuestion,
-	IQuestion,
-	ISBAQuestion,
-} from "../../../../interface/exam"
-import {
-	getCurrentQuestionRequest,
-	submitAnswerRequest,
-} from "../../../../lib/exam.request"
+import { ICBQQuestion, ISBAQuestion } from "../../../../interface/exam"
+import { getCurrentQuestionRequest, submitAnswerRequest } from "../../../../lib/exam.request"
 import ShortNextButton from "../ui/ShortNextButton"
+import useExpiredPlanToast from "../../hooks/useExpiredPlanToast"
+import CategoryHeader from "../ui/CategoryHeader"
+import HelpBox from "../ui/HelpBox"
+import CBQPagination from "../ui/CBQPagination"
+import CBQOption from "../ui/CQBOption"
+import CBQPaginationButtons from "./CBQPaginationButtons"
 
 interface IScreenState {
 	page: number
@@ -33,22 +31,17 @@ const CBQQuestion = () => {
 		setHasFinished,
 		setScoresHistory,
 		mode,
-		questionNumber,
-		questionsAfterCancelling,
 		advanceNextQuestionAfterCancelling,
 	} = useExamContext()
 	const { auth } = useAuthContext()
 
 	const question = useCurrentQuestion<ICBQQuestion>()
-	const [screenOptions, setScreenOptions] = useState({
+	const [pageContent, setPageContent] = useState({
 		page: 0,
 		cases: question.content.length,
 		currentQuestion: question.content[0],
 	} as IScreenState)
-
-	const [selectedOptions, setSelectedOptions] = useState(
-		question.content.map(_ => "") as string[]
-	)
+	const [selectedOptions, setSelectedOptions] = useState<string[]>(new Array(question.content.length).fill(""))
 
 	async function submitAnswers() {
 		if (selectedOptions.some(singleSelectedOption => !singleSelectedOption))
@@ -58,10 +51,7 @@ const CBQQuestion = () => {
 			const payload = {
 				answers: selectedOptions,
 			}
-			const { data } = await submitAnswerRequest(
-				payload,
-				auth.token || ""
-			)
+			const { data } = await submitAnswerRequest(payload, auth.token || "")
 
 			setHasAnswered(true)
 			setQuestionResponse(data)
@@ -78,20 +68,19 @@ const CBQQuestion = () => {
 			}
 
 			return toast.error("Something went wrong... Try later")
-		} catch (error) {
+		} catch (error: any) {
+			if (error.response.status === 401) {
+				useExpiredPlanToast()
+			}
+
 			toast.error("Something went wrong when submitting the answer")
 		}
 	}
 
-	function handleOnChange(
-		e: React.ChangeEvent<HTMLInputElement>,
-		caseIndex: number
-	) {
-		setSelectedOptions(
-			selectedOptions.map((singleSelectedOption, selectedOptionsIndex) =>
-				selectedOptionsIndex === caseIndex
-					? e.target.value
-					: singleSelectedOption
+	function handleSelectOption(e: React.ChangeEvent<HTMLInputElement>) {
+		setSelectedOptions(prevSelectedOptions =>
+			prevSelectedOptions.map((singleSelectedOption, selectedOptionsIndex) =>
+				selectedOptionsIndex === pageContent.page ? e.target.value : singleSelectedOption
 			)
 		)
 	}
@@ -105,17 +94,18 @@ const CBQQuestion = () => {
 		return false
 	}
 
-	async function handleChangeCase(indexAdvance: number) {
-		const pageIndex = screenOptions.page + indexAdvance
+	async function handlePagination(indexAdvance: number) {
+		const pageIndex = pageContent.page + indexAdvance
 
-		if (
-			!hasAnswered &&
-			(pageIndex < 0 || pageIndex > screenOptions.cases - 1)
-		) {
+		if (pageIndex < 0) {
 			return
 		}
 
-		if (hasAnswered && pageIndex === screenOptions.cases + 1) {
+		if (!hasAnswered && pageIndex > pageContent.cases - 1) {
+			return
+		}
+
+		if (hasAnswered && pageIndex === pageContent.cases + 1) {
 			// ? Reload to fetch next question
 			if (mode === "PREVIEW") {
 				return advanceNextQuestionAfterCancelling()
@@ -128,8 +118,8 @@ const CBQQuestion = () => {
 			}
 		}
 
-		setScreenOptions({
-			...screenOptions,
+		setPageContent({
+			...pageContent,
 			page: pageIndex,
 			currentQuestion: question.content[pageIndex],
 		})
@@ -138,277 +128,66 @@ const CBQQuestion = () => {
 	return (
 		<div className='flex flex-col gap-3 text-gray-200 font-medium relative'>
 			{hasAnswered && <ShortNextButton />}
-			<span className='text-sm text-gray-300'>
-				Category -{" "}
-				{!["None", "All"].includes(question.parent) ? (
-					<b>{question.parent}</b>
-				) : (
-					question.category
-				)}
-			</span>
-			<span className='text-xs sm:text-sm text-gray-400 flex items-baseline gap-3'>
-				<svg
-					className='hidden sm:block w-8 self-center'
-					fill='currentColor'
-					viewBox='0 0 20 20'
-					xmlns='http://www.w3.org/2000/svg'
-					aria-hidden='true'
-				>
-					<path
-						clipRule='evenodd'
-						fillRule='evenodd'
-						d='M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a.75.75 0 000 1.5h.253a.25.25 0 01.244.304l-.459 2.066A1.75 1.75 0 0010.747 15H11a.75.75 0 000-1.5h-.253a.25.25 0 01-.244-.304l.459-2.066A1.75 1.75 0 009.253 9H9z'
-					/>
-				</svg>
-				<p>
-					Answer the questions of the current case based on the
-					scenario that appears below. Finally submit your answers to
-					continue with the next question.
-				</p>
-			</span>
+			<CategoryHeader question={question} />
+			<HelpBox
+				content='Answer the questions of the current case based on the scenario that appears below. Finally submit
+					your answers to continue with the next question'
+			/>
 			<Separator />
 			<div className='my-2'>
-				<div className='flex gap-2 items-center text-sm'>
-					{question.content.map((_, caseIndex) => (
-						<span
-							key={caseIndex + caseIndex ** 2}
-							className={`border shadow-md rounded-lg p-1 ${
-								hasAnswered
-									? questionResponse.question.content[
-											caseIndex
-									  ].answer -
-											1 ===
-									  question.content[
-											caseIndex
-									  ].options.indexOf(
-											selectedOptions[caseIndex]
-									  )
-										? themeBtns.greenBtn
-										: themeBtns.redBtn
-									: caseIndex === screenOptions.page
-									? "bg-blue-700/50 border-blue-100/10"
-									: "bg-slate-700 border-gray-100/10"
-							}`}
-						>
-							Q{caseIndex + 1}
-						</span>
-					))}
-					<span
-						className={`border  shadow-md rounded-lg p-1 ${
-							screenOptions.page === screenOptions.cases
-								? "bg-blue-700/50 border-blue-100/10"
-								: "bg-slate-700 border-gray-100/10"
-						}`}
-					>
-						Summary
-					</span>
-				</div>
+				<CBQPagination
+					currPage={pageContent.page}
+					cases={pageContent.cases}
+					question={question}
+					selectedOptions={selectedOptions}
+				/>
 
-				{screenOptions.page === screenOptions.cases ? (
-					<div>
-						<p className='text-sm font-medium mt-6 text-gray-200'>
-							Go back to see the correct answers and see thier
-							explanations over here.
-						</p>
-						{questionResponse.question.content.map(
-							(question: ISBAQuestion, i: number) => (
-								<div key={i + question.explanation}>
-									<div>
-										<MarkdownBody
-											content={question.explanation}
-										/>
-									</div>
-								</div>
-							)
-						)}
-					</div>
+				{/** EXPLANATION */}
+				{pageContent.page === pageContent.cases ? (
+					<article>
+						<h3 className='text-sm font-medium mt-6 text-gray-200'>
+							Go back to see the correct answers and see thier explanations over here.
+						</h3>
+						{questionResponse.question.content.map((question: ISBAQuestion, i: number) => (
+							<div key={i + question.explanation}>
+								<MarkdownBody content={question.explanation} />
+							</div>
+						))}
+					</article>
 				) : (
 					<>
-						<p className='mt-4'>
+						{/** QUESTION CONTENT */}
+						<div className='mt-4'>
 							<MarkdownBody content={question.scenario} />
-						</p>
+						</div>
 
-						<p className='text-gray-300 mt-4 mb-2'>
-							<MarkdownBody
-								content={
-									question.content[screenOptions.page]
-										.question
-								}
-							/>
-						</p>
+						<div className='text-gray-300 mt-4 mb-2'>
+							<MarkdownBody content={pageContent.currentQuestion.question} />
+						</div>
 
-						<ol type='A' className='inline-flex flex-col mt-2 mb-1'>
-							{question.content[screenOptions.page].options.map(
-								(option, optionIndex) => (
-									<li
-										className='list-[upper-latin] list-inside first:rounded-t-md last:rounded-b-md border border-gray-100/10 py-2 px-4'
-										key={option + optionIndex}
-									>
-										<label
-											className={`${
-												hasAnswered
-													? optionIndex ===
-													  questionResponse.question
-															.content[
-															screenOptions.page
-													  ].answer -
-															1
-														? "text-emerald-500"
-														: "text-red-500"
-													: "text-gray-300"
-											} ${
-												hasAnswered &&
-												selectedOptions[
-													screenOptions.page
-												] === option &&
-												"underline"
-											}`}
-											htmlFor={option + optionIndex}
-										>
-											{option}
-											{!hasAnswered &&
-												mode !== "PREVIEW" && (
-													<input
-														className={`ml-4`}
-														type='radio'
-														value={option}
-														checked={
-															selectedOptions[
-																screenOptions
-																	.page
-															] === option
-														}
-														onChange={e =>
-															handleOnChange(
-																e,
-																screenOptions.page
-															)
-														}
-														id={
-															option + optionIndex
-														}
-														name='optionSelected'
-													/>
-												)}
-										</label>
-									</li>
-								)
-							)}
+						{/** OPTIONS */}
+						<ol type='A' role='list' className='flex flex-col mt-2 mb-1'>
+							{pageContent.currentQuestion.options.map((optionContent, optionIndex) => (
+								<CBQOption
+									key={`case:${pageContent.page}-option:${optionIndex}`}
+									optionContent={optionContent}
+									optionIndex={optionIndex}
+									handleSelectOption={handleSelectOption}
+									selectedOption={selectedOptions[pageContent.page]}
+									currPage={pageContent.page}
+								/>
+							))}
 						</ol>
 					</>
 				)}
 
-				<div className='flex justify-between mt-4 gap-1'>
-					<button
-						onClick={() => {
-							handleChangeCase(-1)
-						}}
-						className={`flex items-center gap-2 py-2 px-3 border rounded-md mt-3 mb-1 ${
-							screenOptions.page === 0
-								? "bg-slate-700 border-gray-100/30 cursor-not-allowed"
-								: "border-blue-500/50 hover:bg-blue-700/50 bg-blue-800/50"
-						}`}
-						type='button'
-					>
-						<svg
-							className='w-5'
-							fill='currentColor'
-							viewBox='0 0 20 20'
-							xmlns='http://www.w3.org/2000/svg'
-							aria-hidden='true'
-						>
-							<path
-								clipRule='evenodd'
-								fillRule='evenodd'
-								d='M18 10a.75.75 0 01-.75.75H4.66l2.1 1.95a.75.75 0 11-1.02 1.1l-3.5-3.25a.75.75 0 010-1.1l3.5-3.25a.75.75 0 111.02 1.1l-2.1 1.95h12.59A.75.75 0 0118 10z'
-							/>
-						</svg>
-						Previous
-					</button>
-					<button
-						onClick={() => {
-							handleChangeCase(1)
-							if (
-								!hasAnswered &&
-								screenOptions.page === screenOptions.cases - 1
-							) {
-								submitAnswers()
-							}
-						}}
-						className='flex items-center gap-2 py-2 px-3 border rounded-md mt-3 mb-1 border-blue-500/50 hover:bg-blue-700/50 bg-blue-800/50'
-						type='button'
-					>
-						{screenOptions.page === screenOptions.cases - 1 ? (
-							hasAnswered ? (
-								<>
-									Summary
-									<svg
-										className='w-5'
-										fill='currentColor'
-										viewBox='0 0 20 20'
-										xmlns='http://www.w3.org/2000/svg'
-										aria-hidden='true'
-									>
-										<path
-											clipRule='evenodd'
-											fillRule='evenodd'
-											d='M3 10a.75.75 0 01.75-.75h10.638L10.23 5.29a.75.75 0 111.04-1.08l5.5 5.25a.75.75 0 010 1.08l-5.5 5.25a.75.75 0 11-1.04-1.08l4.158-3.96H3.75A.75.75 0 013 10z'
-										/>
-									</svg>
-								</>
-							) : (
-								<>
-									<svg
-										className='w-5'
-										fill='currentColor'
-										viewBox='0 0 20 20'
-										xmlns='http://www.w3.org/2000/svg'
-										aria-hidden='true'
-									>
-										<path d='M3.105 2.289a.75.75 0 00-.826.95l1.414 4.925A1.5 1.5 0 005.135 9.25h6.115a.75.75 0 010 1.5H5.135a1.5 1.5 0 00-1.442 1.086l-1.414 4.926a.75.75 0 00.826.95 28.896 28.896 0 0015.293-7.154.75.75 0 000-1.115A28.897 28.897 0 003.105 2.289z' />
-									</svg>
-									<p className='hidden sm:block'>
-										{mode === "LIVE"
-											? "Submit answer"
-											: questionsAfterCancelling &&
-											  questionNumber ===
-													questionsAfterCancelling.length -
-														1
-											? "Leave"
-											: "Submit answer"}
-									</p>
-									<p className='block sm:hidden'>
-										{mode === "LIVE"
-											? "Next"
-											: questionsAfterCancelling &&
-											  questionNumber ===
-													questionsAfterCancelling.length -
-														1
-											? "Leave"
-											: "Next"}
-									</p>
-								</>
-							)
-						) : (
-							<>
-								Next
-								<svg
-									className='w-5'
-									fill='currentColor'
-									viewBox='0 0 20 20'
-									xmlns='http://www.w3.org/2000/svg'
-									aria-hidden='true'
-								>
-									<path
-										clipRule='evenodd'
-										fillRule='evenodd'
-										d='M3 10a.75.75 0 01.75-.75h10.638L10.23 5.29a.75.75 0 111.04-1.08l5.5 5.25a.75.75 0 010 1.08l-5.5 5.25a.75.75 0 11-1.04-1.08l4.158-3.96H3.75A.75.75 0 013 10z'
-									/>
-								</svg>
-							</>
-						)}
-					</button>
-				</div>
+				{/** PAGINATION BUTTONS */}
+				<CBQPaginationButtons
+					currPage={pageContent.page}
+					cases={pageContent.cases}
+					handlePagination={handlePagination}
+					submitAnswers={submitAnswers}
+				/>
 			</div>
 		</div>
 	)

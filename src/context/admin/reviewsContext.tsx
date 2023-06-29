@@ -18,7 +18,7 @@ import {
 } from "../../lib/admin.request"
 import { toast } from "react-hot-toast"
 import { ReactElement } from "react-markdown/lib/react-markdown"
-import DecitionToast from "../../components/ui/DecitionToast"
+import DecitionToast from "../../components/toast/DecitionToast"
 import { IUser } from "../../interface/user"
 import { IQuestion } from "../../interface/exam"
 

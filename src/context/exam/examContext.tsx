@@ -16,7 +16,7 @@ import { IScoresHistory } from "../../interface/user"
 import { getCurrentQuestionRequest } from "../../lib/exam.request"
 import { useAuthContext } from "../auth/authContext"
 import toast from "react-hot-toast"
-import DecitionToast from "../../components/ui/DecitionToast"
+import DecitionToast from "../../components/toast/DecitionToast"
 
 const ExamContext = createContext({} as IExamContext)
 

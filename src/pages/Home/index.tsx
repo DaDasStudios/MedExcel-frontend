@@ -67,7 +67,7 @@ const Home = () => {
 											to='/signin'
 										>
 											<p className='hidden sm:block'>
-												Have account?
+												Have an account?
 											</p>
 											<p className='block sm:hidden'>
 												Sign up

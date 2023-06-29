@@ -8,6 +8,7 @@ interface Props extends PropsWithChildren {
 	elements: {
 		displayTitle: string
 		href: string
+		icon?: React.ReactNode
 	}[]
 }
 
@@ -60,8 +61,9 @@ const Navbar = ({ elements }: Props) => {
 					{elements.map((e, i) => (
 						<li
 							key={e.displayTitle + i}
-							className='text-sky-100 hover:text-sky-200'
+							className='text-sky-100 hover:text-sky-200 flex items-center gap-x-2 justify-center'
 						>
+							{e.icon}
 							<Link to={e.href}>{e.displayTitle}</Link>
 						</li>
 					))}
