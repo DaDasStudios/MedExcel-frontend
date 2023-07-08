@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, Fragment } from "react"
 import { useAuthContext } from "../../../context/auth/authContext"
 import { themeBtns } from "../../../components/ui/Buttons/SolidButton"
 
@@ -48,21 +48,17 @@ const ExamProgress = () => {
 		<>
 			<div className={`grid grid-cols-6 gap-2.5 mb-4`}>
 				{numberQuestions.map((questionID, index) => (
-					<>
+					<Fragment key={`Question:${index}:ID:${questionID}`}>
 						{isClosed ? (
 							<>
 								{index >= user.exam.current - PAGE_BREAK && index <= user.exam.current + PAGE_BREAK && (
-									<QuestionMarker
-										key={`Question:${index}:ID:${questionID}`}
-										id={questionID}
-										index={index}
-									/>
+									<QuestionMarker id={questionID} index={index} />
 								)}
 							</>
 						) : (
-							<QuestionMarker key={`Question:${index}:ID:${questionID}`} id={questionID} index={index} />
+							<QuestionMarker id={questionID} index={index} />
 						)}
-					</>
+					</Fragment>
 				))}
 			</div>
 

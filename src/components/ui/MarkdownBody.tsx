@@ -12,15 +12,10 @@ const MarkdownBody = ({ content }: IProps) => {
 		<article className='markdown-body'>
 			<ReactMarkdown
 				components={{
-					img: ({ node, ...props }) => (
-						<ClickeableImage src={props.src} alt={props.alt} />
-					),
+					img: ({ node, ...props }) => <ClickeableImage src={props.src} alt={props.alt} />,
 				}}
-				disallowedElements={["FsLightbox"]}
 				children={
-					content
-						? content
-						: `
+					content ||`
 # Ups...
 Nothing is alive here... Type some markdown text and you'll see it on here
 `

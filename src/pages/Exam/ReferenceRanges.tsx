@@ -8,9 +8,9 @@ const ReferenceRanges = () => {
 		modal: { open },
 	} = useSiteContext()
 
-    function handleOnClick() {
-        open(<MarkdownBody content={referenceRangesContent}/>)
-    }
+	function handleOnClick() {
+		open(<MarkdownBody content={referenceRangesContent} />)
+	}
 
 	return (
 		<Tooltip message='See reference ranges'>

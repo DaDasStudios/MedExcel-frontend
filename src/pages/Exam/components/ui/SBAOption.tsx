@@ -62,8 +62,9 @@ const SBAOption = ({
 							onChange={handleSelectOption}
 							id={optionContent + optionIndex}
 							name='optionSelected'
-                            aria-label="Select option radio button"
-                            title="Select option"
+							aria-label='Select option radio button'
+							className="flex-none"
+							title='Select option'
 						/>
 					)}
 					{optionContent}

@@ -7,7 +7,7 @@ interface IProps {
 const CrossOutButton = ({ toggleExcludeOption, optionIndex }: IProps) => {
   return (
 		<button
-			className='text-slate-500 hover:text-slate-400 ml-3 opacity-0 group-hover/crossout:opacity-100 transition-opacity justifuy peer/crossout'
+			className='text-slate-500 hover:text-slate-400 ml-3 opacity-0 group-hover/crossout:opacity-100 transition-opacity peer/crossout'
 			type='button'
 			aria-label='Exclude option'
 			title='Toggle cross out option'

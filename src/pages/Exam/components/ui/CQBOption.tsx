@@ -57,6 +57,7 @@ const CBQOption = ({
 							id={optionContent + optionIndex}
 							name='optionSelected'
 							aria-label='Select option radio button'
+							className='flex-none'
 							title='Select option'
 						/>
 					)}
