@@ -6,16 +6,12 @@ import { IAuth } from "../../interface"
 import { IUser } from "../../interface/user"
 import { getUserRequest } from "../../lib/user.request"
 
-type loginFunction = (payload: {
-	token: string
-	id: string
-	user: IUser | null
-}) => void
+type loginFunction = (payload: { token: string; id: string; user: IUser | null }) => void
 
 interface IAuthContext {
 	auth: IAuth
 	login: loginFunction
-	refreshUser: () => void
+	refreshUser: () => Promise<void>
 	reset: () => void
 }
 
@@ -31,7 +27,7 @@ const authInitialState: IAuth = {
 }
 
 export const AuthContextProvider = ({ children }: PropsWithChildren) => {
-	const [auth, setAuth] = useLocalStorage("medexcel_auth", authInitialState)
+	const [auth, setAuth] = useLocalStorage(authInitialState, "medexcelAuth")
 	const navigate = useNavigate()
 
 	const reset = () => setAuth(authInitialState)
@@ -42,7 +38,7 @@ export const AuthContextProvider = ({ children }: PropsWithChildren) => {
 
 	async function refreshUser() {
 		try {
-			const { data } = await getUserRequest(auth.id, auth.token)
+			const { data } = await getUserRequest(auth.id || "", auth.token || "")
 			if (data.user && data.user.role === "Admin") {
 				navigate("/")
 				reset()
@@ -71,8 +67,9 @@ export const AuthContextProvider = ({ children }: PropsWithChildren) => {
 				auth,
 				login,
 				reset,
-				refreshUser
-			}}>
+				refreshUser,
+			}}
+		>
 			{children}
 		</AuthContext.Provider>
 	)

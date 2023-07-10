@@ -1,34 +1,29 @@
 import { useEffect, useState } from "react"
 import { useExamContext } from "../../../../context/exam/examContext"
-import CrossOutButton from "./CrossOutButton"
-
+import CrossOutButton from "../ui/CrossOutButton"
+import { CBQ, IQuestion } from "../../../../interface/exam"
 
 interface IProps {
+	question: IQuestion<CBQ>
 	optionContent: string
 	optionIndex: number
-    currPage: number
-	selectedOption: string
+	_page: number
+	selectedOptions: string[]
 	handleSelectOption: (e: React.ChangeEvent<HTMLInputElement>) => void
 }
 
-const CBQOption = ({
-	optionContent,
-	optionIndex,
-    currPage,
-	selectedOption,
-	handleSelectOption,
-}: IProps) => {
-	const { hasAnswered, mode, questionResponse } = useExamContext()
+const CBQOption = ({ question, optionContent, optionIndex, _page, selectedOptions, handleSelectOption }: IProps) => {
+	const { page, canAnswer, answersRecords } = useExamContext()
 
-    const [isExcluded, setIsExcluded] = useState(false)
+	const [isExcluded, setIsExcluded] = useState(false)
 
-    function toggleExcludeOption() {
-        setIsExcluded(prevExcluded => !prevExcluded)
-    }
+	function toggleExcludeOption() {
+		setIsExcluded(prevExcluded => !prevExcluded)
+	}
 
-    useEffect(() => {
-        setIsExcluded(false)
-    }, [hasAnswered])
+	useEffect(() => {
+		setIsExcluded(false)
+	}, [canAnswer])
 
 	return (
 		<li
@@ -36,23 +31,28 @@ const CBQOption = ({
 			className={`md:list-[upper-latin] list-inside first:rounded-t-md last:rounded-b-md border border-gray-100/10 py-2 px-4 group/crossout`}
 		>
 			<div className='inline-flex items-center w-[95%]'>
-				{!hasAnswered && <CrossOutButton optionIndex={optionIndex} toggleExcludeOption={toggleExcludeOption} />}
+				{canAnswer && <CrossOutButton optionIndex={optionIndex} toggleExcludeOption={toggleExcludeOption} />}
 				<label
 					className={`grow flex items-center gap-x-3 ml-1 order-first peer-hover/crossout:line-through peer-hover/crossout:text-slate-400/80 ${
 						isExcluded && "line-through text-slate-400/80"
 					} ${
-						hasAnswered
-							? optionIndex === questionResponse.question.content[currPage].answer - 1
+						!canAnswer
+							? question.content[_page].options[question.content[_page].answer - 1] === optionContent
 								? "text-emerald-500"
 								: "text-red-500"
 							: "text-gray-300"
-					} ${hasAnswered && selectedOption === optionContent && "underline"}`}
+					} ${!canAnswer && answersRecords[page][_page] === optionContent && "underline"}`}
 					htmlFor={optionContent + optionIndex}
 				>
-					{!hasAnswered && mode !== "PREVIEW" && !isExcluded && (
+					{canAnswer && !isExcluded && (
 						<input
 							type='radio'
 							value={optionContent}
+							defaultChecked={
+								canAnswer
+									? selectedOptions[_page] === optionContent
+									: answersRecords[page][_page] === optionContent
+							}
 							onChange={handleSelectOption}
 							id={optionContent + optionIndex}
 							name='optionSelected'

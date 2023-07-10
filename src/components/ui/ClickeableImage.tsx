@@ -8,22 +8,14 @@ interface IProps {
 	alt?: string
 }
 
-const ClickeableImage = ({ src, alt, ...props }: IProps) => {
+const ClickeableImage = ({ src, alt }: IProps) => {
 	const { modal } = useSiteContext()
 
 	function handleOnClick() {
 		modal.open(
-			<div className="flex items-center flex-col gap-4 mt-4">
-				<img
-					className='cursor-pointer object-contain w-[150%] mx-auto block rounded-lg'
-					src={src}
-					alt={alt}
-				/>
-				<SolidButton
-					as={ComponentElement.BUTTON}
-					theme={themeBtns.blueBtn}
-					onClick={openNewTab}
-				>
+			<div className='flex items-center flex-col gap-4 mt-4'>
+				<img className='cursor-pointer object-contain w-[150%] mx-auto block rounded-lg' src={src} alt={alt} />
+				<SolidButton as={ComponentElement.BUTTON} theme={themeBtns.blueBtn} onClick={openNewTab}>
 					<div className='flex justify-center gap-x-2 items-center'>
 						<svg
 							className='w-5'
@@ -52,16 +44,14 @@ const ClickeableImage = ({ src, alt, ...props }: IProps) => {
 	}
 
 	return (
-		<div>
-			<Tooltip message='Expand'>
-				<img
-					className='cursor-pointer object-contain w-52 sm:w-72 md:w-80 lg:w-96 mx-auto hover:scale-105 transition-all duration-500 block'
-					onClick={handleOnClick}
-					src={src}
-					alt={alt}
-				/>
-			</Tooltip>
-		</div>
+		<Tooltip message='Expand'>
+			<img
+				className='cursor-pointer object-contain w-52 sm:w-72 md:w-80 lg:w-96 mx-auto hover:scale-105 transition-all duration-500 block'
+				onClick={handleOnClick}
+				src={src}
+				alt={alt}
+			/>
+		</Tooltip>
 	)
 }
 export default ClickeableImage

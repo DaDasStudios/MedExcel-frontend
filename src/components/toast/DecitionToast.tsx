@@ -3,6 +3,7 @@ import { toast, Toast } from "react-hot-toast"
 interface IProps {
 	text: string
 	afirmativeCallback: any
+	textClassName?: string
 	negativeCallback?: Function
 	t: Toast
 }
@@ -10,16 +11,13 @@ interface IProps {
 const DecitionToast = ({
 	t,
 	text,
+	textClassName,
 	afirmativeCallback,
 	negativeCallback,
 }: IProps) => {
 	return (
-		<div
-			className={`bg-white rounded-md shadow-md p-3 ${
-				t.visible ? "animate-enter" : "animate-leave"
-			}`}
-		>
-			<p className='text-gray-800'>{text}</p>
+		<div className={`bg-white rounded-md shadow-md p-3 ${t.visible ? "animate-enter" : "animate-leave"}`}>
+			<p className={`text-gray-800 ${textClassName}`}>{text}</p>
 			<div className='flex justify-center items-center gap-4 mt-2 font-medium'>
 				<button
 					className='bg-emerald-600 hover:bg-emerald-500 text-white rounded-md py-2 px-5 cursor-pointer'

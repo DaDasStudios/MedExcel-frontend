@@ -13,7 +13,7 @@ const Modal = ({ children, rendered, closeModal, darkBackground = true }: IProps
 				darkBackground && "bg-slate-900/60 "
 			} fixed inset-0 flex items-center justify-center z-50`}
 		>
-			<div className='rounded-md border-gray-100/10 border shadow-md bg-slate-800 p-8 relative overflow-y-auto h-[75%] max-w-[80%] overflow-x-auto'>
+			<div className='rounded-md border-gray-100/10 border shadow-md bg-slate-800 p-8 relative overflow-y-auto max-h-[75%] max-w-[80%] overflow-x-auto'>
 				<span className='absolute top-0 right-0'>
 					<button
 						onClick={closeModal}

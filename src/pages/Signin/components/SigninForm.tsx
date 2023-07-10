@@ -12,8 +12,9 @@ import { ComponentElement } from "../../../interface"
 import { useAuthContext } from "../../../context/auth/authContext"
 
 const SigninForm = () => {
-	const { login } = useAuthContext()
+	const { login, refreshUser } = useAuthContext()
 	const navigate = useNavigate()
+
 	return (
 		<div className='bg-slate-900/50 py-6 px-5 sm:p-8 rounded-md shadow-md border border-slate-100/10 flex flex-col'>
 			<div className='mb-6 text-center flex flex-col justify-center gap-3'>
@@ -34,7 +35,7 @@ const SigninForm = () => {
 						.required("Required"),
 					password: yup.string().required("Required"),
 				})}
-				onSubmit={async (values, { resetForm, setSubmitting }) => {
+				onSubmit={async (values, { setSubmitting }) => {
 					try {
 						const res = await signInRequest({
 							email: values.email,
@@ -46,14 +47,12 @@ const SigninForm = () => {
 							res.data?.token &&
 							res.data?.id
 						) {
+							navigate("/account")
 							login({
 								token: res.data.token,
 								id: res.data.id,
 								user: null,
 							})
-							toast.success("Welcome back!")
-							navigate("/account")
-							resetForm()
 						}
 					} catch (error: any) {
 						if (

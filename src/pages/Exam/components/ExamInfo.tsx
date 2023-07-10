@@ -1,61 +1,24 @@
-import { toast } from "react-hot-toast"
 import { themeBtns } from "../../../components/ui/Buttons/SolidButton"
-import DecitionToast from "../../../components/toast/DecitionToast"
 import { useAuthContext } from "../../../context/auth/authContext"
 import { useExamContext } from "../../../context/exam/examContext"
-import { cancelExamRequest } from "../../../lib/exam.request"
 import { formatDate } from "../../../utils/date"
-import SideBarElement from "./ui/SideBarElement"
 import ExamProgress from "./ExamProgress"
+import { PropsWithChildren } from "react"
 
-const Sidebar = () => {
-	const { auth, refreshUser } = useAuthContext()
-	const { score, mode, setMode, advanceNextQuestionAfterCancelling } =
-		useExamContext()
+export const InfoElement = ({ children }: PropsWithChildren) => {
+	return <span className='flex gap-2 items-center mb-2'>{children}</span>
+}
+
+const ExamInfo = () => {
+	const { auth } = useAuthContext()
+	const { score, page, amount, cancelExam } = useExamContext()
 	const { user } = auth
-
-	async function cancelExam() {
-		toast.custom(t => (
-			<DecitionToast
-				t={t}
-				text='Are you sure you want to cancel this exam?'
-				afirmativeCallback={async () => {
-					try {
-						const { data } = await cancelExamRequest(
-							auth.token || ""
-						)
-
-						if (data.statusCode === 204) {
-							if (data.incorrectQuestions.length === 0) {
-								return refreshUser()
-							}
-
-							toast.success(
-								"Take a look of the incorrect answers",
-								{
-									id: t.id,
-								}
-							)
-							setMode("PREVIEW")
-							advanceNextQuestionAfterCancelling(
-								data.incorrectQuestions
-							)
-						}
-					} catch (error) {
-						toast.error("Something went wrong... Try later", {
-							id: t.id,
-						})
-					}
-				}}
-			/>
-		))
-	}
 
 	return (
 		<div className='py-6 px-5 sm:p-5 bg-slate-900/80 h-fit rounded-md border border-gray-100/10 shadow-md mb-6'>
 			<div className='font-medium text-gray-300 text-normal'>
-				<ExamProgress/>
-				<SideBarElement>
+				<ExamProgress />
+				<InfoElement>
 					<svg
 						className='w-5'
 						fill='currentColor'
@@ -70,16 +33,10 @@ const Sidebar = () => {
 						/>
 					</svg>
 					<h4>
-						Correct questions{" "}
-						<b>
-							{score
-								? score.toFixed(0)
-								: user?.exam.score.toFixed(0)}
-						</b>
-						%
+						Correct questions <b>{score.toFixed(0)}</b>%
 					</h4>
-				</SideBarElement>
-				<SideBarElement>
+				</InfoElement>
+				<InfoElement>
 					<svg
 						className='w-5'
 						fill='currentColor'
@@ -95,11 +52,10 @@ const Sidebar = () => {
 						<path d='M16.5 6.5h-1v8.75a1.25 1.25 0 102.5 0V8a1.5 1.5 0 00-1.5-1.5z' />
 					</svg>
 					<p>
-						Question <b>{(user?.exam.current || 0) + 1}</b> of{" "}
-						<b>{user?.exam.questions.length}</b>
+						Question <b>{page + 1}</b> of <b>{amount}</b>
 					</p>
-				</SideBarElement>
-				<SideBarElement>
+				</InfoElement>
+				<InfoElement>
 					<svg
 						className='w-5'
 						fill='currentColor'
@@ -115,39 +71,32 @@ const Sidebar = () => {
 						/>
 					</svg>
 					<p>
-						Started at{" "}
-						<b>
-							{formatDate.format(
-								new Date(user?.exam.startedAt || "")
-							)}
-						</b>
+						Started at <b>{formatDate.format(new Date(user?.exam.startedAt || ""))}</b>
 					</p>
-				</SideBarElement>
+				</InfoElement>
 			</div>
-			{mode === "LIVE" && (
-				<button
-					className={`flex justify-center items-center gap-2 py-2 px-3 border rounded-md mt-6 mb-1 w-full ${themeBtns.redBtn}`}
-					type='button'
-					onClick={cancelExam}
+			<button
+				className={`flex justify-center items-center gap-2 py-2 px-3 border rounded-md mt-6 mb-1 w-full ${themeBtns.redBtn}`}
+				type='button'
+				onClick={cancelExam}
+			>
+				<svg
+					className='w-5'
+					fill='currentColor'
+					viewBox='0 0 20 20'
+					xmlns='http://www.w3.org/2000/svg'
+					aria-hidden='true'
 				>
-					<svg
-						className='w-5'
-						fill='currentColor'
-						viewBox='0 0 20 20'
-						xmlns='http://www.w3.org/2000/svg'
-						aria-hidden='true'
-					>
-						<path d='M2 3a1 1 0 00-1 1v1a1 1 0 001 1h16a1 1 0 001-1V4a1 1 0 00-1-1H2z' />
-						<path
-							clipRule='evenodd'
-							fillRule='evenodd'
-							d='M2 7.5h16l-.811 7.71a2 2 0 01-1.99 1.79H4.802a2 2 0 01-1.99-1.79L2 7.5zm5.22 1.72a.75.75 0 011.06 0L10 10.94l1.72-1.72a.75.75 0 111.06 1.06L11.06 12l1.72 1.72a.75.75 0 11-1.06 1.06L10 13.06l-1.72 1.72a.75.75 0 01-1.06-1.06L8.94 12l-1.72-1.72a.75.75 0 010-1.06z'
-						/>
-					</svg>
-					End and review
-				</button>
-			)}
+					<path d='M2 3a1 1 0 00-1 1v1a1 1 0 001 1h16a1 1 0 001-1V4a1 1 0 00-1-1H2z' />
+					<path
+						clipRule='evenodd'
+						fillRule='evenodd'
+						d='M2 7.5h16l-.811 7.71a2 2 0 01-1.99 1.79H4.802a2 2 0 01-1.99-1.79L2 7.5zm5.22 1.72a.75.75 0 011.06 0L10 10.94l1.72-1.72a.75.75 0 111.06 1.06L11.06 12l1.72 1.72a.75.75 0 11-1.06 1.06L10 13.06l-1.72 1.72a.75.75 0 01-1.06-1.06L8.94 12l-1.72-1.72a.75.75 0 010-1.06z'
+					/>
+				</svg>
+				<span>End Exam</span>
+			</button>
 		</div>
 	)
 }
-export default Sidebar
+export default ExamInfo

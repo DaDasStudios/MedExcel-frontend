@@ -1,73 +1,74 @@
-import { IScoresHistory } from "./user"
+export type SBA = "SBA"
+export type ECQ = "ECQ"
+export type CBQ = "CBQ"
 
-export type QuestionType = "SBA" | "ECQ" | "CBQ" 
+export type QuestionType = SBA | ECQ | CBQ 
+export type MarkdownContent = string
 
-export type ICBQQuestion = ISBAQuestion[]
+export type SBAContent = {
+	options: string[]
+	question: string
+	answer: number
+	explanation: MarkdownContent
+}
+export type CBQContent = SBAContent[]
 
-export type IMDString = string
-
-export interface IECQQuestion {
-    options: string[]
-    question: Array<{
-        question: string
-        answer: number
-    }>
-    explanation: IMDString
+export type ECQContent = {
+	options: string[]
+	question: Array<{
+		question: string
+		answer: number
+	}>
+	explanation: MarkdownContent
 }
 
-export interface ISBAQuestion {
-    options: string[];
-    question: string
-    answer: number
-    explanation: IMDString
+export interface IQuestion<T extends QuestionType = any> {
+	_id: string
+	type: QuestionType
+	scenario: MarkdownContent
+	topic: string
+	content: T extends SBA ? SBAContent : T extends CBQ ? CBQContent : T extends ECQ ? ECQContent : any
+	category: string
+	parent: string
+	createdAt: string
+	updatedAt: string
 }
 
-export interface IQuestion<T = any> {
-    _id: string
-    type: QuestionType
-    scenario: IMDString
-    topic: string
-    content: T
-    category: string    
-    parent: string
-    createdAt: string
-    updatedAt: string
+export type AnswerSBA = string
+export type AnswerCBQ = string[]
+export type AnswerECQ = string[]
+export type IAnswer = AnswerSBA | AnswerCBQ | AnswerECQ
+
+export type AnswerResponseSBA = boolean
+export type AnswerResponseCBQ = boolean[]
+export type AnswerResponseECQ = boolean[]
+export type IAnswerResponse = AnswerResponseSBA | AnswerResponseCBQ | AnswerResponseECQ
+
+export interface IExamContext {
+	currQuestion?: IQuestion<any>
+	amount: number
+	page: number
+	lastPage: number
+	score: number
+	answersRecords: IAnswer[]
+	validatedAnswers: IAnswerResponse[]
+	loading: boolean
+	submitting: boolean
+	canAnswer: boolean
+	handleNavigation(step?: number, to?: number): void
+	submitAnswer(answer: IAnswer): void
+	cancelExam(): void
+	terminateExam(): void
 }
 
 export type FilterSetExamType = "ALL" | "INCORRECT" | "NEW"
 
 export type AnsweredQuestionStatus = "CORRECT" | "INCORRECT" | "NOT ALL CORRECT"
 
-export type ExamMode = "LIVE" | "PREVIEW"
-
 export interface IAnsweredQuestionResponse {
-    score: number
-    status: AnsweredQuestionStatus
-    explanation: string | string[]
-    question: IQuestion
-}
-
-export interface IExamContext {
-    currentQuestion: IQuestion
-    setCurrentQuestion: React.Dispatch<React.SetStateAction<IQuestion>>
-    useCurrentQuestion<T>(): IQuestion<T>
-    questionResponse: IAnsweredQuestionResponse
-    resetQuestionResponse: () => void
-    setQuestionResponse: React.Dispatch<React.SetStateAction<IAnsweredQuestionResponse>>
-    score: number
-    setScore: React.Dispatch<React.SetStateAction<number>>
-    hasAnswered: boolean
-    setHasAnswered: React.Dispatch<React.SetStateAction<boolean>>
-    getCurrentQuestion: () => Promise<void>
-    hasFinished: boolean
-    scoresHistory: IScoresHistory
-    setScoresHistory: React.Dispatch<React.SetStateAction<IScoresHistory>>
-    setHasFinished: React.Dispatch<React.SetStateAction<boolean>>
-    mode: ExamMode
-    setMode: React.Dispatch<React.SetStateAction<ExamMode>>
-    questionNumber: number
-    setQuestionNumber: React.Dispatch<React.SetStateAction<number>>
-    questionsAfterCancelling: IQuestion[] | undefined
-    setQuestionsAfterCancelling: React.Dispatch<React.SetStateAction<IQuestion[] | undefined>>
-    advanceNextQuestionAfterCancelling: (questionsAfterCancellingInit?: IQuestion[]) => void
+	score: number
+	status: AnsweredQuestionStatus
+	explanation: string | string[]
+	question: IQuestion
+	current: number
 }

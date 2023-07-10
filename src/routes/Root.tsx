@@ -23,9 +23,10 @@ import Footer from "../components/layout/Footer"
 import Navbar from "../components/layout/Navbar"
 import Exam from "../pages/Exam"
 import ErrorPage from "./ErrorPage"
-import ExamErrorPage from "./ExamErrorPage"
 import DeleteAccountScreen from "../pages/Account/DeleteAccountScreen"
 import Modal from "../components/ui/Modal"
+import FinishExam from "../pages/Exam/FinishExam"
+import StartExam from "../pages/Exam/StartExam"
 
 function Layout() {
 	const {
@@ -62,7 +63,7 @@ function Layout() {
 										},
 										{
 											displayTitle: "Question Bank",
-											href: "/exam",
+											href: user.exam.startedAt ? "/exam" : "/exam/start",
 											icon: (
 												<svg
 													className='w-6'
@@ -98,7 +99,7 @@ function Layout() {
 								: [
 										{
 											displayTitle: "Question Bank",
-											href: "/exam",
+											href: user.exam.startedAt ? "/exam" : "/exam/start",
 											icon: (
 												<svg
 													className='w-6'
@@ -208,7 +209,7 @@ function Layout() {
 					}
 				/>
 			)}
-			
+
 			<main className='min-h-screen relative'>
 				<Modal children={children} closeModal={close} rendered={isOpen} />
 				<Routes>
@@ -218,21 +219,26 @@ function Layout() {
 					<Route path='/recover' element={<Recover />} />
 					<Route path='/account/delete' element={<DeleteAccountScreen />} />
 					<Route path='/recover/auth' element={<RecoverAuth />} />
-					{/* ADMIN */}
-					<Route path='/admin/*' element={<Admin />} errorElement={<ErrorPage />}></Route>
+					<Route path='/account' element={<Account />} />
 
-					{user && (
+					{/* ADMIN */}
+					<Route path='/admin/*' element={<Admin />} />
+
+					{user ? (
 						<>
-							<Route path='/account' element={<Account />} />
-							<Route errorElement={<ExamErrorPage />} path='/exam' element={<Exam />} />
+							<Route>
+								<Route path='/exam/start' element={<StartExam />} />
+								<Route path='/exam/finish' element={<FinishExam />} />
+								<Route path='/exam' element={<Exam />} />
+							</Route>
 						</>
-					)}
-					{!user && (
+					) : (
 						<>
 							<Route path='/signup' element={<Signup />} />
 							<Route path='/signin' element={<Signin />} />
 						</>
 					)}
+
 					<Route path='*' element={<ErrorPage />} />
 				</Routes>
 			</main>

@@ -1,7 +1,7 @@
-import Tooltip from "../../components/ui/Tooltip"
-import { useSiteContext } from "../../context/site/siteContext"
-import MarkdownBody from "../../components/ui/MarkdownBody"
-import { referenceRangesContent } from "../../utils/markdown"
+import Tooltip from "../../../../components/ui/Tooltip"
+import { useSiteContext } from "../../../../context/site/siteContext"
+import MarkdownBody from "../../../../components/ui/MarkdownBody"
+import { referenceRangesContent } from "../../../../utils/markdown"
 
 const ReferenceRanges = () => {
 	const {

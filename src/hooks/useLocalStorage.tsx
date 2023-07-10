@@ -1,31 +1,35 @@
-import { useState } from 'react'
+import { useEffect, useState } from "react"
 
+export function useLocalStorage<T>(
+	initalState: T,
+	key: string,
+	parseValidators?: ((parsed: any) => boolean)[]
+): [state: T, setState: React.Dispatch<React.SetStateAction<T>>, deleteState: () => void] {
 
-export function useLocalStorage<T>(key: string, initialValue: T) {
+	const [state, setState] = useState(() => {
+		const item = localStorage.getItem(key)
+		let parsed: any | null = null
 
-  const [storedValue, setStoredValue] = useState(() => {
-    if (typeof window === "undefined") {
-      return initialValue;
-    }
-    try {
-      const item = window.localStorage.getItem(key);
-      return item ? JSON.parse(item): initialValue;
-    } catch (error) {
-      return initialValue;
-    }
-  });
+		if (item) {
+			parsed = JSON.parse(item)
 
-  const setValue = (value: T) => {
-    try {
-      const valueToStore =
-        value instanceof Function ? value(storedValue) : value;
-      setStoredValue(valueToStore);
-      if (typeof window !== "undefined") {
-        window.localStorage.setItem(key, JSON.stringify(valueToStore));
-      }
-    } catch (error) {
-    }
-  };
-  return [storedValue, setValue];
+			if (parsed) {
+				if (parseValidators && parseValidators.some(validator => !validator(parsed))) {
+					return initalState
+				}
+
+				return parsed
+			} else return initalState
+		} else return initalState
+	})
+
+	useEffect(() => {
+		localStorage.setItem(key, JSON.stringify(state))
+	}, [state])
+
+	function deleteState() {
+		localStorage.removeItem(key)
+	}
+
+	return [state, setState, deleteState]
 }
-

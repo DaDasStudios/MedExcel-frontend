@@ -2,23 +2,20 @@ import { FormEvent, useState } from "react"
 import { toast } from "react-hot-toast"
 import MarkdownBody from "../../../../components/ui/MarkdownBody"
 import Separator from "../../../../components/ui/Separator"
-import { useAuthContext } from "../../../../context/auth/authContext"
 import { useExamContext } from "../../../../context/exam/examContext"
-import { ISBAQuestion } from "../../../../interface/exam"
-import { submitAnswerRequest } from "../../../../lib/exam.request"
-import NextButton from "../ui/NextButton"
+import { IQuestion, SBA } from "../../../../interface/exam"
 import ShortNextButton from "../ui/ShortNextButton"
-import useExpiredPlanToast from "../../hooks/useExpiredPlanToast"
-import SBAOption from "../ui/SBAOption"
+import SBAOption from "./SBAOption"
 import CategoryHeader from "../ui/CategoryHeader"
 import HelpBox from "../ui/HelpBox"
-import SubmitButton from "../ui/SubmitButton"
+import NavigationButtons from "../ui/NavigationButtons"
 
-const SBAQuestion = () => {
-	const { auth } = useAuthContext()
-	const { useCurrentQuestion, hasAnswered, questionResponse, setHasAnswered, setQuestionResponse, setScore, mode } =
-		useExamContext()
-	const question = useCurrentQuestion<ISBAQuestion>()
+interface IProps {
+	question: IQuestion<SBA>
+}
+
+const SBAQuestion = ({ question }: IProps) => {
+	const { canAnswer, submitAnswer } = useExamContext()
 
 	const [selectedOption, setSelectedOption] = useState("")
 	const [excludedOptions, setExcludedOptions] = useState<Array<boolean>>(
@@ -33,39 +30,17 @@ const SBAQuestion = () => {
 		setExcludedOptions(prevExcludedOptions => prevExcludedOptions.map((value, i) => (i === index ? !value : value)))
 	}
 
-	async function submitAnswer(e: FormEvent) {
+	async function onSubmit(e: FormEvent) {
 		e.preventDefault()
-		try {
-			if (!selectedOption) return toast.error("First pick up an option")
-			const payload = {
-				answer: selectedOption,
-			}
-			const { data } = await submitAnswerRequest(payload, auth.token || "")
-			setHasAnswered(true)
-			setQuestionResponse(data)
-			setScore(data.score)
-			setExcludedOptions(excludedOptions.fill(false))
+		if (!selectedOption) return toast.error("First pick up an option")
 
-			if (data.status === "CORRECT") {
-				return toast.success("Correct answer")
-			}
-			if (data.status === "INCORRECT") {
-				return toast.error("Incorrect answer")
-			}
-
-			return toast.error("Something went wrong... Try later")
-		} catch (error: any) {
-			if (error.response.status === 401) {
-				useExpiredPlanToast()
-			}
-
-			toast.error("Something went wrong when submitting the answer")
-		}
+		submitAnswer(selectedOption)
+		setExcludedOptions(excludedOptions.fill(false))
 	}
 
 	return (
 		<div className='flex flex-col gap-3 text-gray-200 font-medium relative'>
-			{hasAnswered && <ShortNextButton />}
+			{!canAnswer && <ShortNextButton />}
 			<CategoryHeader question={question} />
 			<HelpBox
 				content='Answer the question based on the scenario presented below, just select an option and click on
@@ -74,7 +49,7 @@ const SBAQuestion = () => {
 			<Separator />
 			<MarkdownBody content={question.scenario} />
 			<MarkdownBody content={question.content.question} />
-			<form onSubmit={submitAnswer}>
+			<form onSubmit={onSubmit}>
 				<ol type='A' role='list' className='flex flex-col mt-2 mb-1 '>
 					{question.content.options.map((option, index) => (
 						<SBAOption
@@ -83,20 +58,15 @@ const SBAQuestion = () => {
 							optionContent={option}
 							isExcluded={excludedOptions[index]}
 							excludedOptions={excludedOptions}
-							selectedOption={selectedOption}
 							toggleExcludeOption={toggleExcludeOption}
 							handleSelectOption={handleSelectOption}
+							question={question}
 						/>
 					))}
 				</ol>
-				{!hasAnswered && <SubmitButton />}
+				{!canAnswer && <MarkdownBody content={question.content.explanation} />}
+				<NavigationButtons />
 			</form>
-			{hasAnswered && (
-				<>
-					<MarkdownBody content={questionResponse.question.content.explanation} />
-					<NextButton />
-				</>
-			)}
 		</div>
 	)
 }

@@ -1,10 +1,12 @@
 import { useState, Fragment } from "react"
 import { useAuthContext } from "../../../context/auth/authContext"
 import { themeBtns } from "../../../components/ui/Buttons/SolidButton"
+import { useExamContext } from "../../../context/exam/examContext"
 
 const PAGE_BREAK = 10
 
-const QuestionMarker = ({ id, index }: { id: string; index: number }) => {
+const QuestionMarker = ({ index }: { index: number }) => {
+	const { amount, lastPage, page, validatedAnswers, handleNavigation } = useExamContext()
 	const {
 		auth: { user },
 	} = useAuthContext()
@@ -13,18 +15,23 @@ const QuestionMarker = ({ id, index }: { id: string; index: number }) => {
 		throw new Error("User is not logged in")
 	}
 
+	const isLastQuestion = lastPage === amount
+
 	return (
 		<span
+			onClick={() => handleNavigation(undefined, index)}
+			role='button'
+			aria-hidden={index > lastPage}
+			aria-labelledby={`Go to question ${index + 1}`}
 			className={`flex items-center justify-center rounded-full border text-center w-8 h-8 ${
-				index === user.exam.current
+				index === page
 					? "border-blue-100/20 bg-blue-700/50 hover:bg-blue-700/70 text-blue-100"
-					: user.exam.correctAnswers.includes(id) && index < user.exam.current
+					: (isLastQuestion ? validatedAnswers[index] : validatedAnswers[index] && index < lastPage)
 					? "border-emerald-100/20 bg-emerald-700/50 hover:bg-emerald-700/70 text-emerald-100"
-					: index < user.exam.current
+					: index < lastPage
 					? "border-rose-100/20 bg-rose-700/50 hover:bg-rose-700/70 text-rose-100"
 					: "border-slate-100/10 bg-slate-800 hover:bg-slate-700 text-slate-200"
-			}
-							`}
+			}`}
 		>
 			{index + 1}
 		</span>
@@ -35,6 +42,7 @@ const ExamProgress = () => {
 	const {
 		auth: { user },
 	} = useAuthContext()
+	const { page } = useExamContext()
 
 	const [isClosed, setIsClosed] = useState(true)
 
@@ -51,12 +59,12 @@ const ExamProgress = () => {
 					<Fragment key={`Question:${index}:ID:${questionID}`}>
 						{isClosed ? (
 							<>
-								{index >= user.exam.current - PAGE_BREAK && index <= user.exam.current + PAGE_BREAK && (
-									<QuestionMarker id={questionID} index={index} />
+								{index >= page - PAGE_BREAK && index <= page + PAGE_BREAK && (
+									<QuestionMarker index={index} />
 								)}
 							</>
 						) : (
-							<QuestionMarker id={questionID} index={index} />
+							<QuestionMarker index={index} />
 						)}
 					</Fragment>
 				))}

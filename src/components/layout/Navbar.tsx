@@ -24,25 +24,14 @@ const Navbar = ({ elements }: Props) => {
 				<Link className='block' to='/'>
 					{image.url ? (
 						<>
-							<img
-								className='rounded-full w-36 hidden sm:block'
-								src={image.url}
-								alt={name}
-							/>
-							<img
-								src='/img/compact-logo.png'
-								className='w-12 block sm:hidden'
-								alt={name}
-							/>
+							<img className='rounded-full w-36 hidden sm:block' src={image.url} alt={name} />
+							<img src='/img/compact-logo.png' className='w-12 block sm:hidden' alt={name} />
 						</>
 					) : (
 						<Spin />
 					)}
 				</Link>
-				<button
-					className='block sm:hidden'
-					onClick={() => setActiveCollapse(!activeCollapse)}
-				>
+				<button className='block sm:hidden' onClick={() => setActiveCollapse(a => !a)}>
 					<svg
 						className='w-6'
 						fill='currentColor'
@@ -90,27 +79,27 @@ const Navbar = ({ elements }: Props) => {
 								</Link>
 							</li>
 							<li
-								onClick={() => {
-									reset()
-									navigate("/")
-								}}
 								className='text-sky-100 hover:text-sky-200 cursor-pointer'
+								role='button'
+								aria-label='Logout'
 							>
-								<svg
-									className='w-6'
-									fill='none'
-									stroke='currentColor'
-									strokeWidth={1.5}
-									viewBox='0 0 24 24'
-									xmlns='http://www.w3.org/2000/svg'
-									aria-hidden='true'
-								>
-									<path
-										strokeLinecap='round'
-										strokeLinejoin='round'
-										d='M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9'
-									/>
-								</svg>
+								<Link onClick={() => reset()} to='/'>
+									<svg
+										className='w-6'
+										fill='none'
+										stroke='currentColor'
+										strokeWidth={1.5}
+										viewBox='0 0 24 24'
+										xmlns='http://www.w3.org/2000/svg'
+										aria-hidden='true'
+									>
+										<path
+											strokeLinecap='round'
+											strokeLinejoin='round'
+											d='M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9'
+										/>
+									</svg>
+								</Link>
 							</li>
 						</>
 					)}
@@ -121,10 +110,7 @@ const Navbar = ({ elements }: Props) => {
 				<div onClick={() => setActiveCollapse(false)}>
 					<ul className='flex flex-col items-center gap-y-5'>
 						{elements.map((e, i) => (
-							<li
-								key={e.displayTitle + i}
-								className='text-sky-100 hover:text-sky-200'
-							>
+							<li key={e.displayTitle + i} className='text-sky-100 hover:text-sky-200'>
 								<Link to={e.href}>{e.displayTitle}</Link>
 							</li>
 						))}
@@ -132,7 +118,6 @@ const Navbar = ({ elements }: Props) => {
 							<>
 								<li className='text-sky-100 hover:text-sky-200 cursor-pointer'>
 									<Link to='/account'>
-										{" "}
 										<svg
 											className='w-6'
 											fill='none'
@@ -151,27 +136,27 @@ const Navbar = ({ elements }: Props) => {
 									</Link>
 								</li>
 								<li
-									onClick={() => {
-										reset()
-										navigate("/")
-									}}
 									className='text-sky-100 hover:text-sky-200 cursor-pointer'
+									role='button'
+									aria-label='Logout'
 								>
-									<svg
-										className='w-6'
-										fill='none'
-										stroke='currentColor'
-										strokeWidth={1.5}
-										viewBox='0 0 24 24'
-										xmlns='http://www.w3.org/2000/svg'
-										aria-hidden='true'
-									>
-										<path
-											strokeLinecap='round'
-											strokeLinejoin='round'
-											d='M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9'
-										/>
-									</svg>
+									<Link onClick={() => reset()} to='/'>
+										<svg
+											className='w-6'
+											fill='none'
+											stroke='currentColor'
+											strokeWidth={1.5}
+											viewBox='0 0 24 24'
+											xmlns='http://www.w3.org/2000/svg'
+											aria-hidden='true'
+										>
+											<path
+												strokeLinecap='round'
+												strokeLinejoin='round'
+												d='M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9'
+											/>
+										</svg>
+									</Link>
 								</li>
 							</>
 						)}

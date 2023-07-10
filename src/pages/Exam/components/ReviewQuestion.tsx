@@ -1,5 +1,5 @@
 import { Form, Formik } from "formik"
-import SideBarElement from "./ui/SideBarElement"
+import { InfoElement } from "./ExamInfo"
 import * as yup from "yup"
 import { Input } from "../../../components/ui/Input"
 import { themeBtns } from "../../../components/ui/Buttons/SolidButton"
@@ -17,17 +17,17 @@ interface IQuestionReview {
 
 const MAX_STARS = 5
 
-const QuestionReview = () => {
+const ReviewQuestion = () => {
 	const { auth } = useAuthContext()
-	const { currentQuestion } = useExamContext()
+	const { currQuestion } = useExamContext()
 
 	const [stars, setStars] = useState(4)
 	const [rated, setRated] = useState(false)
 
 	return (
-		<aside className='min-[400px]:max-lg:w-[300px] max-lg:max-w-[300px] max-lg:mx-auto lg:col-span-2 py-6 px-5 sm:p-5 bg-slate-900/80 h-fit rounded-md border border-gray-100/10 shadow-md'>
+		<div className='min-[400px]:max-lg:w-[300px] max-lg:max-w-[300px] max-lg:mx-auto lg:col-span-2 py-6 px-5 sm:p-5 bg-slate-900/80 h-fit rounded-md border border-gray-100/10 shadow-md'>
 			<div className='font-medium text-gray-300 text-normal'>
-				<SideBarElement>
+				<InfoElement>
 					<svg
 						className='w-5'
 						fill='currentColor'
@@ -41,10 +41,8 @@ const QuestionReview = () => {
 							d='M16.403 12.652a3 3 0 000-5.304 3 3 0 00-3.75-3.751 3 3 0 00-5.305 0 3 3 0 00-3.751 3.75 3 3 0 000 5.305 3 3 0 003.75 3.751 3 3 0 005.305 0 3 3 0 003.751-3.75zm-2.546-4.46a.75.75 0 00-1.214-.883l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z'
 						/>
 					</svg>
-					<h4 className='font-medium'>
-						{rated ? "Question rated" : "Rate this question"}
-					</h4>
-				</SideBarElement>
+					<h4 className='font-medium'>{rated ? "Question rated" : "Rate this question"}</h4>
+				</InfoElement>
 				<div className='mt-4'>
 					<Formik<IQuestionReview>
 						initialValues={{
@@ -52,19 +50,13 @@ const QuestionReview = () => {
 							review: "",
 						}}
 						validationSchema={yup.object({
-							review: yup
-								.string()
-								.min(10, "Must be 10 characters or more")
-								.required("Required"),
+							review: yup.string().min(10, "Must be 10 characters or more").required("Required"),
 						})}
-						onSubmit={async (
-							{ rate, review },
-							{ setSubmitting }
-						) => {
+						onSubmit={async ({ rate, review }, { setSubmitting }) => {
 							try {
 								setSubmitting(true)
 								const { data } = await postQuestionReview(
-									currentQuestion._id,
+									currQuestion?._id || "",
 									auth?.token || "",
 									review,
 									rate
@@ -97,16 +89,11 @@ const QuestionReview = () => {
 									}`}
 								>
 									{rated
-										? Array.from(
-												{ length: MAX_STARS },
-												(_, i) => i + 1
-										  ).map(starValue => (
+										? Array.from({ length: MAX_STARS }, (_, i) => i + 1).map(starValue => (
 												<span
 													key={"start" + starValue}
 													className={`${
-														starValue <= stars
-															? "text-yellow-300"
-															: "text-yellow-100"
+														starValue <= stars ? "text-yellow-300" : "text-yellow-100"
 													}`}
 												>
 													<svg
@@ -124,23 +111,14 @@ const QuestionReview = () => {
 													</svg>
 												</span>
 										  ))
-										: Array.from(
-												{ length: MAX_STARS },
-												(_, i) => i + 1
-										  ).map(starValue => (
+										: Array.from({ length: MAX_STARS }, (_, i) => i + 1).map(starValue => (
 												<span
 													key={"start" + starValue}
 													className={`${
-														starValue <= stars
-															? "text-yellow-300"
-															: "text-yellow-100"
+														starValue <= stars ? "text-yellow-300" : "text-yellow-100"
 													} hover:text-yellow-300 cursor-pointer`}
-													onMouseOver={() =>
-														setStars(starValue)
-													}
-													onMouseLeave={() =>
-														setStars(values.rate)
-													}
+													onMouseOver={() => setStars(starValue)}
+													onMouseLeave={() => setStars(values.rate)}
 													onClick={() =>
 														setValues(v => {
 															return {
@@ -171,10 +149,7 @@ const QuestionReview = () => {
 										type='submit'
 										className={`flex justify-center items-center gap-2 py-2 px-3 border rounded-md mt-6 mb-1 w-full ${
 											themeBtns.greenBtn
-										} ${
-											isSubmitting &&
-											"pointer-events-none cursor-not-allowed"
-										}`}
+										} ${isSubmitting && "pointer-events-none cursor-not-allowed"}`}
 									>
 										{isSubmitting ? (
 											<Spin />
@@ -189,7 +164,7 @@ const QuestionReview = () => {
 												<path d='M3.5 2.75a.75.75 0 00-1.5 0v14.5a.75.75 0 001.5 0v-4.392l1.657-.348a6.449 6.449 0 014.271.572 7.948 7.948 0 005.965.524l2.078-.64A.75.75 0 0018 12.25v-8.5a.75.75 0 00-.9s04-.734l-2.38.501a7.25 7.25 0 01-4.186-.363l-.502-.2a8.75 8.75 0 00-5.053-.439l-1.475.31V2.75z' />
 											</svg>
 										)}
-										<p>Rate</p>
+										<p>{isSubmitting ? "Rating" : "Rate"}</p>
 									</button>
 								)}
 							</Form>
@@ -197,7 +172,7 @@ const QuestionReview = () => {
 					</Formik>
 				</div>
 			</div>
-		</aside>
+		</div>
 	)
 }
-export default QuestionReview
+export default ReviewQuestion

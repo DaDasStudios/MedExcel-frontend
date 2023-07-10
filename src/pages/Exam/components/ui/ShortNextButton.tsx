@@ -1,44 +1,15 @@
-import { toast } from "react-hot-toast"
-import { useAuthContext } from "../../../../context/auth/authContext"
 import { useExamContext } from "../../../../context/exam/examContext"
-import { getCurrentQuestionRequest } from "../../../../lib/exam.request"
 
 const ShortNextButton = () => {
-	const { auth } = useAuthContext()
+	const { handleNavigation, page, lastPage } = useExamContext()
 
-	const {
-		setHasFinished,
-		setScoresHistory,
-		mode,
-		advanceNextQuestionAfterCancelling,
-	} = useExamContext()
-
-	async function GoNextQuestion() {
-		switch (mode) {
-			case "LIVE":
-				const res = await getCurrentQuestionRequest(auth?.token || "")
-				if (res.data.status && res.data.status === "FINISHED") {
-					setHasFinished(true)
-					setScoresHistory(res.data.record)
-					toast.success("Exam finished!")
-				} else {
-					window.location.reload()
-				}
-				break
-			case "PREVIEW":
-				advanceNextQuestionAfterCancelling()
-			default:
-				break
-		}
-	}
-
-	return (
+	return lastPage === page ? null : (
 		<div className='absolute right-0 top-0'>
 			<button
-				onClick={GoNextQuestion}
+				onClick={() => handleNavigation(1)}
 				type='submit'
-				aria-label="Next question button"
-				title="Next question"
+				aria-label='Next question button'
+				title='Next question'
 				className='flex items-center gap-2 py-1.5 px-3 rounded-md -m-2 hover:bg-slate-500/20 transition-colors'
 			>
 				<svg

@@ -46,33 +46,25 @@ const ExamRecordTable = ({ setShowChartModal, setModalChildren }: IProps) => {
 
 			setShowChartModal(true)
 			setModalChildren(
-				<div className="grid">
+				<div className='grid'>
 					<h3 className='text-center text-slate-300 font-medium mb-6'>
-						Exam date at{" "}
-						{formatDate.format(new Date(record.startedAt))} -
-						Performance in categories
+						Exam date at {formatDate.format(new Date(record.startedAt))} - Performance in categories
 					</h3>
 					<div className='grid grid-cols-1 sm:grid-cols-2 gap-x-5'>
 						<div className='flex flex-col gap-3 mb-6 tracking-tight'>
-							<label className='text-base text-slate-300 font-medium'>
-								Best Category
-							</label>
+							<label className='text-base text-slate-300 font-medium'>Best Category</label>
 							<input
 								className={`bg-transparent border-2 border-slate-100/10 rounded-md text-slate-300 py-3 px-4 placeholder:text-slate-400 outline-none focus:outline-none placeholder:tracking-tight focus-within:bg-transparent `}
-								value={toTitle(
-									res.data.statistics.bestCategory
-								)}
+								defaultValue={toTitle(res.data.statistics.bestCategory)}
+								readOnly
 							/>
 						</div>
 						<div className='flex flex-col gap-3 mb-6 tracking-tight'>
-							<label className='text-base text-slate-300 font-medium'>
-								Worst Category
-							</label>
+							<label className='text-base text-slate-300 font-medium'>Worst Category</label>
 							<input
 								className={`bg-transparent border-2 border-slate-100/10 rounded-md text-slate-300 py-3 px-4 placeholder:text-slate-400 outline-none focus:outline-none placeholder:tracking-tight focus-within:bg-transparent `}
-								value={toTitle(
-									res.data.statistics.worstCategory
-								)}
+								defaultValue={toTitle(res.data.statistics.worstCategory)}
+								readOnly
 							/>
 						</div>
 					</div>
@@ -80,26 +72,16 @@ const ExamRecordTable = ({ setShowChartModal, setModalChildren }: IProps) => {
 						className='max-md:hidden justify-self-center -ml-[40px]'
 						width={450}
 						height={300}
-						data={Object.entries(
-							res.data.statistics.categoriesPerformance
-						).map(stat => {
+						data={Object.entries(res.data.statistics.categoriesPerformance).map(stat => {
 							return {
 								name: toTitle(stat[0]),
 								count: stat[1].count,
 							}
 						})}
 					>
-						<CartesianGrid
-							strokeDasharray={10}
-							stroke={neutralChartTheme.backgroundColor}
-						/>
+						<CartesianGrid strokeDasharray={10} stroke={neutralChartTheme.backgroundColor} />
 						<YAxis stroke={neutralChartTheme.borderColor} />
-						<XAxis
-							dataKey='name'
-							stroke={neutralChartTheme.borderColor}
-							tickCount={4}
-							fontSize={14}
-						/>
+						<XAxis dataKey='name' stroke={neutralChartTheme.borderColor} tickCount={4} fontSize={14} />
 						<Bar
 							dataKey='count'
 							fill={neutralChartTheme.backgroundColor}

@@ -1,26 +1,27 @@
 import { useExamContext } from "../../../../context/exam/examContext"
-import CrossOutButton from "./CrossOutButton"
+import { IQuestion, SBA } from "../../../../interface/exam"
+import CrossOutButton from "../ui/CrossOutButton"
 
 interface IProps {
+	question: IQuestion<SBA>
 	optionContent: string
 	optionIndex: number
 	isExcluded: boolean
 	excludedOptions: boolean[]
-	selectedOption: string
 	toggleExcludeOption: (optionIndex: number) => void
 	handleSelectOption: (e: React.ChangeEvent<HTMLInputElement>) => void
 }
 
 const SBAOption = ({
+	question,
 	optionContent,
 	optionIndex,
 	isExcluded,
-	selectedOption,
 	excludedOptions,
 	toggleExcludeOption,
 	handleSelectOption,
 }: IProps) => {
-	const { hasAnswered, mode, questionResponse } = useExamContext()
+	const { page, canAnswer ,answersRecords } = useExamContext()
 
 	return (
 		<li
@@ -28,7 +29,7 @@ const SBAOption = ({
 			className={`md:list-[upper-latin] list-inside first:rounded-t-md last:rounded-b-md border border-gray-100/10 py-2 px-4 group/crossout`}
 		>
 			<div className='inline-flex items-center w-[95%]'>
-				{!hasAnswered && (
+				{canAnswer && (
 					<>
 						{excludedOptions.reduce((count, curr) => {
 							count += Number(curr)
@@ -45,17 +46,17 @@ const SBAOption = ({
 				)}
 				<label
 					className={`grow flex items-center gap-x-3 ml-1 order-first peer-hover/crossout:line-through peer-hover/crossout:text-slate-400/80 ${
-						isExcluded && "line-through text-slate-400/80"
+						isExcluded ? "line-through text-slate-400/80" : ""
 					} ${
-						hasAnswered
-							? optionIndex === questionResponse.question.content.answer - 1
+						!canAnswer
+							? question.content.options[question.content.answer - 1] === optionContent
 								? "text-emerald-500"
 								: "text-red-500"
 							: "text-gray-300"
-					} ${hasAnswered && selectedOption === optionContent && "underline"}`}
+					} ${!canAnswer && answersRecords[page] === optionContent && "underline"}`}
 					htmlFor={optionContent + optionIndex}
 				>
-					{!hasAnswered && mode !== "PREVIEW" && !isExcluded && (
+					{canAnswer && !isExcluded && (
 						<input
 							type='radio'
 							value={optionContent}
@@ -63,7 +64,7 @@ const SBAOption = ({
 							id={optionContent + optionIndex}
 							name='optionSelected'
 							aria-label='Select option radio button'
-							className="flex-none"
+							className='flex-none'
 							title='Select option'
 						/>
 					)}

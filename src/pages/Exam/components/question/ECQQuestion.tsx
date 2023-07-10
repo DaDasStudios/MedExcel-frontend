@@ -1,98 +1,57 @@
-import { useEffect, useState } from "react"
-import { toast } from "react-hot-toast"
-import { themeBtns } from "../../../../components/ui/Buttons/SolidButton"
+import { useState } from "react"
 import MarkdownBody from "../../../../components/ui/MarkdownBody"
 import Separator from "../../../../components/ui/Separator"
-import { useAuthContext } from "../../../../context/auth/authContext"
 import { useExamContext } from "../../../../context/exam/examContext"
-import { IECQQuestion, IQuestion } from "../../../../interface/exam"
-import { submitAnswerRequest } from "../../../../lib/exam.request"
-import NextButton from "../ui/NextButton"
+import { ECQ, IQuestion, AnswerECQ } from "../../../../interface/exam"
 import ShortNextButton from "../ui/ShortNextButton"
-import useExpiredPlanToast from "../../hooks/useExpiredPlanToast"
 import HelpBox from "../ui/HelpBox"
 import CategoryHeader from "../ui/CategoryHeader"
+import NavigationButtons from "../ui/NavigationButtons"
+import { toast } from "react-hot-toast"
+import ECQSelect from "./ECQSelect"
 
-const ECQQuestion = () => {
-	const { auth } = useAuthContext()
-	const {
-		useCurrentQuestion,
-		questionResponse,
-		setQuestionResponse,
-		setScore,
-		hasAnswered,
-		setHasAnswered,
-	} = useExamContext()
+interface IProps {
+	question: IQuestion<ECQ>
+}
 
-	const question = useCurrentQuestion<IECQQuestion>()
-	const [answers, setAnswers] = useState([] as (number | string)[])
+const ECQQuestion = ({ question }: IProps) => {
+	const { page, canAnswer, answersRecords, submitAnswer } = useExamContext()
 
-	async function submitAnswer(e: React.FormEvent) {
-		e.preventDefault()
-		try {
-			const payload = {
-				answers: answers.map(
-					answerIndex =>
-						question.content.options[answerIndex as number]
-				),
-			}
-			const { data } = await submitAnswerRequest(
-				payload,
-				auth.token || ""
-			)
-
-			setHasAnswered(true)
-			setQuestionResponse(data)
-			setScore(data.score)
-
-			if (data.status === "CORRECT") {
-				return toast.success("Correct answers")
-			}
-			if (data.status === "INCORRECT") {
-				return toast.error("Incorrect answers")
-			}
-			if (data.status === "NOT ALL CORRECT") {
-				return toast.error("Some answers were correct")
-			}
-
-			return toast.error("Something went wrong... Try later")
-		} catch (error: any) {
-			if (error.response.status === 401) {
-				useExpiredPlanToast()
-			}
-
-			toast.error("Something went wrong when submitting the answer")
+	const [selectedOptions, setSelectedOptions] = useState<AnswerECQ>(() => {
+		if (canAnswer) {
+			return new Array(question.content.question.length).fill(question.content.options[0])
+		} else {
+			return answersRecords[page] as AnswerECQ
 		}
+	})
+
+	async function onSubmit(e: React.FormEvent) {
+		e.preventDefault()
+
+		if (selectedOptions.some(singleSelectedOption => !singleSelectedOption)) {
+			return toast.error("Pick up an option in each question")
+		}
+
+		submitAnswer(selectedOptions)
 	}
 
-	function handleOnChange(
-		selectIndex: number,
-		e: React.ChangeEvent<HTMLSelectElement>
-	) {
-		setAnswers(
-			answers.map((answer, answerIndex) =>
-				selectIndex === answerIndex ? e.target.value : answer
-			)
+	function handleOnChange(value: string, questionIndex: number) {
+		if (!canAnswer) return
+
+		setSelectedOptions(prevSelectedOptions =>
+			prevSelectedOptions.map((selectedOption, index) => (index === questionIndex ? value : selectedOption))
 		)
 	}
 
-	useEffect(() => {
-		const tempAnswers = []
-		for (let i = 0; i < question.content.question.length; i++) {
-			tempAnswers.push(i)
-		}
-		setAnswers(tempAnswers)
-	}, [question])
-
 	return (
 		<div className='flex flex-col gap-3 text-gray-200 font-medium relative'>
-			{hasAnswered && <ShortNextButton />}
+			{!canAnswer && <ShortNextButton />}
 			<CategoryHeader question={question} />
 			<HelpBox
 				content='Each group of extenden matching questions consists of
 					numbered options followed by a list of problems questions.
 					For each problem question select one numbered option the
-					most closely answers the question. You can use the same
+					most closely selectedOptions the question. You can use the same
 					option more than once'
 			/>
 			<Separator />
@@ -105,65 +64,30 @@ const ECQQuestion = () => {
 				))}
 			</ul>
 			<MarkdownBody content={question.scenario} />
-			<form onSubmit={submitAnswer}>
+			<form onSubmit={onSubmit}>
 				<ul className='ml-5 flex flex-col gap-3'>
-					{question.content.question.map((eachSubQuestion, i) => (
-						<li key={eachSubQuestion.question + i} className='list-decimal'>
-							<div className='flex max-sm:flex-col gap-4'>
-								<p>{eachSubQuestion.question}</p>
-								<label
-									key={eachSubQuestion.question + i}
-									className={`${hasAnswered && "correct"}`}
-									htmlFor={eachSubQuestion.question + i}
-								>
-									<select
-										onChange={e => handleOnChange(i, e)}
-										value={answers[i]}
-										className={`rounded-md max-w-min outline-none border ${
-											hasAnswered
-												? answers[i] == questionResponse.question.content.question[i].answer - 1
-													? themeBtns.greenBtn
-													: themeBtns.redBtn
-												: "border-gray-100/10 bg-slate-700"
-										}`}
-										name={"question " + i}
-										id={eachSubQuestion.question + i}
-									>
-										{question.content.options.map((option, j) => (
-											<option key={option + j} value={j}>
-												{option}
-											</option>
-										))}
-									</select>
-								</label>
+					{question.content.question.map((subQuestion, i) => (
+						<li key={`Question:${question._id}-subQuestion:${i}`} className='list-decimal'>
+							<div className='flex flex-wrap sm:justify-between sm:items-center max-sm:flex-col gap-4'>
+								<p>{subQuestion.question}</p>
+								<ECQSelect
+									question={question}
+									subQuestion={subQuestion}
+									index={i}
+									selectedOption={selectedOptions[i]}
+									handleOnChange={value => handleOnChange(value, i)}
+								/>
 							</div>
 						</li>
 					))}
 				</ul>
-				{!hasAnswered && (
-					<button
-						type='submit'
-						className='flex items-center gap-2 py-2 px-3 border border-blue-500/50 hover:bg-blue-700/50 bg-blue-800/50 rounded-md mt-6 mb-1 max-sm:mx-auto'
-					>
-						<svg
-							className='w-5'
-							fill='currentColor'
-							viewBox='0 0 20 20'
-							xmlns='http://www.w3.org/2000/svg'
-							aria-hidden='true'
-						>
-							<path d='M3.105 2.289a.75.75 0 00-.826.95l1.414 4.925A1.5 1.5 0 005.135 9.25h6.115a.75.75 0 010 1.5H5.135a1.5 1.5 0 00-1.442 1.086l-1.414 4.926a.75.75 0 00.826.95 28.896 28.896 0 0015.293-7.154.75.75 0 000-1.115A28.897 28.897 0 003.105 2.289z' />
-						</svg>
-						Submit answer
-					</button>
+				{!canAnswer && (
+					<div className='mt-4'>
+						<MarkdownBody content={question.content.explanation} />
+					</div>
 				)}
+				<NavigationButtons />
 			</form>
-			{hasAnswered && (
-				<>
-					<MarkdownBody content={questionResponse.question.content.explanation} />
-					<NextButton />
-				</>
-			)}
 		</div>
 	)
 }

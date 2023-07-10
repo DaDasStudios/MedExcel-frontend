@@ -5,9 +5,7 @@ import { IUser } from "../../../interface/user"
 import { formatDate } from "../../../utils/date"
 import Separator from "../../../components/ui/Separator"
 import ExamRecordTable from "./ExamRecordTable"
-import SolidButton, {
-	themeBtns,
-} from "../../../components/ui/Buttons/SolidButton"
+import SolidButton, { themeBtns } from "../../../components/ui/Buttons/SolidButton"
 import { ComponentElement } from "../../../interface"
 import Spin from "../../../components/ui/Spin"
 import {
@@ -46,7 +44,7 @@ const ContentForm = ({ user, setShowChartModal, setModalChildren }: IProps) => {
 	const {
 		auth: { id, token },
 		refreshUser,
-		reset
+		reset,
 	} = useAuthContext()
 	const navigate = useNavigate()
 
@@ -57,16 +55,12 @@ const ContentForm = ({ user, setShowChartModal, setModalChildren }: IProps) => {
 				text='Are you sure you want to request your account deletion?'
 				afirmativeCallback={async () => {
 					try {
-						const res = await sendAccountDeletionRequest(
-							_id,
-							token || ""
-						)
+						const res = await sendAccountDeletionRequest(_id, token || "")
 						if (res.status === 202) {
 							reset()
-							navigate('/')
+							navigate("/")
 							return toast.success(
-								"Request accepted (expires in five minutes) visit your email " +
-									username,
+								"Request accepted (expires in five minutes) visit your email " + username,
 								{
 									id: t.id,
 								}
@@ -82,18 +76,15 @@ const ContentForm = ({ user, setShowChartModal, setModalChildren }: IProps) => {
 		))
 	}
 
-	function resetExamHistory() {
-		toast.custom(t => (
+	async function resetExamHistory() {
+		toast.custom((t) => (
 			<DecitionToast
 				t={t}
 				text='Are you sure you want to reset your exam history?'
 				afirmativeCallback={async () => {
 					try {
-						const { data } = await resetExamHistoryRequest(
-							_id,
-							token || ""
-						)
-						if (data?.message === "History reseted") refreshUser()
+						const { data } = await resetExamHistoryRequest(_id, token || "")
+						if (data?.message === "History reseted") await refreshUser()
 						return toast.success("Exam history reseted", {
 							id: t.id,
 						})
@@ -107,19 +98,15 @@ const ContentForm = ({ user, setShowChartModal, setModalChildren }: IProps) => {
 		))
 	}
 
-	function resetPerformanceRecords() {
+	async function resetPerformanceRecords() {
 		toast.custom(t => (
 			<DecitionToast
 				t={t}
 				text='Are you sure you want to reset your performance statistics?'
 				afirmativeCallback={async () => {
 					try {
-						const { data } = await resetPerformanceHistoryRequest(
-							_id,
-							token || ""
-						)
-						if (data?.message === "Statistics reseted")
-							refreshUser()
+						const { data } = await resetPerformanceHistoryRequest(_id, token || "")
+						if (data?.message === "Statistics reseted") await refreshUser()
 						return toast.success("Statistics reseted", {
 							id: t.id,
 						})
@@ -139,26 +126,16 @@ const ContentForm = ({ user, setShowChartModal, setModalChildren }: IProps) => {
 				username: username,
 				createdAt: formatDate.format(new Date(createdAt)),
 				email: email,
-				durationPlan: formatDate.format(
-					new Date(subscription?.access || "")
-				),
+				durationPlan: formatDate.format(new Date(subscription?.access || "")),
 				purchaseDate: subscription?.purchaseDate
-					? formatDate.format(
-							new Date(subscription?.purchaseDate || "")
-					  )
+					? formatDate.format(new Date(subscription?.purchaseDate || ""))
 					: "",
-				activeSubscription: user.subscription?.hasSubscription
-					? "Active"
-					: "Paused",
+				activeSubscription: user.subscription?.hasSubscription ? "Active" : "Paused",
 				correctAnswers: exam?.correctAnswers.length,
 				maxScore:
 					exam.scoresHistory?.length === 0
 						? "Don't have exams answered"
-						: Math.max(
-								...exam.scoresHistory?.map(
-									record => record.score
-								)
-						  ).toFixed(0) + "%",
+						: Math.max(...exam.scoresHistory?.map(record => record.score)).toFixed(0) + "%",
 			}}
 			validationSchema={yup.object({
 				username: yup
@@ -168,11 +145,7 @@ const ContentForm = ({ user, setShowChartModal, setModalChildren }: IProps) => {
 					.required("Required"),
 			})}
 			onSubmit={(values, { setSubmitting }) => {
-				const requestPromise = updateUserRequest(
-					values.username,
-					id || "",
-					token || ""
-				)
+				const requestPromise = updateUserRequest(values.username, id || "", token || "")
 
 				toast.promise(requestPromise, {
 					loading: "Sending...",
@@ -192,31 +165,11 @@ const ContentForm = ({ user, setShowChartModal, setModalChildren }: IProps) => {
 				<Form>
 					<div className='grid grid-cols-1 sm:grid-cols-2 gap-x-5'>
 						<Input id='username' label='Username' name='username' />
-						<Input
-							id='email'
-							label='Email'
-							name='email'
-							readOnly={true}
-						/>
-						<Input
-							id='createdAt'
-							label='Creation Date'
-							name='createdAt'
-							readOnly={true}
-						/>
-						<Input
-							id='durationPlan'
-							label='Access deadline'
-							name='durationPlan'
-							readOnly={true}
-						/>
+						<Input id='email' label='Email' name='email' readOnly={true} />
+						<Input id='createdAt' label='Creation Date' name='createdAt' readOnly={true} />
+						<Input id='durationPlan' label='Access deadline' name='durationPlan' readOnly={true} />
 						{subscription?.purchaseDate && (
-							<Input
-								id='purchaseDate'
-								label='Date of purchase'
-								name='purchaseDate'
-								readOnly={true}
-							/>
+							<Input id='purchaseDate' label='Date of purchase' name='purchaseDate' readOnly={true} />
 						)}
 						<Input
 							id='activeSubscription'
@@ -227,16 +180,10 @@ const ContentForm = ({ user, setShowChartModal, setModalChildren }: IProps) => {
 					</div>
 					<div
 						className={`flex justify-end gap-x-4 mb-6 ${
-							isSubmitting
-								? "pointer-events-none"
-								: "pointer-events-auto"
+							isSubmitting ? "pointer-events-none" : "pointer-events-auto"
 						}`}
 					>
-						<SolidButton
-							submit={true}
-							as={ComponentElement.BUTTON}
-							theme={themeBtns.greenBtn}
-						>
+						<SolidButton submit={true} as={ComponentElement.BUTTON} theme={themeBtns.greenBtn}>
 							<span className='flex gap-2'>
 								{!isSubmitting ? (
 									<svg
@@ -268,7 +215,7 @@ const ContentForm = ({ user, setShowChartModal, setModalChildren }: IProps) => {
 						>
 							<span className='flex gap-2'>
 								<svg
-									className="w-6"
+									className='w-6'
 									fill='currentColor'
 									viewBox='0 0 20 20'
 									xmlns='http://www.w3.org/2000/svg'
@@ -306,11 +253,7 @@ const ContentForm = ({ user, setShowChartModal, setModalChildren }: IProps) => {
 						<div
 							unselectable='on'
 							draggable='false'
-							className={`${
-								!subscription?.hasSubscription
-									? "blur-sm pointer-events-none"
-									: ""
-							}`}
+							className={`${!subscription?.hasSubscription ? "blur-sm pointer-events-none" : ""}`}
 						>
 							<Separator></Separator>
 							{/** GENERAL PERFORMANCE INFORMATION */}
@@ -321,12 +264,7 @@ const ContentForm = ({ user, setShowChartModal, setModalChildren }: IProps) => {
 									name='correctAnswers'
 									readOnly={true}
 								/>
-								<Input
-									id='maxScore'
-									label='Best score'
-									name='maxScore'
-									readOnly={true}
-								/>
+								<Input id='maxScore' label='Best score' name='maxScore' readOnly={true} />
 							</div>
 							<CategoryStats />
 							<div className='flex justify-end mb-8'>
@@ -359,9 +297,7 @@ const ContentForm = ({ user, setShowChartModal, setModalChildren }: IProps) => {
 							</div>
 							<Separator></Separator>
 							{/* EXAM RECORDS */}
-							<h3 className='text-base text-slate-300 font-medium mb-6 mt-8'>
-								Exam records
-							</h3>
+							<h3 className='text-base text-slate-300 font-medium mb-6 mt-8'>Exam records</h3>
 							<ExamRecordTable
 								setShowChartModal={setShowChartModal}
 								setModalChildren={setModalChildren}

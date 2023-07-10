@@ -1,3 +1,16 @@
+import {
+	IQuestion,
+	SBA,
+	CBQ,
+	ECQ,
+	IAnswer,
+	AnswerSBA,
+	AnswerCBQ,
+	IAnswerResponse,
+	AnswerResponseCBQ,
+	AnswerResponseSBA,
+	AnswerResponseECQ,
+} from "../interface/exam"
 
 export const markdownExampleText = `
 # Title
@@ -34,53 +47,67 @@ Tables are one of the most useful thing in markdown, it's just so easy to type.
 You can also append images just using the syntax
 ![Some alternative text](https://i.blogs.es/ceda9c/dalle/450_1000.jpg)
 `
-export const parentCategories = [
-    "None",
-    "Medicine",
-    "Musculoskeletal",
-    "Surgery",
-    "Womens's health"
-]
+export const parentCategories = ["None", "Medicine", "Musculoskeletal", "Surgery", "Womens's health"]
 
 export const questionCategories = [
-    /* Categories */
-    "Dermatology",
-    "Ear, nose and throat",
-    "Ethics and law",
-    /* Medicine: */
-    "Cardiology",
-    "Endocrinology",
-    "Gastroenterology",
-    "Geriatric medicine",
-    "Haematology",
-    "Immunology",
-    "Infectious diseases",
-    "Metabolic medicine",
-    "Nephrology",
-    "Neurology",
-    "Oncology",
-    "Palliative care",
-    "Respiratory",
-    /* Musculoskeletal: */
-    "Orthopaedics", 
-    "Rheumatology",
-    /* Categories */
-    "Ophthalmology",
-    "Paediatrics", 
-    "Pharmacology", 
-    "Psychiatry", 
-    /* Surgery: */
-    "Anaesthetics and perioperative care",
-    "Breast",
-    "Colorectal",
-    "General surgery", 
-    "Neurosurgery", 
-    "Paediatric surgery", 
-    "Upper GI and hepatobiliary",
-    "Urology",
-    "Vascular",
-    /* Men health */
-    "Contraception",
-    "Gynaecology",
-    "Obstetrics"
+	/* Categories */
+	"Dermatology",
+	"Ear, nose and throat",
+	"Ethics and law",
+	/* Medicine: */
+	"Cardiology",
+	"Endocrinology",
+	"Gastroenterology",
+	"Geriatric medicine",
+	"Haematology",
+	"Immunology",
+	"Infectious diseases",
+	"Metabolic medicine",
+	"Nephrology",
+	"Neurology",
+	"Oncology",
+	"Palliative care",
+	"Respiratory",
+	/* Musculoskeletal: */
+	"Orthopaedics",
+	"Rheumatology",
+	/* Categories */
+	"Ophthalmology",
+	"Paediatrics",
+	"Pharmacology",
+	"Psychiatry",
+	/* Surgery: */
+	"Anaesthetics and perioperative care",
+	"Breast",
+	"Colorectal",
+	"General surgery",
+	"Neurosurgery",
+	"Paediatric surgery",
+	"Upper GI and hepatobiliary",
+	"Urology",
+	"Vascular",
+	/* Men health */
+	"Contraception",
+	"Gynaecology",
+	"Obstetrics",
 ]
+
+export function rateAnswer(question: IQuestion, answer: IAnswer): IAnswerResponse {
+	switch (question.type) {
+		case "SBA": {
+			const _question: IQuestion<SBA> = question
+			return _question.content.options[_question.content.answer - 1] === answer
+		}
+		case "CBQ": {
+			const _question: IQuestion<CBQ> = question
+			return _question.content.every((c, i) => c.options[c.answer - 1] === answer[i])
+		}
+		case "ECQ": {
+			const _question: IQuestion<ECQ> = question
+			return _question.content.question.every((c, i) => _question.content.options[c.answer - 1] === answer[i])
+		}
+
+		default:
+			throw new Error("Unknown question type")
+	}
+}

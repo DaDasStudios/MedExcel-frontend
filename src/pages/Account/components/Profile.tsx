@@ -1,5 +1,3 @@
-import { useEffect } from "react"
-import { toast } from "react-hot-toast"
 import Separator from "../../../components/ui/Separator"
 import { useAuthContext } from "../../../context/auth/authContext"
 import { IUser } from "../../../interface/user"
