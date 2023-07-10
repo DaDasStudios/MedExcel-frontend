@@ -3,43 +3,46 @@
 @tailwind utilities;
 
 html {
-    scroll-behavior: smooth;
-    scroll-padding-top: 160px;
+	scroll-behavior: smooth;
+	scroll-padding-top: 160px;
 }
 
 ::-webkit-scrollbar {
-  @apply w-2 h-2;
+	@apply w-2 h-2;
 }
 
-::-webkit-scrollbar-track {	
-  @apply rounded-md bg-slate-700;
+::-webkit-scrollbar-track {
+	@apply rounded-md bg-slate-700;
 }
 
 ::-webkit-scrollbar-thumb {
-@apply rounded-md bg-slate-600;
+	@apply rounded-md bg-slate-600;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  @apply bg-slate-500;
+	@apply bg-slate-500;
 }
 
-input[type=number]::-webkit-inner-spin-button {
-  -webkit-appearance: none;
+input[type="number"]::-webkit-inner-spin-button {
+	-webkit-appearance: none;
 }
-
-
 
 @keyframes shake {
-  10%, 90% {
-    transform: translate3d(-1px, 0, 0);
-  }
-  20%, 80% {
-    transform: translate3d(2px, 0, 0);
-  }
-  30%, 50%, 70% {
-    transform: translate3d(-4px, 0, 0);
-  }
-  40%, 60% {
-    transform: translate3d(4px, 0, 0);
-  }
+	10%,
+	90% {
+		transform: translate3d(-1px, 0, 0);
+	}
+	20%,
+	80% {
+		transform: translate3d(2px, 0, 0);
+	}
+	30%,
+	50%,
+	70% {
+		transform: translate3d(-4px, 0, 0);
+	}
+	40%,
+	60% {
+		transform: translate3d(4px, 0, 0);
+	}
 }

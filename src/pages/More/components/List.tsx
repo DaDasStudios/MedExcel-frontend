@@ -1,15 +1,8 @@
 import { PropsWithChildren } from "react"
 
-interface IProps extends PropsWithChildren {
-	animation?: string
-}
-
-const List = ({ children, animation = "fade-right", ...props }: IProps) => {
+const List = ({ children, ...props }: PropsWithChildren) => {
 	return (
-		<li
-			data-aos={animation}
-			{...props}
-			className='list-inside list-disc text-slate-200 mb-2 leading-7'>
+		<li {...props} className='list-inside list-disc text-slate-200 mb-2 leading-7 animate-enter-right'>
 			{children}
 		</li>
 	)

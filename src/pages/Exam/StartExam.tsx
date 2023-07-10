@@ -1,5 +1,5 @@
 import BackgroundImage from "../../components/ui/BackgroundImage";
-import EnterTransition from "../../components/ui/EnterTransition";
+import EnterTransition from "../../components/ui/transitions/EnterTransition";
 import CategoriesSelector from "./components/start/CategoriesSelector";
 
 export default function StartExam() {

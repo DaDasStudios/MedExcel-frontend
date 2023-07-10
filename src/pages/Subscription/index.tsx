@@ -1,18 +1,10 @@
 import PlansList from "./components/PlansList"
-import AOS from "aos"
-import { useEffect } from "react"
 import BackgroundImage from "../../components/ui/BackgroundImage"
 import { useAuthContext } from "../../context/auth/authContext"
 
 const Subscription = () => {
 	const { auth } = useAuthContext()
 
-	useEffect(() => {
-		AOS.init({
-			duration: 1300,
-		})
-		AOS.refresh()
-	}, [])
 	return (
 		<>
 			<BackgroundImage url='/img/subscription-page-image.jpg' />

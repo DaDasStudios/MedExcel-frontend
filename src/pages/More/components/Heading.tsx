@@ -1,20 +1,15 @@
 import { PropsWithChildren } from "react"
 
 interface IProps extends PropsWithChildren {
-    id?: string
-    animation?: string
+	id?: string
 }
 
-const Heading = ({ children, animation = "fade-right", ...props }: IProps) => {
-  return (
-		<h4
-			{...props}
-			data-aos={animation}
-			className='text-center font-bold text-5xl mb-8'
-		>
+const Heading = ({ children, ...props }: IProps) => {
+	return (
+		<h4 {...props} className='text-center font-bold text-5xl mb-8 animate-enter-right'>
 			{children}
 		</h4>
-  )
+	)
 }
 
 export default Heading

@@ -6,7 +6,7 @@ import { formatDateDetailed } from "../../utils/date"
 import Spin from "../../components/ui/Spin"
 import Confetti from "./components/constants/Confetti"
 import BackgroundImage from "../../components/ui/BackgroundImage"
-import EnterTransition from "../../components/ui/EnterTransition"
+import { EnterTransition } from "../../components/ui/transitions"
 import { Link } from "react-router-dom"
 
 const FinishExam = () => {

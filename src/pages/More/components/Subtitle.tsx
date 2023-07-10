@@ -1,16 +1,8 @@
 import { PropsWithChildren } from "react"
 
-interface IProps extends PropsWithChildren {
-	id?: string
-	animation?: string
-}
-
-const Subtitle = ({ children, animation = "fade-right", ...props }: IProps) => {
+const Subtitle = ({ children, ...props }: PropsWithChildren) => {
 	return (
-		<h6
-			{...props}
-			data-aos={animation}
-			className='text-left font-semibold text-xl mb-4'>
+		<h6 {...props} className='text-left font-semibold text-xl mb-4 animate-enter-right'>
 			{children}
 		</h6>
 	)
