@@ -1,11 +1,7 @@
 import { createContext, PropsWithChildren, useContext, useEffect } from "react"
 import toast from "react-hot-toast"
 import { useLocalStorage } from "../../hooks/useLocalStorage"
-import {
-	IAdminContext,
-	IAdminState,
-	setAdminDataType,
-} from "../../interface/admin"
+import { IAdminContext, IAdminState, setAdminDataType } from "../../interface/admin"
 import { getUserRequest } from "../../lib/user.request"
 
 const adminContext = createContext({} as IAdminContext)
@@ -18,7 +14,7 @@ const initialAuthState: IAdminState = {
 	user: null,
 }
 export const AdminContextProvider = ({ children }: PropsWithChildren) => {
-	const [auth, setAuth] = useLocalStorage("medexcel_auth", initialAuthState)
+	const [auth, setAuth] = useLocalStorage(initialAuthState, "medexcel_auth")
 
 	const reset = () => setAuth(initialAuthState)
 
@@ -60,7 +56,8 @@ export const AdminContextProvider = ({ children }: PropsWithChildren) => {
 				auth,
 				setAdminData,
 				reset,
-			}}>
+			}}
+		>
 			{children}
 		</adminContext.Provider>
 	)

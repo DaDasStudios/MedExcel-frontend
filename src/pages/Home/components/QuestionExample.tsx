@@ -2,12 +2,12 @@ import { useId, useState } from "react"
 import { toast } from "react-hot-toast"
 import MarkdownBody from "../../../components/ui/MarkdownBody"
 import Separator from "../../../components/ui/Separator"
-import { IQuestion, ISBAQuestion } from "../../../interface/exam"
+import { IQuestion, SBA } from "../../../interface/exam"
 import { Link } from "react-router-dom"
 
 const QuestionExample = () => {
 	const id = useId()
-	const question: IQuestion<ISBAQuestion> = {
+	const question: IQuestion<SBA> = {
 		type: "SBA",
 		topic: "" ,
 		content: {

@@ -1,6 +1,6 @@
 import { createContext, PropsWithChildren, useContext, useRef, useState } from "react"
 import { IExamsAdminContext } from "../../interface/admin"
-import { ICBQQuestion, IQuestion, QuestionType } from "../../interface/exam"
+import { CBQContent, IQuestion, QuestionType } from "../../interface/exam"
 
 const examsContext = createContext({} as IExamsAdminContext)
 
@@ -54,7 +54,7 @@ export const ExamsAdminContextProvider = function ({
 	}
 	const [ECQContent, setECQContent] = useState(ECQInitialState)
 
-	const CBQInitialState: ICBQQuestion = [
+	const CBQInitialState: CBQContent = [
 		{
 			question: "",
 			answer: 0,

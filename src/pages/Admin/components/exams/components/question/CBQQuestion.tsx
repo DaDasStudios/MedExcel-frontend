@@ -1,13 +1,13 @@
 import {
-	ICBQQuestion,
+	CBQ,
 	IQuestion,
-	ISBAQuestion,
+	SBAContent,
 } from "../../../../../../interface/exam"
 import { useState } from "react"
 import MarkdownBody from "../../../../../../components/ui/MarkdownBody"
 
 interface IProps {
-	data: IQuestion<ICBQQuestion>
+	data: IQuestion<CBQ>
 }
 
 const CBQQuestion = ({ data }: IProps) => {
@@ -15,7 +15,7 @@ const CBQQuestion = ({ data }: IProps) => {
 
 	const currentQuestion = data.content.find(
 		(_, index) => index === current
-	) as ISBAQuestion
+	) as SBAContent
 
 	return (
 		<>

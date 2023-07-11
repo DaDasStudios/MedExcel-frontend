@@ -1,7 +1,7 @@
 import {
-	ICBQQuestion,
-	IECQQuestion,
-	ISBAQuestion,
+	CBQContent,
+	ECQContent,
+	SBAContent,
 	QuestionType,
 } from "../../../../../../interface/exam"
 import DropdownQuestion from "./DropdownQuestion"
@@ -15,7 +15,7 @@ interface IProps {
 function QuestionContent({ content, type }: IProps) {
 	switch (type) {
 		case "SBA": {
-			let data: ISBAQuestion = content as ISBAQuestion
+			let data = content as SBAContent
 
 			return (
 				<article className='flex flex-col gap-2 text-sm'>
@@ -53,7 +53,7 @@ function QuestionContent({ content, type }: IProps) {
 		}
 
 		case "CBQ": {
-			let data: ICBQQuestion = content as ICBQQuestion
+			let data = content as CBQContent
 
 			return (
 				<article className='flex flex-col gap-2 text-sm'>
@@ -130,7 +130,7 @@ function QuestionContent({ content, type }: IProps) {
 		}
 
 		case "ECQ": {
-			let data: IECQQuestion = content as IECQQuestion
+			let data = content as ECQContent
 
 			return (
 				<article className='flex flex-col gap-2 text-sm'>

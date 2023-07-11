@@ -1,5 +1,6 @@
-import { ICBQQuestion, IECQQuestion, IMDString, IQuestion, ISBAQuestion, QuestionType } from "./exam";
+import { CBQContent, ECQContent, SBAContent, MarkdownContent, IQuestion, QuestionType } from "./exam";
 import React from "react";
+import { IUser } from "./user";
 
 export type setAdminDataType = (payload: { token: string; id: string }) => Promise<boolean>;
 
@@ -9,22 +10,10 @@ export interface IAdminContext {
     reset: () => void
 }
 
-export interface IAdminUser {
-    _id: string;
-    username: string;
-    email: string;
-    password: null,
-    role: "Admin",
-    createdAt: Date,
-    updatedAt: Date
-    token: string
-
-}
-
 export interface IAdminState {
     token: string;
     id: string;
-    user: IAdminUser | null
+    user: IUser | null
 }
 
 export interface IExamsAdminContext {
@@ -65,16 +54,16 @@ export interface IExamsAdminContext {
         editId: string
         setEditId: React.Dispatch<React.SetStateAction<string>>
 
-        SBAContent: ISBAQuestion
-        setSBAContent: React.Dispatch<React.SetStateAction<ISBAQuestion>>
+        SBAContent: SBAContent
+        setSBAContent: React.Dispatch<React.SetStateAction<SBAContent>>
         resetSBAContent: () => void
 
-        ECQContent: IECQQuestion
-        setECQContent: React.Dispatch<React.SetStateAction<IECQQuestion>>
+        ECQContent: ECQContent
+        setECQContent: React.Dispatch<React.SetStateAction<ECQContent>>
         resetECQContent: () => void
 
-        CBQContent: ICBQQuestion
-        setCBQContent: React.Dispatch<React.SetStateAction<ICBQQuestion>>
+        CBQContent: CBQContent
+        setCBQContent: React.Dispatch<React.SetStateAction<CBQContent>>
         resetCBQContent: () => void
 
         formRef: React.MutableRefObject<HTMLFormElement | null>
@@ -84,7 +73,7 @@ export interface IExamsAdminContext {
 export interface IQuestionFormState {
     type: QuestionType
     category: string
-    scenario: IMDString
+    scenario: MarkdownContent
     parent: string
     topic: string
 }

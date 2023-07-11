@@ -1,12 +1,6 @@
 import MarkdownBody from "../../../../../../components/ui/MarkdownBody"
 import Separator from "../../../../../../components/ui/Separator"
-import {
-	ICBQQuestion,
-	IECQQuestion,
-	IQuestion,
-	ISBAQuestion,
-	QuestionType,
-} from "../../../../../../interface/exam"
+import { IQuestion, QuestionType, SBA, ECQ, CBQ } from "../../../../../../interface/exam"
 import { toTitle } from "../../../../../../utils/string"
 import CBQQuestion from "./CBQQuestion"
 
@@ -18,17 +12,16 @@ interface IProps {
 const QuestionPreview = ({ question, type }: IProps) => {
 	switch (type) {
 		case "SBA": {
-			let data: IQuestion<ISBAQuestion> =
-				question as IQuestion<ISBAQuestion>
+			let data = question as IQuestion<SBA>
 			return (
 				<>
 					<span className='text-sm text-gray-300'>
-						Category - <b>{data.parent}</b> / <b>{data.category}</b>{" "}
-						/ <b>{toTitle(data.topic || "No topic")}</b>
+						Category - <b>{data.parent}</b> / <b>{data.category}</b> /{" "}
+						<b>{toTitle(data.topic || "No topic")}</b>
 					</span>
 					<Separator />
 					<MarkdownBody content={data.scenario} />
-					<MarkdownBody content={data.content.question}/>
+					<MarkdownBody content={data.content.question} />
 					<form>
 						<div className='inline-flex flex-col mt-2 mb-1'>
 							{data.content.options.map((option, index) => (
@@ -73,22 +66,19 @@ const QuestionPreview = ({ question, type }: IProps) => {
 							Answer
 						</button>
 					</form>
-					<h5 className='text-sm text-blue-500 mt-2'>
-						Explanation after answering
-					</h5>
+					<h5 className='text-sm text-blue-500 mt-2'>Explanation after answering</h5>
 					<MarkdownBody content={data.content.explanation} />
 				</>
 			)
 		}
 
 		case "ECQ": {
-			let data: IQuestion<IECQQuestion> =
-				question as IQuestion<IECQQuestion>
+			let data = question as IQuestion<ECQ>
 			return (
 				<>
 					<span className='text-sm text-gray-300'>
-						Category - <b>{data.parent}</b> / <b>{data.category}</b>{" "}
-						/ <b>{toTitle(data.topic || "No topic")}</b>
+						Category - <b>{data.parent}</b> / <b>{data.category}</b> /{" "}
+						<b>{toTitle(data.topic || "No topic")}</b>
 					</span>
 					<span className='text-sm text-gray-400 flex items-baseline gap-3'>
 						<svg
@@ -105,22 +95,16 @@ const QuestionPreview = ({ question, type }: IProps) => {
 							/>
 						</svg>
 						<p>
-							Each group of extenden matching questions consists
-							of numbered options followed by a list of problems
-							questions. For each problem question select one
-							numbered option the most closely answers the
-							question. You can use the same option more than
-							once.
+							Each group of extenden matching questions consists of numbered options followed by a list of
+							problems questions. For each problem question select one numbered option the most closely
+							answers the question. You can use the same option more than once.
 						</p>
 					</span>
 					<Separator />
 					<p>Available options</p>
 					<ul className='ml-5'>
 						{data.content.options.map((option, index) => (
-							<li
-								className='list-decimal text-gray-300'
-								key={index + option}
-							>
+							<li className='list-decimal text-gray-300' key={index + option}>
 								{option}
 							</li>
 						))}
@@ -129,32 +113,20 @@ const QuestionPreview = ({ question, type }: IProps) => {
 					<form>
 						<ul className='ml-5 flex flex-col gap-2'>
 							{data.content.question.map((question, i) => (
-								<li
-									key={question.question + i}
-									className='list-decimal'
-								>
+								<li key={question.question + i} className='list-decimal'>
 									<div className='flex gap-2'>
 										<p className=''>{question.question}</p>
-										<label
-											key={question.question + i}
-											className=''
-											htmlFor={question.question + i}
-										>
+										<label key={question.question + i} className='' htmlFor={question.question + i}>
 											<select
 												className='bg-slate-700 rounded-md outline-none border border-gray-100/10 text-slate-300'
 												name={"question " + i}
 												id={question.question + i}
 											>
-												{data.content.options.map(
-													(option, j) => (
-														<option
-															key={option + j}
-															value={j + 1}
-														>
-															{option}
-														</option>
-													)
-												)}
+												{data.content.options.map((option, j) => (
+													<option key={option + j} value={j + 1}>
+														{option}
+													</option>
+												))}
 											</select>
 										</label>
 									</div>
@@ -177,23 +149,20 @@ const QuestionPreview = ({ question, type }: IProps) => {
 							Check
 						</button>
 					</form>
-					<h5 className='text-sm text-blue-500 mt-2'>
-						Explanation after answering
-					</h5>
+					<h5 className='text-sm text-blue-500 mt-2'>Explanation after answering</h5>
 					<MarkdownBody content={data.content.explanation} />
 				</>
 			)
 		}
 
 		case "CBQ": {
-			let data: IQuestion<ICBQQuestion> =
-				question as IQuestion<ICBQQuestion>
+			let data = question as IQuestion<CBQ>
 
 			return (
 				<>
 					<span className='text-sm text-gray-300'>
-						Category - <b>{data.parent}</b> / <b>{data.category}</b>{" "}
-						/ <b>{toTitle(data.topic || "No topic")}</b>
+						Category - <b>{data.parent}</b> / <b>{data.category}</b> /{" "}
+						<b>{toTitle(data.topic || "No topic")}</b>
 					</span>
 					<span className='text-sm text-gray-400 flex items-baseline gap-3'>
 						<svg
@@ -210,9 +179,8 @@ const QuestionPreview = ({ question, type }: IProps) => {
 							/>
 						</svg>
 						<p>
-							Answer the question based on the below scenario,
-							once you answer the asked question then you can
-							continue with the next one.
+							Answer the question based on the below scenario, once you answer the asked question then you
+							can continue with the next one.
 						</p>
 					</span>
 					<Separator />

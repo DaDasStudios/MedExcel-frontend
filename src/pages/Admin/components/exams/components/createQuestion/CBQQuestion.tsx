@@ -2,7 +2,7 @@ import { useId } from "react"
 import { SimpleInput, TextArea } from "./Input"
 import Tooltip from "../../../../../../components/ui/Tooltip"
 import { useExamsAdminContext } from "../../../../../../context/admin/examsContext"
-import { ISBAQuestion } from "../../../../../../interface/exam"
+import { SBAContent } from "../../../../../../interface/exam"
 import SolidButton, { themeBtns } from "../../../../../../components/ui/Buttons/SolidButton"
 import { ComponentElement } from "../../../../../../interface"
 
@@ -29,7 +29,7 @@ const CBQQUestion = () => {
 	}
 
 	function setQuestionExplanation(
-		stateAction: (value: any) => ISBAQuestion,
+		stateAction: (value: any) => SBAContent,
 		index: number
 	) {
 		const res = stateAction(content[index])
@@ -57,7 +57,7 @@ const CBQQUestion = () => {
 	return (
 		<>
 			<div className='max-h-[500px] overflow-y-auto pr-3'>
-				{content.map((singleCase, index) => (
+				{content.map((_, index) => (
 					<div key={id + index}>
 						<TextArea
 							id={"question" + index}
