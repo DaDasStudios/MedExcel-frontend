@@ -71,6 +71,7 @@ const CategoriesSelector = () => {
 				{
 					categories: selectedCategories,
 					filter,
+
 				},
 				auth.token || ""
 			)

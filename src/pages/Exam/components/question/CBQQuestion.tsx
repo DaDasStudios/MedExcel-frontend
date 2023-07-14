@@ -1,9 +1,9 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { toast } from "react-hot-toast"
 import MarkdownBody from "../../../../components/ui/MarkdownBody"
 import Separator from "../../../../components/ui/Separator"
 import { useExamContext } from "../../../../context/exam/examContext"
-import { AnswerCBQ, CBQ, IQuestion, SBA, SBAContent } from "../../../../interface/exam"
+import { AnswerCBQ, CBQ, IQuestion, SBAContent } from "../../../../interface/exam"
 import ShortNextButton from "../ui/ShortNextButton"
 import CategoryHeader from "../ui/CategoryHeader"
 import HelpBox from "../ui/HelpBox"
@@ -16,19 +16,10 @@ interface IProps {
 	question: IQuestion<CBQ>
 }
 
-interface IPageContent {
-	page: number
-	currentQuestion: SBAContent
-}
-
 const CBQQuestion = ({ question }: IProps) => {
-	const { page, canAnswer, answersRecords, submitAnswer } = useExamContext()
-
-	const [pageContent, setPageContent] = useState({
-		page: 0,
-		currentQuestion: question.content[0],
-	} as IPageContent)
-
+	const { page, canAnswer, answersRecords, currQuestion, submitAnswer } = useExamContext()
+	const [_page, setPage] = useState(0)
+	const currentQuestion = question.content[_page >= question.content.length ? 0 : _page]
 	const cases = question.content.length
 
 	const [selectedOptions, setSelectedOptions] = useState<string[]>(() => {
@@ -50,14 +41,12 @@ const CBQQuestion = ({ question }: IProps) => {
 
 	function handleSelectOption(e: React.ChangeEvent<HTMLInputElement>) {
 		setSelectedOptions(prevSelectedOptions =>
-			prevSelectedOptions.map((selectionOption, index) =>
-				index === pageContent.page ? e.target.value : selectionOption
-			)
+			prevSelectedOptions.map((selectionOption, index) => (index === _page ? e.target.value : selectionOption))
 		)
 	}
 
 	async function handlePagination(step: number) {
-		const pageIndex = pageContent.page + step
+		const pageIndex = _page + step
 
 		if (pageIndex < 0) {
 			return
@@ -67,12 +56,12 @@ const CBQQuestion = ({ question }: IProps) => {
 			return
 		}
 
-		setPageContent({
-			...pageContent,
-			page: pageIndex,
-			currentQuestion: question.content[pageIndex],
-		})
+		setPage(pageIndex)
 	}
+
+	useEffect(() => {
+		setPage(0)
+	}, [currQuestion])
 
 	return (
 		<div className='flex flex-col gap-3 text-gray-200 font-medium relative'>
@@ -84,10 +73,10 @@ const CBQQuestion = ({ question }: IProps) => {
 			/>
 			<Separator />
 			<form onSubmit={onSubmit} className='my-2'>
-				<Header _page={pageContent.page} cases={cases} question={question} />
+				<Header _page={_page} cases={cases} question={question} />
 
 				{/** EXPLANATION */}
-				{pageContent.page === cases && !canAnswer ? (
+				{_page === cases && !canAnswer ? (
 					<article>
 						<h3 className='text-sm font-medium mt-6 text-gray-200 mb-4'>
 							Go back to see the correct answers and see thier explanations over here.
@@ -106,19 +95,19 @@ const CBQQuestion = ({ question }: IProps) => {
 						</div>
 
 						<div className='text-gray-300 mt-4 mb-2'>
-							<MarkdownBody content={pageContent.currentQuestion.question} />
+							<MarkdownBody content={currentQuestion.question} />
 						</div>
 
 						{/** OPTIONS */}
 						<ol type='A' role='list' className='flex flex-col mt-2 mb-1'>
-							{pageContent.currentQuestion.options.map((optionContent, optionIndex) => (
+							{currentQuestion.options.map((optionContent, optionIndex) => (
 								<CBQOption
 									question={question}
-									key={`case:${pageContent.page}-option:${optionIndex}`}
+									key={`case:${_page}-option:${optionIndex}`}
 									optionContent={optionContent}
 									optionIndex={optionIndex}
 									handleSelectOption={handleSelectOption}
-									_page={pageContent.page}
+									_page={_page}
 									selectedOptions={selectedOptions}
 								/>
 							))}
@@ -127,7 +116,7 @@ const CBQQuestion = ({ question }: IProps) => {
 				)}
 
 				{/** PAGINATION BUTTONS */}
-				<CBQPaginationButtons _page={pageContent.page} cases={cases} handlePagination={handlePagination} />
+				<CBQPaginationButtons _page={_page} cases={cases} handlePagination={handlePagination} />
 				<NavigationButtons />
 			</form>
 		</div>

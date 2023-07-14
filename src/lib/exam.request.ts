@@ -25,6 +25,7 @@ export const setExamRequest = (
 		categories: string[]
 		filter: FilterSetExamType
 		type?: QuestionType
+		ids?: string[]
 	},
 	token: string
 ) =>
